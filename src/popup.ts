@@ -42,7 +42,6 @@ export function apply() {
       enumerable: true,
       configurable: true,
       value() {
-        console.log('=-==>', this.popUp)
         if (!this.popUp) throw new DOMException(notSupportedMessage, 'NotSupportedError')
         if (visibleElements.has(this)) throw new DOMException('Invalid on already-showing popups', 'InvalidStateError')
         this.style.display = 'block'
