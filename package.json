@@ -42,7 +42,7 @@
     "test:ci": "playwright test --browser=all"
   },
   "devDependencies": {
-    "@playwright/test": "^1.23.1",
+    "@playwright/test": "^1.23.3",
     "stylis": "^4.1.1"
   },
   "dependencies": {
