@@ -6,7 +6,7 @@
   padding: 1em;
   width: fit-content;
   height: fit-content;
-  border: 1px solid initial;
+  border: 1px solid;
   background: white;
   color: black;
 }
