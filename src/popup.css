@@ -16,3 +16,8 @@
     color: white;
   }
 }
+
+/* Necessary for compatibility with Chrome */
+[popup]:not(:-internal-popup-hidden) {
+  display: block;
+}
