@@ -16,7 +16,7 @@ export function apply() {
       enumerable: true,
       configurable: true,
       get() {
-        const value = this.getAttribute('popup')
+        const value = this.getAttribute('popup').toLowerCase()
         if (value === 'hint') return 'hint'
         if (value === 'manual') return 'manual'
         if (value === '' || value == 'auto') return 'auto'
