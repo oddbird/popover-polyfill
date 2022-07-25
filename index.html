@@ -4,9 +4,21 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Polyfill Demo</title>
+  <title>Popup Attribute Polyfill</title>
+  <script src="./dist/index.iife.min.js"></script>
+  <link rel="stylesheet" href="./dist/popup.css">
 </head>
 <body>
-  <h1>Polyfill Demo</h1>
+  <h1>Popup Attribute Polyfill</h1>
+
+  <div id=popups>
+    <div id=popup1 popup>Pop up</div>
+    <div id=popup2 popup="">Pop up</div>
+    <div id=popup3 popup=auto>Pop up</div>
+    <div id=popup4 popup=hint>Pop up</div>
+    <div id=popup5 popup=manual>Pop up</div>
+    <div id=popup6 popup=invalid>Invalid Pop up</div>
+  </div>
+
 </body>
 </html>

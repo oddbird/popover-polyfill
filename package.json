@@ -18,18 +18,19 @@
     "polyfill"
   ],
   "type": "module",
-  "main": "dist/main.js",
-  "module": "dist/module.js",
+  "main": "dist/index.min.js",
+  "module": "dist/index.js",
   "files": [
     "README.md",
     "src/**/*.js"
   ],
   "scripts": {
-    "build:iife:minified": "esbuild --bundle src/css-toggles.js --outfile=dist/css-toggles.iife.min.js --format=iife --minify",
-    "build:esm:minified": "esbuild --bundle src/css-toggles.js --outfile=dist/css-toggles.min.js --format=esm --minify",
-    "build:esm:debug": "esbuild --bundle src/css-toggles.js --outfile=dist/css-toggles.js --format=esm",
-    "build": "rm -rf dist && yarn build:esm:debug && yarn build:esm:minified && yarn build:iife:minified",
-    "dev": "rm -rf dist && esbuild --bundle src/css-toggles.js --format=esm --servedir=. --outdir=dist --sourcemap --serve=3000",
+    "build:iife:minified": "esbuild --bundle src/index.ts --outfile=dist/index.iife.min.js --format=iife --minify",
+    "build:esm:minified": "esbuild --bundle src/index.ts --outfile=dist/index.min.js --format=esm --minify",
+    "build:esm:module": "esbuild src/*.ts src/*.css --outdir=dist/ --format=esm",
+    "build:esm:debug": "esbuild --bundle src/index.ts --outfile=dist/index.ts --format=esm",
+    "build": "rm -rf dist && yarn build:esm:module && yarn build:esm:debug && yarn build:esm:minified && yarn build:iife:minified",
+    "dev": "rm -rf dist && esbuild --bundle src/index.ts --format=esm --servedir=. --outdir=dist --sourcemap --serve=3000",
     "format:css": "stylelint --fix src/**/*.css",
     "format:js": "prettier --write {src,tests}/**/*.js && eslint --fix {src,tests}/**/*.js",
     "format": "yarn format:css && yarn format:js",
@@ -42,7 +43,7 @@
     "test:ci": "playwright test --browser=all"
   },
   "devDependencies": {
-    "@playwright/test": "^1.23.1",
+    "@playwright/test": "^1.23.3",
     "stylis": "^4.1.1"
   },
   "dependencies": {

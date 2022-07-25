@@ -1,0 +1,23 @@
+[popup="" i], [popup="auto" i], [popup="hint" i], [popup="manual" i] {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 1em;
+  width: fit-content;
+  height: fit-content;
+  border: 1px solid;
+  background: white;
+  color: black;
+}
+@media (prefers-color-scheme: dark) {
+  [popup="" i], [popup="auto" i], [popup="hint" i], [popup="manual" i] {
+    background: black;
+    color: white;
+  }
+}
+
+/* Necessary for compatibility with Chrome */
+[popup]:not(:-internal-popup-hidden) {
+  display: block;
+}
