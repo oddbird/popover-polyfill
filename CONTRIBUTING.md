@@ -1,4 +1,4 @@
-# Contributing to CSS Toggles
+# Contributing to the Popup Attribute Polyfill
 
 Ideas, issues, and pull-requests are welcome!
 
