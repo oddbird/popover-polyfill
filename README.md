@@ -21,7 +21,7 @@ with a `<script>` tag:
 ```
 
 You will also likely need the CSS file, which supplies some default styles.
-Download the `popup.csss` [from
+Download the `popup.css` [from
 unpkg.com](https://unpkg.com/browse/@oddbird/popup-polyfill/dist/) and add it
 to the appropriate directory in your project. Then, include it where necessary
 with a `<link rel=stylesheet>` tag:
