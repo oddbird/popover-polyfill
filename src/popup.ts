@@ -66,4 +66,21 @@ export function apply() {
     }
 
   })
+
+  function showDefaultOpen() {
+    // Only the first auto popup is shown. hint popups are not shown
+    const popup = document.querySelector('[popup=auto i][defaultopen]')
+    if (popup) popup.showPopUp()
+    // All manual popups are shown
+    for (const popup of document.querySelectorAll('[popup=manual i][defaultopen]')) {
+      popup.showPopUp()
+    }
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    showDefaultOpen()
+  } else {
+    document.addEventListener('DOMContentLoaded', showDefaultOpen, { once: true })
+  }
+
 }
