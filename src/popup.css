@@ -20,6 +20,17 @@
   inset-block-end: 0;
 }
 
+/* stylelint-disable selector-class-pattern */
+[popup='' i].\:open,
+[popup='auto' i].\:open,
+[popup='hint' i].\:open,
+[popup='manual' i].\:open {
+  display: block;
+  position: fixed;
+  z-index: 2147483647;
+}
+/* stylelint-enable selector-class-pattern */
+
 @media (prefers-color-scheme: dark) {
   [popup='' i],
   [popup='auto' i],

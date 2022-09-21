@@ -50,8 +50,7 @@ export function apply() {
             'Invalid on already-showing popups',
             'InvalidStateError',
           );
-        this.style.display = 'block';
-        this.style.position = 'fixed';
+        this.classList.add(':open');
         visibleElements.add(this);
         if (this.popUp === 'auto') {
           const focusEl = this.hasAttribute('autofocus')
@@ -73,7 +72,7 @@ export function apply() {
             'Invalid on already-hidden popups',
             'InvalidStateError',
           );
-        this.style.display = 'none';
+        this.classList.remove(':open');
         visibleElements.delete(this);
       },
     },
@@ -101,4 +100,19 @@ export function apply() {
       once: true,
     });
   }
+
+  document.addEventListener('click', (event: Event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const doc = target.ownerDocument;
+    const effectedPopup: HTMLElement | null = target.closest('[popup]');
+
+    // Dismiss open popups
+    for (const popup of doc.querySelectorAll(
+      '[popup="" i].\\:open, [popup=auto i].\\:open, [popup=hint i].\\:open',
+    )) {
+      if (popup instanceof HTMLElement && popup !== effectedPopup)
+        popup.hidePopUp();
+    }
+  });
 }
