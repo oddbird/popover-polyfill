@@ -9,6 +9,12 @@
   border: 1px solid;
   background: white;
   color: black;
+  overflow: auto;
+  margin: auto;
+  inset-inline-start: 0px;
+  inset-inline-end: 0px;
+  inset-block-start: 0px;
+  inset-block-end: 0px;
 }
 @media (prefers-color-scheme: dark) {
   [popup="" i], [popup="auto" i], [popup="hint" i], [popup="manual" i] {
