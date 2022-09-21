@@ -1,0 +1,13 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "lib": ["es6", "dom", "dom.iterable"],
+    "module": "ESNext",
+    "noEmit": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2019"
+  }
+}

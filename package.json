@@ -35,7 +35,7 @@
     "format:js": "prettier --write {src,tests}/**/*.js && eslint --fix {src,tests}/**/*.js",
     "format": "yarn format:css && yarn format:js",
     "lint:css": "stylelint src/**/*.css",
-    "lint:js": "prettier --check {src,tests}/**/*.js && eslint {src,tests}/**/*.js",
+    "lint:js": "prettier --check {src,tests}/**/*.js && eslint {src,tests}/**/*.js && tsc",
     "lint": "yarn lint:css && yarn lint:js",
     "prepack": "yarn build",
     "preview": "rm -rf dist && yarn build && esbuild --servedir=. --serve=\"${PORT:-3000}\" --log-level=\"${LEVEL:-info}\"",
@@ -44,9 +44,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.23.3",
-    "stylis": "^4.1.1"
-  },
-  "dependencies": {
-    "esbuild": "^0.14.48"
+    "esbuild": "^0.14.48",
+    "stylis": "^4.1.1",
+    "typescript": "^4.8.3"
   }
 }
