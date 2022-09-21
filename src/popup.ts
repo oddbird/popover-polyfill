@@ -10,7 +10,7 @@ const notSupportedMessage =
   'Not supported on element that does not have valid popup attribute';
 
 export function apply() {
-  const visibleElements = new Set<HTMLElement>();
+  const visibleElements = new WeakSet<HTMLElement>();
 
   Object.defineProperties(HTMLElement.prototype, {
     popUp: {
