@@ -27,7 +27,7 @@ to the appropriate directory in your project. Then, include it where necessary
 with a `<link rel=stylesheet>` tag:
 
 ```html
-<link rel="stylesheet" src="/path/to/popup.css">
+<link rel="stylesheet" src="/path/to/popup.css" />
 ```
 
 ### With npm
@@ -72,5 +72,3 @@ attributes to the HTMLElement class.
 ## Contributing
 
 Visit our [contribution guidelines](https://github.com/oddbird/css-toggles/blob/main/CONTRIBUTING.md).
-
-

@@ -1,4 +1,7 @@
-[popup="" i], [popup="auto" i], [popup="hint" i], [popup="manual" i] {
+[popup='' i],
+[popup='auto' i],
+[popup='hint' i],
+[popup='manual' i] {
   display: none;
   position: fixed;
   top: 0;
@@ -9,9 +12,19 @@
   border: 1px solid;
   background: white;
   color: black;
+  overflow: auto;
+  margin: auto;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
 }
+
 @media (prefers-color-scheme: dark) {
-  [popup="" i], [popup="auto" i], [popup="hint" i], [popup="manual" i] {
+  [popup='' i],
+  [popup='auto' i],
+  [popup='hint' i],
+  [popup='manual' i] {
     background: black;
     color: white;
   }

@@ -1,4 +1,4 @@
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 export default {
   timeout: process.env.CI ? undefined : 3000, // Max execution time of any single test
   expect: {
@@ -16,4 +16,4 @@ export default {
     headless: true,
     forbidOnly: process.env.CI,
   },
-}
+};
