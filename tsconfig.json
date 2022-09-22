@@ -1,13 +1,15 @@
 {
-  "include": ["src"],
   "compilerOptions": {
-    "baseUrl": ".",
-    "esModuleInterop": true,
-    "lib": ["es6", "dom", "dom.iterable"],
-    "module": "ESNext",
-    "noEmit": true,
-    "sourceMap": true,
+    "module": "node16",
+    "moduleResolution": "Node16",
     "strict": true,
-    "target": "ES2019"
-  }
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
