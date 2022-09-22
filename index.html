@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Popup Attribute Polyfill</title>
-  <script src="./dist/index.js"></script>
-  <link rel="stylesheet" href="./dist/popup.css">
-</head>
-<body>
-  <h1>Popup Attribute Polyfill</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Popup Attribute Polyfill</title>
+    <script src="./dist/index.js"></script>
+    <link rel="stylesheet" href="./dist/popup.css" />
+  </head>
+  <body>
+    <h1>Popup Attribute Polyfill</h1>
 
-  <div id=popups>
-    <div id=popup1 popup>Pop up</div>
-    <div id=popup2 popup="">Pop up</div>
-    <div id=popup3 popup=auto>Pop up</div>
-    <div id=popup4 popup=hint>Pop up</div>
-    <div id=popup5 popup=manual>Pop up</div>
-    <div id=popup6 popup=invalid>Invalid Pop up</div>
+    <div id="popups">
+      <div id="popup1" popup>Pop up</div>
+      <div id="popup2" popup="">Pop up</div>
+      <div id="popup3" popup="auto">Pop up</div>
+      <div id="popup4" popup="hint">Pop up</div>
+      <div id="popup5" popup="manual">Pop up</div>
+      <div id="popup6" popup="invalid">Invalid Pop up</div>
 
-    <div id=popup7 popup=hint defaultopen>Default Open Pop up</div>
-    <div id=popup8 popup=auto defaultopen>Not Default Open Pop up</div>
-    <div id=popup9 popup=auto defaultopen>Not Default Open Pop up</div>
-    <div id=popup10 popup=manual defaultopen>Default Open Pop up</div>
-    <div id=popup11 popup=manual defaultopen>Default Open Pop up</div>
-  </div>
-
-</body>
+      <div id="popup7" popup="hint" defaultopen>Default Open Pop up</div>
+      <div id="popup8" popup="auto" defaultopen>Not Default Open Pop up</div>
+      <div id="popup9" popup="auto" defaultopen>Not Default Open Pop up</div>
+      <div id="popup10" popup="manual" defaultopen>Default Open Pop up</div>
+      <div id="popup11" popup="manual" defaultopen>Default Open Pop up</div>
+    </div>
+  </body>
 </html>

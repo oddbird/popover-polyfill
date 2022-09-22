@@ -1,4 +1,7 @@
-[popup="" i], [popup="auto" i], [popup="hint" i], [popup="manual" i] {
+[popup='' i],
+[popup='auto' i],
+[popup='hint' i],
+[popup='manual' i] {
   display: none;
   position: fixed;
   top: 0;
@@ -11,13 +14,17 @@
   color: black;
   overflow: auto;
   margin: auto;
-  inset-inline-start: 0px;
-  inset-inline-end: 0px;
-  inset-block-start: 0px;
-  inset-block-end: 0px;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
 }
+
 @media (prefers-color-scheme: dark) {
-  [popup="" i], [popup="auto" i], [popup="hint" i], [popup="manual" i] {
+  [popup='' i],
+  [popup='auto' i],
+  [popup='hint' i],
+  [popup='manual' i] {
     background: black;
     color: white;
   }
