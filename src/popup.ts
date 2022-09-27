@@ -105,7 +105,47 @@ export function apply() {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
     const doc = target.ownerDocument;
-    const effectedPopup: HTMLElement | null = target.closest('[popup]');
+    let effectedPopup: HTMLElement | null = target.closest('[popup]');
+    const isButton = target instanceof HTMLButtonElement;
+
+    // Handle popup triggers
+    if (isButton && target.hasAttribute('popupshowtarget')) {
+      effectedPopup = doc.getElementById(
+        target.getAttribute('popupshowtarget') || '',
+      );
+
+      if (
+        effectedPopup &&
+        effectedPopup.popUp &&
+        !visibleElements.has(effectedPopup)
+      ) {
+        effectedPopup.showPopUp();
+      }
+    } else if (isButton && target.hasAttribute('popuphidetarget')) {
+      effectedPopup = doc.getElementById(
+        target.getAttribute('popuphidetarget') || '',
+      );
+
+      if (
+        effectedPopup &&
+        effectedPopup.popUp &&
+        visibleElements.has(effectedPopup)
+      ) {
+        effectedPopup.hidePopUp();
+      }
+    } else if (isButton && target.hasAttribute('popuptoggletarget')) {
+      effectedPopup = doc.getElementById(
+        target.getAttribute('popuptoggletarget') || '',
+      );
+
+      if (effectedPopup && effectedPopup.popUp) {
+        if (visibleElements.has(effectedPopup)) {
+          effectedPopup.hidePopUp();
+        } else {
+          effectedPopup.showPopUp();
+        }
+      }
+    }
 
     // Dismiss open popups
     for (const popup of doc.querySelectorAll(
