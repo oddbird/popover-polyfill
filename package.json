@@ -1,7 +1,7 @@
 {
-  "name": "@oddbird/polyfill-template",
-  "version": "0.0.0-development",
-  "description": "Polyfill template",
+  "name": "@oddbird/popup-polyfill",
+  "version": "0.0.1",
+  "description": "Popup Polyfill",
   "license": "BSD-3-Clause",
   "publishConfig": {
     "access": "public"
