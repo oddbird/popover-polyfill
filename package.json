@@ -9,10 +9,10 @@
   "author": "OddBird <birds@oddbird.net> (oddbird.net)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/oddbird/polyfill.git"
+    "url": "https://github.com/oddbird/popup-polyfill.git"
   },
-  "bugs": "https://github.com/oddbird/polyfill/issues",
-  "homepage": "https://polyfill.oddbird.net",
+  "bugs": "https://github.com/oddbird/popup-polyfill/issues",
+  "homepage": "https://github.com/oddbird/popup-polyfill",
   "keywords": [
     "css",
     "polyfill"
