@@ -29,7 +29,7 @@
     "build:esm:minified": "esbuild --bundle src/index.ts --outfile=dist/index.min.js --format=esm --minify",
     "build:esm:module": "esbuild src/*.ts src/*.css --outdir=dist/ --format=esm",
     "build:esm:debug": "esbuild --bundle src/index.ts --outfile=dist/index.js --format=esm",
-    "build": "rm -rf dist && yarn build:esm:module && yarn build:esm:debug && yarn build:esm:minified && yarn build:iife:minified",
+    "build": "rm -rf dist && npm run build:esm:module && npm run build:esm:debug && npm run build:esm:minified && npm run build:iife:minified",
     "serve": "rm -rf dist && esbuild --bundle src/index.ts --format=esm --servedir=. --outdir=dist --sourcemap --serve=3000",
     "dev": "rm -rf dist && esbuild --bundle src/index.ts --format=esm --servedir=. --outdir=dist --sourcemap --serve=3000",
     "tsc": "tsc --noEmit",
