@@ -71,4 +71,4 @@ attributes to the HTMLElement class.
 
 ## Contributing
 
-Visit our [contribution guidelines](https://github.com/oddbird/css-toggles/blob/main/CONTRIBUTING.md).
+Visit our [contribution guidelines](https://github.com/oddbird/popup-polyfill/blob/main/CONTRIBUTING.md).
