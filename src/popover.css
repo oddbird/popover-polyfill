@@ -1,7 +1,7 @@
-[popup='' i],
-[popup='auto' i],
-[popup='hint' i],
-[popup='manual' i] {
+[popover='' i],
+[popover='auto' i],
+[popover='hint' i],
+[popover='manual' i] {
   display: none;
   position: fixed;
   top: 0;
@@ -21,10 +21,10 @@
 }
 
 /* stylelint-disable selector-class-pattern */
-[popup='' i].\:open,
-[popup='auto' i].\:open,
-[popup='hint' i].\:open,
-[popup='manual' i].\:open {
+[popover='' i].\:open,
+[popover='auto' i].\:open,
+[popover='hint' i].\:open,
+[popover='manual' i].\:open {
   display: block;
   position: fixed;
   z-index: 2147483647;
@@ -32,16 +32,16 @@
 /* stylelint-enable selector-class-pattern */
 
 @media (prefers-color-scheme: dark) {
-  [popup='' i],
-  [popup='auto' i],
-  [popup='hint' i],
-  [popup='manual' i] {
+  [popover='' i],
+  [popover='auto' i],
+  [popover='hint' i],
+  [popover='manual' i] {
     background: black;
     color: white;
   }
 }
 
 /* Necessary for compatibility with Chrome */
-[popup]:not(:-internal-popup-hidden) {
+[popover]:not(:-internal-popover-hidden) {
   display: block;
 }

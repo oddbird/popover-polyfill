@@ -1,12 +1,12 @@
-import { apply, isSupported } from './popup.js';
+import { apply, isSupported } from './popover.js';
 
 if (!isSupported()) apply();
 
 declare global {
   interface HTMLElement {
-    popUp: 'auto' | 'hint' | 'manual';
+    popover: 'auto' | 'hint' | 'manual';
     defaultOpen: boolean;
-    showPopUp(): void;
-    hidePopUp(): void;
+    showPopover(): void;
+    hidePopover(): void;
   }
 }

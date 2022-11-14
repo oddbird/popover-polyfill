@@ -1,8 +1,8 @@
-# popup polyfill
+# Popover Attribute Polyfill
 
-[Explainer](https://open-ui.org/components/popup.research.explainer#nearest-open-ancestral-pop-up)
+[Explainer](https://open-ui.org/components/popup.research.explainer)
 
-This polyfills the HTML `popUp` attribute and `showPopUp`/`hidePopUp` methods onto HTMLElement.
+This polyfills the HTML `popover` attribute and `showPopover`/`hidePopover` methods onto HTMLElement.
 
 ## Polyfill Installation
 

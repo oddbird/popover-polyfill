@@ -2,29 +2,29 @@ export function isSupported() {
   return (
     typeof HTMLElement !== 'undefined' &&
     typeof HTMLElement.prototype === 'object' &&
-    'popUp' in HTMLElement.prototype
+    'popover' in HTMLElement.prototype
   );
 }
 
 const notSupportedMessage =
-  'Not supported on element that does not have valid popup attribute';
+  'Not supported on element that does not have valid popover attribute';
 
 export function apply() {
   const visibleElements = new WeakSet<HTMLElement>();
 
   Object.defineProperties(HTMLElement.prototype, {
-    popUp: {
+    popover: {
       enumerable: true,
       configurable: true,
       get() {
-        const value = (this.getAttribute('popup') || '').toLowerCase();
+        const value = (this.getAttribute('popover') || '').toLowerCase();
         if (value === 'hint') return 'hint';
         if (value === 'manual') return 'manual';
         if (value === '' || value == 'auto') return 'auto';
         return null;
       },
       set(value) {
-        this.setAttribute('popup', value);
+        this.setAttribute('popover', value);
       },
     },
 
@@ -39,20 +39,20 @@ export function apply() {
       },
     },
 
-    showPopUp: {
+    showPopover: {
       enumerable: true,
       configurable: true,
       value() {
-        if (!this.popUp)
+        if (!this.popover)
           throw new DOMException(notSupportedMessage, 'NotSupportedError');
         if (visibleElements.has(this))
           throw new DOMException(
-            'Invalid on already-showing popups',
+            'Invalid on already-showing Popovers',
             'InvalidStateError',
           );
         this.classList.add(':open');
         visibleElements.add(this);
-        if (this.popUp === 'auto') {
+        if (this.popover === 'auto') {
           const focusEl = this.hasAttribute('autofocus')
             ? this
             : this.querySelector('[autofocus]');
@@ -61,15 +61,15 @@ export function apply() {
       },
     },
 
-    hidePopUp: {
+    hidePopover: {
       enumerable: true,
       configurable: true,
       value() {
-        if (!this.popUp)
+        if (!this.popover)
           throw new DOMException(notSupportedMessage, 'NotSupportedError');
         if (!visibleElements.has(this))
           throw new DOMException(
-            'Invalid on already-hidden popups',
+            'Invalid on already-hidden Popovers',
             'InvalidStateError',
           );
         this.classList.remove(':open');
@@ -79,14 +79,14 @@ export function apply() {
   });
 
   function showDefaultOpen() {
-    // Only the first auto popup is shown. hint popups are not shown
-    const popup = document.querySelector('[popup=auto i][defaultopen]');
-    if (popup instanceof HTMLElement) popup.showPopUp();
-    // All manual popups are shown
-    for (const popup of document.querySelectorAll(
-      '[popup=manual i][defaultopen]',
+    // Only the first auto Popover is shown. hint Popovers are not shown
+    const popover = document.querySelector('[popover=auto i][defaultopen]');
+    if (popover instanceof HTMLElement) popover.showPopover();
+    // All manual Popovers are shown
+    for (const popover of document.querySelectorAll(
+      '[popover=manual i][defaultopen]',
     )) {
-      if (popup instanceof HTMLElement) popup.showPopUp();
+      if (popover instanceof HTMLElement) popover.showPopover();
     }
   }
 
@@ -105,54 +105,54 @@ export function apply() {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
     const doc = target.ownerDocument;
-    let effectedPopup: HTMLElement | null = target.closest('[popup]');
+    let effectedPopover: HTMLElement | null = target.closest('[popover]');
     const isButton = target instanceof HTMLButtonElement;
 
-    // Handle popup triggers
-    if (isButton && target.hasAttribute('popupshowtarget')) {
-      effectedPopup = doc.getElementById(
-        target.getAttribute('popupshowtarget') || '',
+    // Handle Popover triggers
+    if (isButton && target.hasAttribute('popovershowtarget')) {
+      effectedPopover = doc.getElementById(
+        target.getAttribute('popovershowtarget') || '',
       );
 
       if (
-        effectedPopup &&
-        effectedPopup.popUp &&
-        !visibleElements.has(effectedPopup)
+        effectedPopover &&
+        effectedPopover.popover &&
+        !visibleElements.has(effectedPopover)
       ) {
-        effectedPopup.showPopUp();
+        effectedPopover.showPopover();
       }
-    } else if (isButton && target.hasAttribute('popuphidetarget')) {
-      effectedPopup = doc.getElementById(
-        target.getAttribute('popuphidetarget') || '',
+    } else if (isButton && target.hasAttribute('popoverhidetarget')) {
+      effectedPopover = doc.getElementById(
+        target.getAttribute('popoverhidetarget') || '',
       );
 
       if (
-        effectedPopup &&
-        effectedPopup.popUp &&
-        visibleElements.has(effectedPopup)
+        effectedPopover &&
+        effectedPopover.popover &&
+        visibleElements.has(effectedPopover)
       ) {
-        effectedPopup.hidePopUp();
+        effectedPopover.hidePopover();
       }
-    } else if (isButton && target.hasAttribute('popuptoggletarget')) {
-      effectedPopup = doc.getElementById(
-        target.getAttribute('popuptoggletarget') || '',
+    } else if (isButton && target.hasAttribute('popovertoggletarget')) {
+      effectedPopover = doc.getElementById(
+        target.getAttribute('popovertoggletarget') || '',
       );
 
-      if (effectedPopup && effectedPopup.popUp) {
-        if (visibleElements.has(effectedPopup)) {
-          effectedPopup.hidePopUp();
+      if (effectedPopover && effectedPopover.popover) {
+        if (visibleElements.has(effectedPopover)) {
+          effectedPopover.hidePopover();
         } else {
-          effectedPopup.showPopUp();
+          effectedPopover.showPopover();
         }
       }
     }
 
-    // Dismiss open popups
-    for (const popup of doc.querySelectorAll(
-      '[popup="" i].\\:open, [popup=auto i].\\:open, [popup=hint i].\\:open',
+    // Dismiss open Popovers
+    for (const popover of doc.querySelectorAll(
+      '[popover="" i].\\:open, [popover=auto i].\\:open, [popover=hint i].\\:open',
     )) {
-      if (popup instanceof HTMLElement && popup !== effectedPopup)
-        popup.hidePopUp();
+      if (popover instanceof HTMLElement && popover !== effectedPopover)
+        popover.hidePopover();
     }
   });
 }

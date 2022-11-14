@@ -1,4 +1,4 @@
-# Contributing to the Popup Attribute Polyfill
+# Contributing to the Popover Attribute Polyfill
 
 Ideas, issues, and pull-requests are welcome!
 
