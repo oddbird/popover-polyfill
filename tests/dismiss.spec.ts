@@ -4,67 +4,67 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('click dismisses all auto/hint popups', async ({ page }) => {
-  const popup7 = (await page.locator('#popup7')).nth(0);
-  await expect(popup7).toBeHidden();
-  const popup8 = (await page.locator('#popup8')).nth(0);
-  await expect(popup8).toBeVisible();
-  const popup9 = (await page.locator('#popup9')).nth(0);
-  await expect(popup9).toBeHidden();
-  const popup10 = (await page.locator('#popup10')).nth(0);
-  await expect(popup10).toBeVisible();
-  const popup11 = (await page.locator('#popup11')).nth(0);
-  await expect(popup11).toBeVisible();
+test('click dismisses all auto/hint popovers', async ({ page }) => {
+  const popover7 = (await page.locator('#popover7')).nth(0);
+  await expect(popover7).toBeHidden();
+  const popover8 = (await page.locator('#popover8')).nth(0);
+  await expect(popover8).toBeVisible();
+  const popover9 = (await page.locator('#popover9')).nth(0);
+  await expect(popover9).toBeHidden();
+  const popover10 = (await page.locator('#popover10')).nth(0);
+  await expect(popover10).toBeVisible();
+  const popover11 = (await page.locator('#popover11')).nth(0);
+  await expect(popover11).toBeVisible();
 
   await page.click('h1');
-  await expect(popup8).toBeHidden();
-  await expect(popup10).toBeVisible();
-  await expect(popup11).toBeVisible();
+  await expect(popover8).toBeHidden();
+  await expect(popover10).toBeVisible();
+  await expect(popover11).toBeVisible();
 });
 
-test('click inside manual popup dismisses other auto/hint popups', async ({
+test('click inside manual popover dismisses other auto/hint popovers', async ({
   page,
 }) => {
-  const popup7 = (await page.locator('#popup7')).nth(0);
-  await expect(popup7).toBeHidden();
-  const popup8 = (await page.locator('#popup8')).nth(0);
-  await expect(popup8).toBeVisible();
-  const popup9 = (await page.locator('#popup9')).nth(0);
-  await expect(popup9).toBeHidden();
-  const popup10 = (await page.locator('#popup10')).nth(0);
-  await expect(popup10).toBeVisible();
-  const popup11 = (await page.locator('#popup11')).nth(0);
-  await expect(popup11).toBeVisible();
+  const popover7 = (await page.locator('#popover7')).nth(0);
+  await expect(popover7).toBeHidden();
+  const popover8 = (await page.locator('#popover8')).nth(0);
+  await expect(popover8).toBeVisible();
+  const popover9 = (await page.locator('#popover9')).nth(0);
+  await expect(popover9).toBeHidden();
+  const popover10 = (await page.locator('#popover10')).nth(0);
+  await expect(popover10).toBeVisible();
+  const popover11 = (await page.locator('#popover11')).nth(0);
+  await expect(popover11).toBeVisible();
 
-  await page.click('#popup11');
-  await expect(popup8).toBeHidden();
-  await expect(popup10).toBeVisible();
-  await expect(popup11).toBeVisible();
+  await page.click('#popover11');
+  await expect(popover8).toBeHidden();
+  await expect(popover10).toBeVisible();
+  await expect(popover11).toBeVisible();
 });
 
-test('click inside auto popup does not dismiss itself', async ({ page }) => {
-  const popup7 = (await page.locator('#popup7')).nth(0);
+test('click inside auto popover does not dismiss itself', async ({ page }) => {
+  const popover7 = (await page.locator('#popover7')).nth(0);
   await expect(
-    await popup7.evaluate((node) => node.showPopUp()),
+    await popover7.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
-  const popup8 = (await page.locator('#popup8')).nth(0);
-  await expect(popup8).toBeVisible();
+  const popover8 = (await page.locator('#popover8')).nth(0);
+  await expect(popover8).toBeVisible();
 
-  await popup8.evaluate((node) => node.click());
-  await expect(popup7).toBeHidden();
-  await expect(popup8).toBeVisible();
+  await popover8.evaluate((node) => node.click());
+  await expect(popover7).toBeHidden();
+  await expect(popover8).toBeVisible();
 });
 
-test('click inside hint popup does not dismiss itself', async ({ page }) => {
-  const popup7 = (await page.locator('#popup7')).nth(0);
+test('click inside hint popover does not dismiss itself', async ({ page }) => {
+  const popover7 = (await page.locator('#popover7')).nth(0);
   await expect(
-    await popup7.evaluate((node) => node.showPopUp()),
+    await popover7.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
-  await expect(popup7).toBeVisible();
-  const popup8 = (await page.locator('#popup8')).nth(0);
-  await expect(popup8).toBeVisible();
+  await expect(popover7).toBeVisible();
+  const popover8 = (await page.locator('#popover8')).nth(0);
+  await expect(popover8).toBeVisible();
 
-  await popup7.evaluate((node) => node.click());
-  await expect(popup7).toBeVisible();
-  await expect(popup8).toBeHidden();
+  await popover7.evaluate((node) => node.click());
+  await expect(popover7).toBeVisible();
+  await expect(popover8).toBeHidden();
 });
