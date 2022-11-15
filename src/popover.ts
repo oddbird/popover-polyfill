@@ -28,17 +28,6 @@ export function apply() {
       },
     },
 
-    defaultOpen: {
-      enumerable: true,
-      configurable: true,
-      get() {
-        return this.hasAttribute('defaultopen');
-      },
-      set(value) {
-        this.toggleAttribute('defaultopen', value);
-      },
-    },
-
     showPopover: {
       enumerable: true,
       configurable: true,
@@ -77,29 +66,6 @@ export function apply() {
       },
     },
   });
-
-  function showDefaultOpen() {
-    // Only the first auto Popover is shown. hint Popovers are not shown
-    const popover = document.querySelector('[popover=auto i][defaultopen]');
-    if (popover instanceof HTMLElement) popover.showPopover();
-    // All manual Popovers are shown
-    for (const popover of document.querySelectorAll(
-      '[popover=manual i][defaultopen]',
-    )) {
-      if (popover instanceof HTMLElement) popover.showPopover();
-    }
-  }
-
-  if (
-    document.readyState === 'complete' ||
-    document.readyState === 'interactive'
-  ) {
-    showDefaultOpen();
-  } else {
-    document.addEventListener('DOMContentLoaded', showDefaultOpen, {
-      once: true,
-    });
-  }
 
   document.addEventListener('click', (event: Event) => {
     const target = event.target;

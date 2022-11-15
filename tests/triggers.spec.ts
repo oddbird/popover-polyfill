@@ -8,6 +8,10 @@ test('clicking button[popovertoggletarget=popover11] should hide open popover', 
   page,
 }) => {
   const popover = (await page.locator('#popover11')).nth(0);
+  await expect(popover).toBeHidden();
+  await expect(
+    await popover.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
   await expect(popover).toBeVisible();
   await page.click('button[popovertoggletarget=popover11]');
   await expect(popover).toBeHidden();
@@ -17,11 +21,10 @@ test('clicking button[popovertoggletarget=popover11] twice should hide the open 
   page,
 }) => {
   const popover = (await page.locator('#popover11')).nth(0);
+  await page.click('button[popovertoggletarget=popover11]');
   await expect(popover).toBeVisible();
   await page.click('button[popovertoggletarget=popover11]');
   await expect(popover).toBeHidden();
-  await page.click('button[popovertoggletarget=popover11]');
-  await expect(popover).toBeVisible();
 });
 
 test('clicking button[popovertoggletarget=popover1] should show then hide open popover', async ({
