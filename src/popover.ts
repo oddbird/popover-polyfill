@@ -78,7 +78,7 @@ export function apply() {
   });
 
   function showDefaultOpen() {
-    // Only the first auto Popover is shown. hint Popovers are not shown
+    // Only the first auto Popover is shown
     const popover = document.querySelector('[popover=auto i][defaultopen]');
     if (popover instanceof HTMLElement) popover.showPopover();
     // All manual Popovers are shown
