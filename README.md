@@ -11,23 +11,29 @@ This polyfills the HTML `popover` attribute and `showPopover`/`hidePopover` meth
 The simplest, recommended way to install the polyfill is to copy it into your
 project.
 
-Download `popup.iife.min.js` [from
-unpkg.com](https://unpkg.com/browse/@oddbird/popup-polyfill/dist/) and add it
+Download `popover.js` (or `popover.min.js`) [from
+unpkg.com](https://unpkg.com/browse/@oddbird/popover-polyfill/dist/) and add it
 to the appropriate directory in your project. Then, include it where necessary
 with a `<script>` tag:
 
 ```html
-<script src="/path/to/popup.iife.min.js" type="module"></script>
+<script src="/path/to/popover.min.js" type="module"></script>
+```
+
+Or without [JavaScript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules):
+
+```html
+<script src="/path/to/popover.iife.min.js"></script>
 ```
 
 You will also likely need the CSS file, which supplies some default styles.
-Download the `popup.css` [from
-unpkg.com](https://unpkg.com/browse/@oddbird/popup-polyfill/dist/) and add it
+Download `popover.css` [from
+unpkg.com](https://unpkg.com/browse/@oddbird/popover-polyfill/dist/) and add it
 to the appropriate directory in your project. Then, include it where necessary
 with a `<link rel=stylesheet>` tag:
 
 ```html
-<link rel="stylesheet" src="/path/to/popup.css" />
+<link rel="stylesheet" src="/path/to/popover.css" />
 ```
 
 ### With npm
@@ -36,18 +42,18 @@ For more advanced configuration, you can install with
 [npm](https://www.npmjs.com/):
 
 ```sh
-npm install @oddbird/popup-polyfill
+npm install @oddbird/popover-polyfill
 ```
 
 After installing, you’ll need to use appropriate tooling to use
-`node_modules/@oddbird/popup-polyfill/dist/index.js` (or `.min.js`).
+`node_modules/@oddbird/popover-polyfill/dist/popover.js`.
 
 You will also likely need to include the CSS stylesheet which is found in
-`node_modules/@oddbird/popup-polyfill/dist/popup.css`.
+`node_modules/@oddbird/popover-polyfill/dist/popover.css`.
 
-If you want to manually apply the polyfill, you can also import the
-`isSupported` and `apply` functions from
-`node_modules/@oddbird/popup-polyfill/dist/popup.js` file.
+If you want to manually apply the polyfill, you can instead import the
+`isSupported` and `apply` functions directly from
+`node_modules/@oddbird/popover-polyfill/dist/popover-fn.js` file.
 
 ### Via CDN
 
@@ -58,7 +64,7 @@ performance and robustness.
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/npm/@oddbird/popup-polyfill@latest"
+  src="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest"
   crossorigin="anonymous"
   defer
 ></script>
@@ -71,4 +77,4 @@ attributes to the HTMLElement class.
 
 ## Contributing
 
-Visit our [contribution guidelines](https://github.com/oddbird/popup-polyfill/blob/main/CONTRIBUTING.md).
+Visit our [contribution guidelines](https://github.com/oddbird/popover-polyfill/blob/main/CONTRIBUTING.md).

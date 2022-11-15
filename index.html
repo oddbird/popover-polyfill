@@ -5,38 +5,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Popover Attribute Polyfill</title>
-    <script src="./dist/index.js"></script>
+    <script src="./dist/popover.js"></script>
     <link rel="stylesheet" href="./dist/popover.css" />
   </head>
   <body>
     <h1>Popover Attribute Polyfill</h1>
 
     <div id="popovers">
-      <div id="popover1" popover>Pop up</div>
-      <div id="popover2" popover="">Pop up</div>
-      <div id="popover3" popover="auto">Pop up</div>
-      <div id="popover4" popover="hint">Pop up</div>
-      <div id="popover5" popover="manual">Pop up</div>
-      <div id="popover6" popover="invalid">Invalid Pop up</div>
+      <div id="popover1" popover>Popover [1]</div>
+      <div id="popover2" popover="">Popover [2]</div>
+      <div id="popover3" popover="auto">Popover [3]</div>
+      <div id="popover4" popover="hint">Popover [4]</div>
+      <div id="popover5" popover="manual">Popover [5]</div>
+      <div id="popover6" popover="invalid">Invalid Popover [6]</div>
 
-      <div id="popover7" popover="hint" defaultopen>Default Open Pop up</div>
+      <div id="popover7" popover="hint" defaultopen>
+        Default Open Popover [7]
+      </div>
       <div id="popover8" popover="auto" defaultopen>
-        Not Default Open Pop up
+        Not Default Open Popover [8]
       </div>
       <div id="popover9" popover="auto" defaultopen>
-        Not Default Open Pop up
+        Not Default Open Popover [9]
       </div>
-      <div id="popover10" popover="manual" defaultopen>Default Open Pop up</div>
-      <div id="popover11" popover="manual" defaultopen>Default Open Pop up</div>
+      <div id="popover10" popover="manual" defaultopen>
+        Default Open Popover [10]
+      </div>
+      <div id="popover11" popover="manual" defaultopen>
+        Default Open Popover [11]
+      </div>
     </div>
 
     <div id="buttons">
-      <button popovertoggletarget="popover1">Click to toggle popover1</button>
-      <button popovershowtarget="popover3">Click to show popover3</button>
-      <button popovershowtarget="popover5">Click to show popover5</button>
-      <button popoverhidetarget="popover5">Click to hide popover5</button>
-      <button popovertoggletarget="popover10">Click to toggle popover10</button>
-      <button popovertoggletarget="popover11">Click to toggle popover11</button>
+      <button popovertoggletarget="popover1">Click to toggle Popover 1</button>
+      <button popovershowtarget="popover3">Click to show Popover 3</button>
+      <button popovershowtarget="popover5">Click to show Popover 5</button>
+      <button popoverhidetarget="popover5">Click to hide Popover 5</button>
+      <button popovertoggletarget="popover10">
+        Click to toggle Popover 10
+      </button>
+      <button popovertoggletarget="popover11">
+        Click to toggle Popover 11
+      </button>
     </div>
   </body>
 </html>
