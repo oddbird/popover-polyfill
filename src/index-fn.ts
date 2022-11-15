@@ -1,6 +1,6 @@
 declare global {
   interface HTMLElement {
-    popover: 'auto' | 'hint' | 'manual';
+    popover: 'auto' | 'manual' | null;
     defaultOpen: boolean;
     showPopover(): void;
     hidePopover(): void;

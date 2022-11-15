@@ -18,7 +18,6 @@ export function apply() {
       configurable: true,
       get() {
         const value = (this.getAttribute('popover') || '').toLowerCase();
-        if (value === 'hint') return 'hint';
         if (value === 'manual') return 'manual';
         if (value === '' || value == 'auto') return 'auto';
         return null;
@@ -79,7 +78,7 @@ export function apply() {
   });
 
   function showDefaultOpen() {
-    // Only the first auto Popover is shown. hint Popovers are not shown
+    // Only the first auto Popover is shown
     const popover = document.querySelector('[popover=auto i][defaultopen]');
     if (popover instanceof HTMLElement) popover.showPopover();
     // All manual Popovers are shown
@@ -149,7 +148,7 @@ export function apply() {
 
     // Dismiss open Popovers
     for (const popover of doc.querySelectorAll(
-      '[popover="" i].\\:open, [popover=auto i].\\:open, [popover=hint i].\\:open',
+      '[popover="" i].\\:open, [popover=auto i].\\:open',
     )) {
       if (popover instanceof HTMLElement && popover !== effectedPopover)
         popover.hidePopover();
