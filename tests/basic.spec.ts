@@ -37,11 +37,6 @@ test('popover as "auto"', async ({ page }) => {
   await expect(popover).toBeFunctionalPopover();
 });
 
-test('popover as "hint"', async ({ page }) => {
-  const popover = (await page.locator('#popover4')).nth(0);
-  await expect(popover).toBeFunctionalPopover();
-});
-
 test('popover as "manual"', async ({ page }) => {
   const popover = (await page.locator('#popover5')).nth(0);
   await expect(popover).toBeFunctionalPopover();

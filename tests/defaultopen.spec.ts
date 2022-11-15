@@ -5,8 +5,6 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('defaultopen should open on page load', async ({ page }) => {
-  const popover7 = (await page.locator('#popover7')).nth(0);
-  await expect(popover7).toBeHidden();
   const popover8 = (await page.locator('#popover8')).nth(0);
   await expect(popover8).toBeVisible();
   const popover9 = (await page.locator('#popover9')).nth(0);
@@ -18,9 +16,6 @@ test('defaultopen should open on page load', async ({ page }) => {
 });
 
 test('defaultOpen prop should true if attribute present', async ({ page }) => {
-  const popover7 = (await page.locator('#popover7')).nth(0);
-  await expect(await popover7.evaluate((node) => node.defaultOpen)).toBe(true);
-
   const popover8 = (await page.locator('#popover8')).nth(0);
   await expect(await popover8.evaluate((node) => node.defaultOpen)).toBe(true);
 
