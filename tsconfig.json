@@ -7,8 +7,7 @@
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "outDir": "./dist",
-    "noEmit": true
+    "outDir": "./dist"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

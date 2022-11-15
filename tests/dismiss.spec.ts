@@ -4,30 +4,27 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('click dismisses all auto/hint popovers', async ({ page }) => {
+test('click dismisses all auto popovers', async ({ page }) => {
   const popover7 = (await page.locator('#popover7')).nth(0);
-  await expect(popover7).toBeHidden();
-  const popover8 = (await page.locator('#popover8')).nth(0);
   await expect(
-    await popover8.evaluate((node) => node.showPopover()),
+    await popover7.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
-  await expect(popover8).toBeVisible();
+  await expect(popover7).toBeVisible();
+  const popover8 = (await page.locator('#popover8')).nth(0);
+  await expect(popover8).toBeHidden();
   const popover9 = (await page.locator('#popover9')).nth(0);
   await expect(popover9).toBeHidden();
   const popover10 = (await page.locator('#popover10')).nth(0);
   await expect(popover10).toBeHidden();
-  const popover11 = (await page.locator('#popover11')).nth(0);
-  await expect(popover11).toBeHidden();
 
   await page.click('h1');
   await expect(popover7).toBeHidden();
   await expect(popover8).toBeHidden();
   await expect(popover9).toBeHidden();
   await expect(popover10).toBeHidden();
-  await expect(popover11).toBeHidden();
 });
 
-test('click inside manual popover dismisses other auto/hint popovers', async ({
+test('click inside manual popover dismisses other auto popovers', async ({
   page,
 }) => {
   const popover7 = (await page.locator('#popover7')).nth(0);
@@ -35,54 +32,29 @@ test('click inside manual popover dismisses other auto/hint popovers', async ({
   const popover8 = (await page.locator('#popover8')).nth(0);
   await expect(popover8).toBeHidden();
   const popover9 = (await page.locator('#popover9')).nth(0);
-  await expect(popover9).toBeHidden();
+  await expect(
+    await popover9.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(popover9).toBeVisible();
   const popover10 = (await page.locator('#popover10')).nth(0);
   await expect(
     await popover10.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
   await expect(popover10).toBeVisible();
-  const popover11 = (await page.locator('#popover11')).nth(0);
-  await expect(
-    await popover11.evaluate((node) => node.showPopover()),
-  ).toBeUndefined();
-  await expect(popover11).toBeVisible();
 
-  await page.click('#popover11');
-  await expect(popover8).toBeHidden();
+  await page.click('#popover10');
+  await expect(popover7).toBeHidden();
+  await expect(popover9).toBeVisible();
   await expect(popover10).toBeVisible();
-  await expect(popover11).toBeVisible();
 });
 
 test('click inside auto popover does not dismiss itself', async ({ page }) => {
   const popover7 = (await page.locator('#popover7')).nth(0);
-  const popover8 = (await page.locator('#popover8')).nth(0);
   await expect(
     await popover7.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
-  await expect(
-    await popover8.evaluate((node) => node.showPopover()),
-  ).toBeUndefined();
   await expect(popover7).toBeVisible();
-  await expect(popover8).toBeVisible();
-
-  await popover8.evaluate((node) => node.click());
-  await expect(popover7).toBeHidden();
-  await expect(popover8).toBeVisible();
-});
-
-test('click inside hint popover does not dismiss itself', async ({ page }) => {
-  const popover7 = (await page.locator('#popover7')).nth(0);
-  await expect(
-    await popover7.evaluate((node) => node.showPopover()),
-  ).toBeUndefined();
-  const popover8 = (await page.locator('#popover8')).nth(0);
-  await expect(
-    await popover8.evaluate((node) => node.showPopover()),
-  ).toBeUndefined();
-  await expect(popover7).toBeVisible();
-  await expect(popover8).toBeVisible();
 
   await popover7.evaluate((node) => node.click());
   await expect(popover7).toBeVisible();
-  await expect(popover8).toBeHidden();
 });

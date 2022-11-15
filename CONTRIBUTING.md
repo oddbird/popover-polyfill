@@ -17,7 +17,7 @@ Please follow the [OddBird Code of Conduct](https://www.oddbird.net/conduct/).
 
 - Clone the repository.
 - Install dependencies: `npm install`.
-- Start dev server: `npm run dev`. Visit `localhost:3000`.
+- Start dev server: `npm run serve`. Visit `localhost:3000`.
 
 ## Code style
 

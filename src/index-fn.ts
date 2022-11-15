@@ -1,5 +1,3 @@
-import { apply, isSupported } from './popover.js';
-
 declare global {
   interface HTMLElement {
     popover: 'auto' | 'manual' | null;
@@ -9,4 +7,4 @@ declare global {
   }
 }
 
-if (!isSupported()) apply();
+export { apply, isSupported } from './popover.js';

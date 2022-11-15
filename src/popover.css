@@ -1,6 +1,5 @@
 [popover='' i],
 [popover='auto' i],
-[popover='hint' i],
 [popover='manual' i] {
   display: none;
   position: fixed;
@@ -23,7 +22,6 @@
 /* stylelint-disable selector-class-pattern */
 [popover='' i].\:open,
 [popover='auto' i].\:open,
-[popover='hint' i].\:open,
 [popover='manual' i].\:open {
   display: block;
   position: fixed;
@@ -34,7 +32,6 @@
 @media (prefers-color-scheme: dark) {
   [popover='' i],
   [popover='auto' i],
-  [popover='hint' i],
   [popover='manual' i] {
     background: black;
     color: white;
