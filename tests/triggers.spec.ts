@@ -71,7 +71,7 @@ test('clicking button[popoverhidetarget=popover5] should do nothing as it is alr
   await expect(popover).toBeHidden();
 });
 
-test('clicking button[popovershowtarge=popover5] then button[popoverhidetarget=popover5] should show and hide popover', async ({
+test('clicking button[popovershowtarget=popover5] then button[popoverhidetarget=popover5] should show and hide popover', async ({
   page,
 }) => {
   const popover = (await page.locator('#popover5')).nth(0);
