@@ -68,15 +68,18 @@ export function apply() {
 
   document.addEventListener('click', (event: Event) => {
     const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
     const doc = target.ownerDocument;
     let effectedPopover: HTMLElement | null = target.closest('[popover]');
-    const isButton = target instanceof HTMLButtonElement;
+    const button = target.closest(
+      '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
+    );
+    const isButton = button instanceof HTMLButtonElement;
 
     // Handle Popover triggers
-    if (isButton && target.hasAttribute('popovershowtarget')) {
+    if (isButton && button.hasAttribute('popovershowtarget')) {
       effectedPopover = doc.getElementById(
-        target.getAttribute('popovershowtarget') || '',
+        button.getAttribute('popovershowtarget') || '',
       );
 
       if (
@@ -86,9 +89,9 @@ export function apply() {
       ) {
         effectedPopover.showPopover();
       }
-    } else if (isButton && target.hasAttribute('popoverhidetarget')) {
+    } else if (isButton && button.hasAttribute('popoverhidetarget')) {
       effectedPopover = doc.getElementById(
-        target.getAttribute('popoverhidetarget') || '',
+        button.getAttribute('popoverhidetarget') || '',
       );
 
       if (
@@ -98,9 +101,9 @@ export function apply() {
       ) {
         effectedPopover.hidePopover();
       }
-    } else if (isButton && target.hasAttribute('popovertoggletarget')) {
+    } else if (isButton && button.hasAttribute('popovertoggletarget')) {
       effectedPopover = doc.getElementById(
-        target.getAttribute('popovertoggletarget') || '',
+        button.getAttribute('popovertoggletarget') || '',
       );
 
       if (effectedPopover && effectedPopover.popover) {
