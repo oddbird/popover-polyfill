@@ -30,8 +30,6 @@ jobs:
         run: |
           npx --yes npm-check-updates -u
           npm install
-      - name: Build
-        run: npm run build
       - name: Detect changes
         id: changes
         run: echo "::set-output name=count::$(git status --porcelain=v1 2>/dev/null | wc -l)"
