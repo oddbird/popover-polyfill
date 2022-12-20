@@ -1,5 +1,12 @@
 import { querySelectorAllDeep } from 'query-selector-shadow-dom';
 
+function closestComposed(event: Event) {
+  return (event
+    .composedPath()
+    .find((el) => el instanceof HTMLElement && el.hasAttribute('popover')) ||
+    null) as HTMLElement | null;
+}
+
 export function isSupported() {
   return (
     typeof HTMLElement !== 'undefined' &&
@@ -72,10 +79,7 @@ export function apply() {
     const target = event.target;
     if (!(target instanceof Element)) return;
     const doc = target.ownerDocument;
-    let effectedPopover = (event
-      .composedPath()
-      .find((el) => el instanceof HTMLElement && el.hasAttribute('popover')) ||
-      null) as HTMLElement | null;
+    let effectedPopover = closestComposed(event);
     const button = target.closest(
       '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
     );
