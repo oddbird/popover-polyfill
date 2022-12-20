@@ -72,7 +72,10 @@ export function apply() {
     const target = event.target;
     if (!(target instanceof Element)) return;
     const doc = target.ownerDocument;
-    let effectedPopover: HTMLElement | null = target.closest('[popover]');
+    let effectedPopover = (event
+      .composedPath()
+      .find((el) => el instanceof HTMLElement && el.hasAttribute('popover')) ||
+      null) as HTMLElement | null;
     const button = target.closest(
       '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
     );
