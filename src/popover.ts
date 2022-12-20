@@ -1,3 +1,5 @@
+import { querySelectorAllDeep } from 'query-selector-shadow-dom';
+
 export function isSupported() {
   return (
     typeof HTMLElement !== 'undefined' &&
@@ -116,7 +118,7 @@ export function apply() {
     }
 
     // Dismiss open Popovers
-    for (const popover of doc.querySelectorAll(
+    for (const popover of querySelectorAllDeep(
       '[popover="" i].\\:open, [popover=auto i].\\:open',
     )) {
       if (popover instanceof HTMLElement && popover !== effectedPopover)
