@@ -1,5 +1,14 @@
 import { querySelectorAllDeep } from 'query-selector-shadow-dom';
 
+function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
+  Element.prototype._originalAttachShadow = Element.prototype.attachShadow;
+  Element.prototype.attachShadow = function (init) {
+    const shadowRoot = this._originalAttachShadow(init);
+    callback(shadowRoot);
+    return shadowRoot;
+  };
+}
+
 function closestComposed(event: Event) {
   return (event
     .composedPath()
@@ -19,6 +28,25 @@ const notSupportedMessage =
   'Not supported on element that does not have valid popover attribute';
 
 export function apply() {
+  // Create an observer instance linked to the callback function
+  const observer = new MutationObserver(console.log);
+
+  const config = {
+    attributeFilter: ['popover'],
+    childList: true,
+    subtree: true,
+  };
+
+  // observe the document itself
+  observer.observe(document, config);
+
+  function interceptor(shadowRoot: ShadowRoot) {
+    // observe attached shadow
+    observer.observe(shadowRoot, config);
+  }
+
+  patchAttachShadow(interceptor);
+
   const visibleElements = new WeakSet<HTMLElement>();
 
   Object.defineProperties(HTMLElement.prototype, {

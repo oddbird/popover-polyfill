@@ -88,6 +88,7 @@
   "devDependencies": {
     "@playwright/test": "^1.28.1",
     "@types/node": "^18.11.13",
+    "@types/query-selector-shadow-dom": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
     "esbuild": "^0.16.4",
