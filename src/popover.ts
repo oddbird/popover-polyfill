@@ -1,10 +1,49 @@
-import { querySelectorAllDeep } from 'query-selector-shadow-dom';
+const popoverSet = new Set<HTMLElement>();
 
-function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
+const childOListCallback = (mutation: MutationRecord) => {
+  if (mutation.addedNodes.length > 0) {
+    mutation.addedNodes.forEach((node) => {
+      if (node instanceof HTMLElement) {
+        if (node.hasAttribute('popover')) {
+          console.log(node);
+          popoverSet.add(node);
+        }
+      }
+    });
+  }
+
+  if (mutation.removedNodes.length > 0) {
+    console.log('do something about removed nodes');
+  }
+};
+
+const callback = (mutationList: MutationRecord[]) => {
+  mutationList.forEach((mutation) => {
+    switch (mutation.type) {
+      case 'attributes':
+        switch (mutation.attributeName) {
+          case 'popover':
+            console.log('do something about popover attribute');
+            break;
+        }
+        break;
+      case 'childList':
+        childOListCallback(mutation);
+    }
+  });
+};
+
+const observer = new MutationObserver(callback);
+
+function patchAttachShadow() {
   Element.prototype._originalAttachShadow = Element.prototype.attachShadow;
   Element.prototype.attachShadow = function (init) {
     const shadowRoot = this._originalAttachShadow(init);
-    callback(shadowRoot);
+    observer.observe(shadowRoot, {
+      attributeFilter: ['popover'],
+      childList: true,
+      subtree: true,
+    });
     return shadowRoot;
   };
 }
@@ -27,25 +66,58 @@ export function isSupported() {
 const notSupportedMessage =
   'Not supported on element that does not have valid popover attribute';
 
-export function apply() {
-  // Create an observer instance linked to the callback function
-  const observer = new MutationObserver(console.log);
+class PopoverObserver {
+  #popovers = new Set<HTMLElement>();
 
-  const config = {
-    attributeFilter: ['popover'],
-    childList: true,
-    subtree: true,
-  };
+  #observer = new MutationObserver(this.#callback);
 
-  // observe the document itself
-  observer.observe(document, config);
-
-  function interceptor(shadowRoot: ShadowRoot) {
-    // observe attached shadow
-    observer.observe(shadowRoot, config);
+  #userPopoverChanged(target: Node) {
+    console.log(target);
   }
 
-  patchAttachShadow(interceptor);
+  #callback(mutationList: MutationRecord[]) {
+    mutationList.forEach((mutation) => {
+      switch (mutation.type) {
+        case 'attributes':
+          switch (mutation.attributeName) {
+            case 'popover':
+              this.#userPopoverChanged(mutation.target);
+              break;
+          }
+          break;
+      }
+    });
+  }
+
+  add(tree: Document | ShadowRoot) {
+    const popovers = tree.querySelectorAll('[popover]');
+    console.log(tree);
+
+    popovers.forEach((popover) => {
+      console.log(popover instanceof HTMLElement);
+      if (popover instanceof HTMLElement) {
+        this.#popovers.add(popover);
+        console.log([...this.#popovers]);
+      }
+    });
+
+    this.#observer.observe(tree, {
+      attributeFilter: ['popover'],
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  // get popovers() {
+  //   return this.#popovers;
+  // }
+}
+
+export function apply() {
+  // const popoverObserver = new PopoverObserver();
+  // popoverObserver.add(document);
+  // patchAttachShadow((shadowRoot) => popoverObserver.add(shadowRoot));
+  patchAttachShadow();
 
   const visibleElements = new WeakSet<HTMLElement>();
 
@@ -152,10 +224,12 @@ export function apply() {
       }
     }
 
+    // extract to class getter
+    const openPopovers = [...popoverSet].filter((popoverEl) =>
+      popoverEl.classList.contains(':open'),
+    );
     // Dismiss open Popovers
-    for (const popover of querySelectorAllDeep(
-      '[popover="" i].\\:open, [popover=auto i].\\:open',
-    )) {
+    for (const popover of openPopovers) {
       if (popover instanceof HTMLElement && popover !== effectedPopover)
         popover.hidePopover();
     }
