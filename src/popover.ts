@@ -66,52 +66,52 @@ export function isSupported() {
 const notSupportedMessage =
   'Not supported on element that does not have valid popover attribute';
 
-class PopoverObserver {
-  #popovers = new Set<HTMLElement>();
+// class PopoverObserver {
+//   #popovers = new Set<HTMLElement>();
 
-  #observer = new MutationObserver(this.#callback);
+//   #observer = new MutationObserver(this.#callback);
 
-  #userPopoverChanged(target: Node) {
-    console.log(target);
-  }
+//   #userPopoverChanged(target: Node) {
+//     console.log(target);
+//   }
 
-  #callback(mutationList: MutationRecord[]) {
-    mutationList.forEach((mutation) => {
-      switch (mutation.type) {
-        case 'attributes':
-          switch (mutation.attributeName) {
-            case 'popover':
-              this.#userPopoverChanged(mutation.target);
-              break;
-          }
-          break;
-      }
-    });
-  }
+//   #callback(mutationList: MutationRecord[]) {
+//     mutationList.forEach((mutation) => {
+//       switch (mutation.type) {
+//         case 'attributes':
+//           switch (mutation.attributeName) {
+//             case 'popover':
+//               this.#userPopoverChanged(mutation.target);
+//               break;
+//           }
+//           break;
+//       }
+//     });
+//   }
 
-  add(tree: Document | ShadowRoot) {
-    const popovers = tree.querySelectorAll('[popover]');
-    console.log(tree);
+//   add(tree: Document | ShadowRoot) {
+//     const popovers = tree.querySelectorAll('[popover]');
+//     console.log(tree);
 
-    popovers.forEach((popover) => {
-      console.log(popover instanceof HTMLElement);
-      if (popover instanceof HTMLElement) {
-        this.#popovers.add(popover);
-        console.log([...this.#popovers]);
-      }
-    });
+//     popovers.forEach((popover) => {
+//       console.log(popover instanceof HTMLElement);
+//       if (popover instanceof HTMLElement) {
+//         this.#popovers.add(popover);
+//         console.log([...this.#popovers]);
+//       }
+//     });
 
-    this.#observer.observe(tree, {
-      attributeFilter: ['popover'],
-      childList: true,
-      subtree: true,
-    });
-  }
+//     this.#observer.observe(tree, {
+//       attributeFilter: ['popover'],
+//       childList: true,
+//       subtree: true,
+//     });
+//   }
 
-  // get popovers() {
-  //   return this.#popovers;
-  // }
-}
+//   // get popovers() {
+//   //   return this.#popovers;
+//   // }
+// }
 
 export function apply() {
   // const popoverObserver = new PopoverObserver();
