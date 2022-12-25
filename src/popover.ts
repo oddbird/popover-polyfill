@@ -1,58 +1,65 @@
-const popoverSet = new Set<HTMLElement>();
+const popovers = new Set<HTMLElement>();
 
-const childOListCallback = (mutation: MutationRecord) => {
+const handleChildListMutation = (mutation: MutationRecord) => {
   if (mutation.addedNodes.length > 0) {
     mutation.addedNodes.forEach((node) => {
       if (node instanceof HTMLElement) {
         if (node.hasAttribute('popover')) {
-          console.log(node);
-          popoverSet.add(node);
+          popovers.add(node);
         }
       }
     });
   }
 
-  if (mutation.removedNodes.length > 0) {
-    console.log('do something about removed nodes');
+  mutation.removedNodes.forEach((node) => {
+    if (node instanceof HTMLElement && node.hasAttribute('popover')) {
+      popovers.delete(node);
+    }
+  });
+};
+
+const handlePopoverAttributeMutation = (mutation: MutationRecord) => {
+  if (mutation.target instanceof HTMLElement) {
+    if (mutation.target.hasAttribute('popover')) {
+      popovers.add(mutation.target);
+    } else {
+      popovers.delete(mutation.target);
+    }
   }
 };
 
-const callback = (mutationList: MutationRecord[]) => {
+const handleMutation = (mutationList: MutationRecord[]) => {
   mutationList.forEach((mutation) => {
     switch (mutation.type) {
       case 'attributes':
         switch (mutation.attributeName) {
           case 'popover':
-            console.log('do something about popover attribute');
+            handlePopoverAttributeMutation(mutation);
             break;
         }
         break;
       case 'childList':
-        childOListCallback(mutation);
+        handleChildListMutation(mutation);
+        break;
     }
   });
 };
-
-const observer = new MutationObserver(callback);
 
 function patchAttachShadow() {
   Element.prototype._originalAttachShadow = Element.prototype.attachShadow;
   Element.prototype.attachShadow = function (init) {
     const shadowRoot = this._originalAttachShadow(init);
+
+    const observer = new MutationObserver(handleMutation);
+
     observer.observe(shadowRoot, {
       attributeFilter: ['popover'],
       childList: true,
       subtree: true,
     });
+
     return shadowRoot;
   };
-}
-
-function closestComposed(event: Event) {
-  return (event
-    .composedPath()
-    .find((el) => el instanceof HTMLElement && el.hasAttribute('popover')) ||
-    null) as HTMLElement | null;
 }
 
 export function isSupported() {
@@ -179,7 +186,10 @@ export function apply() {
     const target = event.target;
     if (!(target instanceof Element)) return;
     const doc = target.ownerDocument;
-    let effectedPopover = closestComposed(event);
+    let effectedPopover = (event
+      .composedPath()
+      .find((el) => el instanceof HTMLElement && el.hasAttribute('popover')) ||
+      null) as HTMLElement | null;
     const button = target.closest(
       '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
     );
@@ -224,13 +234,9 @@ export function apply() {
       }
     }
 
-    // extract to class getter
-    const openPopovers = [...popoverSet].filter((popoverEl) =>
-      popoverEl.classList.contains(':open'),
-    );
     // Dismiss open Popovers
-    for (const popover of openPopovers) {
-      if (popover instanceof HTMLElement && popover !== effectedPopover)
+    for (const popover of [...popovers]) {
+      if (popover.classList.contains(':open') && popover !== effectedPopover)
         popover.hidePopover();
     }
   });
