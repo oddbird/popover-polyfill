@@ -20,6 +20,25 @@ function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
   };
 }
 
+const closestElement: (selector: string, target: Element) => Element | null = (
+  selector: string,
+  target: Element,
+) => {
+  const found = target.closest(selector);
+
+  if (found) {
+    return found;
+  }
+
+  const root = target.getRootNode();
+
+  if (root === document || !(root instanceof ShadowRoot)) {
+    return null;
+  }
+
+  return closestElement(selector, root.host);
+};
+
 export function apply() {
   observeDocumentOrShadowRootMutations(document);
   patchAttachShadow(observeDocumentOrShadowRootMutations);
@@ -84,10 +103,10 @@ export function apply() {
     const target = event.target;
     if (!(target instanceof Element)) return;
     const doc = target.ownerDocument;
-    let effectedPopover = (event
-      .composedPath()
-      .find((el) => el instanceof HTMLElement && el.hasAttribute('popover')) ||
-      null) as HTMLElement | null;
+    let effectedPopover = closestElement(
+      '[popover]',
+      target,
+    ) as HTMLElement | null;
     const button = target.closest(
       '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
     );
