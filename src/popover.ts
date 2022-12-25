@@ -1,4 +1,4 @@
-import { observeDocumentOrShadowRootMutations } from './mutation';
+import { observeDocumentOrShadowRootMutations, popovers } from './mutation';
 
 export function isSupported() {
   return (

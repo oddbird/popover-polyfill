@@ -1,4 +1,4 @@
-const popovers = new Set<HTMLElement>();
+export const popovers = new Set<HTMLElement>();
 
 const handleChildListMutation = (mutation: MutationRecord) => {
   if (mutation.addedNodes.length > 0) {
