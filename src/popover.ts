@@ -1,4 +1,4 @@
-import { observeDocumentOrShadowRootMutations, popovers } from './mutation.js';
+import { observePopoversMutations, popovers } from './observar.js';
 
 export function isSupported() {
   return (
@@ -40,8 +40,8 @@ const closestElement: (selector: string, target: Element) => Element | null = (
 };
 
 export function apply() {
-  observeDocumentOrShadowRootMutations(document);
-  patchAttachShadow(observeDocumentOrShadowRootMutations);
+  observePopoversMutations(document);
+  patchAttachShadow(observePopoversMutations);
 
   const visibleElements = new WeakSet<HTMLElement>();
 

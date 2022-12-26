@@ -47,12 +47,12 @@ const handleMutation = (mutationList: MutationRecord[]) => {
 
 const observer = new MutationObserver(handleMutation);
 
-export const observeDocumentOrShadowRootMutations = (
+export const observePopoversMutations = (
   documentOrShadowRoot: Document | ShadowRoot,
 ) => {
-  // Document don't initially trigger childList mutations as
-  // opposed to ShadowRoots so we need to manually add the popovers
-  if (documentOrShadowRoot instanceof Document) {
+  // Document don't initially trigger childList mutations as opposed
+  // to shadow roots. so we need to manually add the popovers to the set
+  if (documentOrShadowRoot === document) {
     documentOrShadowRoot.querySelectorAll('[popover]').forEach((popover) => {
       if (popover instanceof HTMLElement) {
         popovers.add(popover);
