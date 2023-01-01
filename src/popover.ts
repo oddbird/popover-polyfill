@@ -138,9 +138,12 @@ export function apply() {
         effectedPopover.hidePopover();
       }
     } else if (isButton && button.hasAttribute('popovertoggletarget')) {
-      effectedPopover = doc.getElementById(
-        button.getAttribute('popovertoggletarget') || '',
-      );
+      effectedPopover =
+        [...popovers].find(
+          (popover) =>
+            popover.getAttribute('id') ===
+            button.getAttribute('popovertoggletarget'),
+        ) || null;
 
       if (effectedPopover && effectedPopover.popover) {
         if (visibleElements.has(effectedPopover)) {
