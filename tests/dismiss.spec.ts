@@ -23,7 +23,6 @@ test('click dismisses all auto popovers', async ({ page }) => {
   await expect(popover8).toBeHidden();
   await expect(popover9).toBeHidden();
   await expect(popover10).toBeHidden();
-  await expect(popover10).toBeHidden();
   await expect(popover11).toBeHidden();
 });
 
