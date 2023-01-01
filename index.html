@@ -8,6 +8,7 @@
     <script src="./dist/popover.js"></script>
     <link rel="stylesheet" href="./dist/popover.css" />
   </head>
+
   <body>
     <h1>Popover Attribute Polyfill</h1>
 
@@ -22,6 +23,11 @@
       <div id="popover8" popover="auto">Popover 8 (auto)</div>
       <div id="popover9" popover="manual">Popover 9 (manual)</div>
       <div id="popover10" popover="manual">Popover 10 (manual)</div>
+      <custom-element>
+        <template shadowroot="open">
+          <div id="popover11" popover="auto">Shadowed Popover (auto)</div>
+        </template>
+      </custom-element>
     </div>
 
     <div id="buttons">

@@ -15,6 +15,7 @@ test('click dismisses all auto popovers', async ({ page }) => {
   const popover9 = (await page.locator('#popover9')).nth(0);
   await expect(popover9).toBeHidden();
   const popover10 = (await page.locator('#popover10')).nth(0);
+  const popover11 = (await page.locator('#popover11')).nth(0);
   await expect(popover10).toBeHidden();
 
   await page.click('h1');
@@ -22,6 +23,8 @@ test('click dismisses all auto popovers', async ({ page }) => {
   await expect(popover8).toBeHidden();
   await expect(popover9).toBeHidden();
   await expect(popover10).toBeHidden();
+  await expect(popover10).toBeHidden();
+  await expect(popover11).toBeHidden();
 });
 
 test('click inside manual popover dismisses other auto popovers', async ({
