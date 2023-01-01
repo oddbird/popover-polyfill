@@ -156,7 +156,10 @@ export function apply() {
 
     // Dismiss open Popovers
     for (const popover of [...popovers]) {
-      if (popover.classList.contains(':open') && popover !== effectedPopover)
+      if (
+        popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
+        popover !== effectedPopover
+      )
         popover.hidePopover();
     }
   });
