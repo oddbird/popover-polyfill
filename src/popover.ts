@@ -39,6 +39,14 @@ const closestElement: (selector: string, target: Element) => Element | null = (
   return closestElement(selector, root.host);
 };
 
+const findEffectedPopover = (
+  button: HTMLButtonElement,
+  attr: 'popovertoggletarget' | 'popoverhidetarget' | 'popovershowtarget',
+) =>
+  [...popovers].find(
+    (popover) => popover.getAttribute('id') === button.getAttribute(attr),
+  ) || null;
+
 export function apply() {
   observePopoversMutations(document);
   patchAttachShadow(observePopoversMutations);
@@ -102,7 +110,6 @@ export function apply() {
   document.addEventListener('click', (event: Event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
-    const doc = target.ownerDocument;
     let effectedPopover = closestElement(
       '[popover]',
       target,
@@ -114,9 +121,7 @@ export function apply() {
 
     // Handle Popover triggers
     if (isButton && button.hasAttribute('popovershowtarget')) {
-      effectedPopover = doc.getElementById(
-        button.getAttribute('popovershowtarget') || '',
-      );
+      effectedPopover = findEffectedPopover(button, 'popovershowtarget');
 
       if (
         effectedPopover &&
@@ -126,8 +131,9 @@ export function apply() {
         effectedPopover.showPopover();
       }
     } else if (isButton && button.hasAttribute('popoverhidetarget')) {
-      effectedPopover = doc.getElementById(
-        button.getAttribute('popoverhidetarget') || '',
+      effectedPopover = effectedPopover = findEffectedPopover(
+        button,
+        'popoverhidetarget',
       );
 
       if (
@@ -138,12 +144,7 @@ export function apply() {
         effectedPopover.hidePopover();
       }
     } else if (isButton && button.hasAttribute('popovertoggletarget')) {
-      effectedPopover =
-        [...popovers].find(
-          (popover) =>
-            popover.getAttribute('id') ===
-            button.getAttribute('popovertoggletarget'),
-        ) || null;
+      effectedPopover = findEffectedPopover(button, 'popovertoggletarget');
 
       if (effectedPopover && effectedPopover.popover) {
         if (visibleElements.has(effectedPopover)) {
