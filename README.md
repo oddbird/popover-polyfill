@@ -78,3 +78,7 @@ attributes to the HTMLElement class.
 ## Contributing
 
 Visit our [contribution guidelines](https://github.com/oddbird/popover-polyfill/blob/main/CONTRIBUTING.md).
+
+## Caveats
+
+- This polyfill does not work with declarative shadow Dom
