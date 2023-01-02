@@ -81,4 +81,5 @@ Visit our [contribution guidelines](https://github.com/oddbird/popover-polyfill/
 
 ## Caveats
 
-- This polyfill does not work with declarative shadow Dom
+- Default styles are not applied to the shadow root of the element with the `popover` attribute. You will need to apply them yourself.
+- Declarative shadow Dom is not supported. You will need to use the `showPopover` and `hidePopover` methods manually, with additional css styling, to show and hide the popover.
