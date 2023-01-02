@@ -83,4 +83,4 @@ Visit our [contribution guidelines](https://github.com/oddbird/popover-polyfill/
 
 - Default styles are not applied to the shadow root of the element with the `popover` attribute. You will need to apply them yourself.
 - Declarative shadow Dom is not supported. You will need to use the `showPopover` and `hidePopover` methods manually, with additional css styling, to show and hide the popover.
-- Triggering elements (elements matching attributes `'popovertoggletarget' | 'popoverhidetarget' | 'popovershowtarget'`) must be present in the same ownerDocument as the element with the `popover` attribute. this is due to the same ID conflict that can occur if you have multiple elements with the same ID in different shadow roots.
+- Triggering elements (elements matching attributes `'popovertoggletarget' | 'popoverhidetarget' | 'popovershowtarget'`) must be present in the same `ownerDocument` as the element with the `popover` attribute. this is due to the same ID conflict that can occur if you have multiple elements with the same ID in different shadow roots.
