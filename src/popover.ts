@@ -99,7 +99,7 @@ export function apply() {
     },
   });
 
-  window.addEventListener('click', (event: Event) => {
+  document.addEventListener('click', (event: Event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
     const doc = target.ownerDocument;
