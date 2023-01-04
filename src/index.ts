@@ -17,9 +17,3 @@ declare global {
 }
 
 if (!isSupported()) apply();
-
-// Also works.
-class C {
-  static readonly StaticSymbol: unique symbol = Symbol();
-}
-console.log(C);
