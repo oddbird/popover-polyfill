@@ -36,7 +36,7 @@ with a `<link rel=stylesheet>` tag:
 <link rel="stylesheet" src="/path/to/popover.css" />
 ```
 
-Note that default styles will not be applied to shadow tree.
+Note that default styles will not be applied to shadow roots.
 Each shadow tree will need to include the styles explicitly.
 
 ### With npm
