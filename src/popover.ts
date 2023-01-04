@@ -40,9 +40,6 @@ const closestElement: (selector: string, target: Element) => Element | null = (
 };
 
 export function apply() {
-  observePopoversMutations(document);
-  patchAttachShadow(observePopoversMutations);
-
   const visibleElements = new WeakSet<HTMLElement>();
 
   Object.defineProperties(HTMLElement.prototype, {
@@ -99,10 +96,13 @@ export function apply() {
     },
   });
 
-  document.addEventListener('click', (event: Event) => {
+  const onClick = (event: Event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
-    const doc = target.ownerDocument;
+    const root = target.getRootNode();
+    if (root instanceof ShadowRoot) {
+      event.stopPropagation();
+    } else if (!(root instanceof Document)) return;
     let effectedPopover = closestElement(
       '[popover]',
       target,
@@ -114,7 +114,7 @@ export function apply() {
 
     // Handle Popover triggers
     if (isButton && button.hasAttribute('popovershowtarget')) {
-      effectedPopover = doc.getElementById(
+      effectedPopover = root.getElementById(
         button.getAttribute('popovershowtarget') || '',
       );
 
@@ -126,7 +126,7 @@ export function apply() {
         effectedPopover.showPopover();
       }
     } else if (isButton && button.hasAttribute('popoverhidetarget')) {
-      effectedPopover = doc.getElementById(
+      effectedPopover = root.getElementById(
         button.getAttribute('popoverhidetarget') || '',
       );
 
@@ -138,7 +138,7 @@ export function apply() {
         effectedPopover.hidePopover();
       }
     } else if (isButton && button.hasAttribute('popovertoggletarget')) {
-      effectedPopover = doc.getElementById(
+      effectedPopover = root.getElementById(
         button.getAttribute('popovertoggletarget') || '',
       );
 
@@ -159,5 +159,20 @@ export function apply() {
       )
         popover.hidePopover();
     }
+  };
+
+  const hookClickEvents = (
+    (callback: (event: Event) => void) =>
+    (DocumentOrShadowRoot: Document | ShadowRoot) => {
+      DocumentOrShadowRoot.addEventListener('click', callback);
+    }
+  )(onClick);
+
+  observePopoversMutations(document);
+  hookClickEvents(document);
+
+  patchAttachShadow((shadowRoot: ShadowRoot) => {
+    observePopoversMutations(shadowRoot);
+    hookClickEvents(shadowRoot);
   });
 }

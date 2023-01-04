@@ -26,11 +26,11 @@
       <custom-element id="customElement"></custom-element>
       <script type="module">
         import sheet from './dist/popover.css' assert { type: 'css' };
-        const shadowRoot = customElement.attachShadow({ mode: 'open' });
-        shadowRoot.innerHTML = `<button popovertoggletarget="popover11">
-            Click to toggle Popover 11
-          </button>
-          <div id=popover11 popover=auto>Shadowed Popover 11 (auto)</div>`;
+        const shadowRoot = customElement.attachShadow({ mode: 'closed' });
+        shadowRoot.innerHTML = `<button popovertoggletarget="shadowedPopover">
+                  Click to toggle shadowed Popover (auto)
+                </button>
+                <div id="shadowedPopover" popover="auto">Shadowed Popover (auto)</div>`;
         shadowRoot.adoptedStyleSheets = [sheet];
       </script>
     </div>
