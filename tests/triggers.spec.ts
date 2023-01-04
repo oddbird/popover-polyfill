@@ -85,12 +85,12 @@ test('clicking button[popovershowtarget=popover5] then button[popoverhidetarget=
 test('clicking button[popovertoggletarget=popover] should hide open popover in the same (shadow) tree scope', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover')).nth(0);
+  const popover = (await page.locator('#shadowedPopover')).nth(0);
   await expect(popover).toBeHidden();
   await expect(
     await popover.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
   await expect(popover).toBeVisible();
-  await page.click('button[popovertoggletarget=popover]');
+  await page.click('button[popovertoggletarget=shadowedPopover]');
   await expect(popover).toBeHidden();
 });
