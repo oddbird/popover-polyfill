@@ -11,10 +11,12 @@ export function isSupported() {
 const notSupportedMessage =
   'Not supported on element that does not have valid popover attribute';
 
+export const ORIGINAL_ATTACH_SHADOW = Symbol('originalAttachShadow');
+
 function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
-  Element.prototype._originalAttachShadow = Element.prototype.attachShadow;
+  Element.prototype[ORIGINAL_ATTACH_SHADOW] = Element.prototype.attachShadow;
   Element.prototype.attachShadow = function (init) {
-    const shadowRoot = this._originalAttachShadow(init);
+    const shadowRoot = this[ORIGINAL_ATTACH_SHADOW](init);
     callback(shadowRoot);
     return shadowRoot;
   };
@@ -161,18 +163,17 @@ export function apply() {
     }
   };
 
-  const hookClickEvents = (
-    (callback: (event: Event) => void) =>
-    (DocumentOrShadowRoot: Document | ShadowRoot) => {
-      DocumentOrShadowRoot.addEventListener('click', callback);
+  const addOnClickEventListener = (
+    (callback: (event: Event) => void) => (root: Document | ShadowRoot) => {
+      root.addEventListener('click', callback);
     }
   )(onClick);
 
   observePopoversMutations(document);
-  hookClickEvents(document);
+  addOnClickEventListener(document);
 
   patchAttachShadow((shadowRoot: ShadowRoot) => {
     observePopoversMutations(shadowRoot);
-    hookClickEvents(shadowRoot);
+    addOnClickEventListener(shadowRoot);
   });
 }

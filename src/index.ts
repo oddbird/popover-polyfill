@@ -1,8 +1,8 @@
-import { apply, isSupported } from './popover.js';
+import { apply, isSupported, ORIGINAL_ATTACH_SHADOW } from './popover.js';
 
 declare global {
   interface Element {
-    _originalAttachShadow(init: ShadowRootInit): ShadowRoot;
+    [ORIGINAL_ATTACH_SHADOW](init: ShadowRootInit): ShadowRoot;
   }
 
   interface HTMLElement {
