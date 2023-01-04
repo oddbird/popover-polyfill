@@ -11,13 +11,11 @@ export function isSupported() {
 const notSupportedMessage =
   'Not supported on element that does not have valid popover attribute';
 
-export const ORIGINAL_ATTACH_SHADOW_SYMBOL: unique symbol = Symbol();
+export const originalAttachShadow = Element.prototype.attachShadow
 
 function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
-  Element.prototype[ORIGINAL_ATTACH_SHADOW_SYMBOL] =
-    Element.prototype.attachShadow;
   Element.prototype.attachShadow = function (init) {
-    const shadowRoot = this[ORIGINAL_ATTACH_SHADOW_SYMBOL](init);
+    const shadowRoot = originalAttachShadow.call(this, init);
     callback(shadowRoot);
     return shadowRoot;
   };
