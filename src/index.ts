@@ -1,14 +1,6 @@
-import {
-  apply,
-  isSupported,
-  ORIGINAL_ATTACH_SHADOW_SYMBOL,
-} from './popover.js';
+import { apply, isSupported } from './popover.js';
 
 declare global {
-  interface Element {
-    [ORIGINAL_ATTACH_SHADOW_SYMBOL]: (init: ShadowRootInit) => ShadowRoot;
-  }
-
   interface HTMLElement {
     popover: 'auto' | 'manual' | null;
     showPopover(): void;
