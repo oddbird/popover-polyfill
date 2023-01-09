@@ -64,10 +64,10 @@ performance and robustness.
 
 ```html
 <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest/dist/popover.css"
-      crossorigin="anonymous"
->
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest/dist/popover.css"
+  crossorigin="anonymous"
+/>
 <script
   src="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest"
   crossorigin="anonymous"
