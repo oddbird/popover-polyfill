@@ -66,6 +66,11 @@ reasons](https://blog.wesleyac.com/posts/why-not-javascript-cdn) such as
 performance and robustness.
 
 ```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest/dist/popover.css"
+  crossorigin="anonymous"
+/>
 <script
   src="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest"
   crossorigin="anonymous"
