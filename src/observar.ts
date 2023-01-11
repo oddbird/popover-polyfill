@@ -1,21 +1,33 @@
 export const popovers = new Set<HTMLElement>();
 
+const popoversSyncFactory =
+  (method: (value: HTMLElement) => void) => (node: Node) => {
+    if (node instanceof HTMLElement) {
+      if (node.hasAttribute('popover')) {
+        method(node);
+      }
+
+      node.querySelectorAll('[popover]').forEach((popover) => {
+        if (popover instanceof HTMLElement) {
+          method(popover);
+        }
+      });
+    }
+  };
+
+const addPopoversToSet = popoversSyncFactory(popovers.add.bind(popovers));
+const removePopoversFromSet = popoversSyncFactory(
+  popovers.delete.bind(popovers),
+);
+
 const handleChildListMutation = (mutation: MutationRecord) => {
   if (mutation.addedNodes.length > 0) {
-    mutation.addedNodes.forEach((node) => {
-      if (node instanceof HTMLElement) {
-        if (node.hasAttribute('popover')) {
-          popovers.add(node);
-        }
-      }
-    });
+    mutation.addedNodes.forEach(addPopoversToSet);
   }
 
-  mutation.removedNodes.forEach((node) => {
-    if (node instanceof HTMLElement && node.hasAttribute('popover')) {
-      popovers.delete(node);
-    }
-  });
+  if (mutation.removedNodes.length > 0) {
+    mutation.removedNodes.forEach(removePopoversFromSet);
+  }
 };
 
 const handlePopoverAttributeMutation = (mutation: MutationRecord) => {

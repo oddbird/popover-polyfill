@@ -31,7 +31,9 @@
         shadowRoot.innerHTML = `<button popovertoggletarget="shadowedPopover">
                   Click to toggle shadowed Popover (auto)
                 </button>
-                <div id="shadowedPopover" popover="auto">Shadowed Popover (auto)</div>`;
+                <div>
+                  <div id="shadowedPopover" popover="auto">Shadowed Popover (auto)</div>
+                <div>`;
         shadowRoot.adoptedStyleSheets = [sheet];
       </script>
     </div>
