@@ -18,6 +18,10 @@ test('click dismisses all auto popovers', async ({ page }) => {
   await expect(popover10).toBeHidden();
   const shadowedPopover = (await page.locator('#shadowedPopover')).nth(0);
   await expect(shadowedPopover).toBeHidden();
+  const shadowedNestedPopover = (
+    await page.locator('#shadowedNestedPopover')
+  ).nth(0);
+  await expect(shadowedNestedPopover).toBeHidden();
 
   await page.click('h1');
   await expect(popover7).toBeHidden();
