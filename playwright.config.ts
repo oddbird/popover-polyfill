@@ -4,12 +4,12 @@ export default {
   expect: {
     timeout: 1000, // Max execution time of single expect() calls
   },
-  webServer: {
-    command: `PORT=${port} LEVEL=warning npm run serve`,
-    url: `http://localhost:${port}/`,
-    timeout: 10 * 1000,
-    reuseExistingServer: !process.env.CI,
-  },
+  // webServer: {
+  //   command: `PORT=${port} LEVEL=warning npm run serve`,
+  //   url: `http://localhost:${port}/`,
+  //   timeout: 10 * 1000,
+  //   reuseExistingServer: !process.env.CI,
+  // },
   use: {
     baseURL: `http://localhost:${port}`,
     browserName: 'chromium',
