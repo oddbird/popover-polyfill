@@ -27,7 +27,7 @@
       <script type="module">
         import sheet from './dist/popover.css' assert { type: 'css' };
         const host = document.getElementById('host');
-        const shadowRoot = host.attachShadow({ mode: 'closed' });
+        const shadowRoot = host.attachShadow({ mode: 'open' });
         shadowRoot.innerHTML = `<button popovertoggletarget="shadowedPopover">
                   Click to toggle shadowed Popover (auto)
                 </button>
