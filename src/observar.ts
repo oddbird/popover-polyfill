@@ -15,18 +15,17 @@ const popoversSyncFactory =
     }
   };
 
-const addPopoversToSet = popoversSyncFactory(popovers.add.bind(popovers));
-const removePopoversFromSet = popoversSyncFactory(
-  popovers.delete.bind(popovers),
-);
+const nodeAddedCallback = popoversSyncFactory(popovers.add.bind(popovers));
+
+const nodeRemovedCallback = popoversSyncFactory(popovers.delete.bind(popovers));
 
 const handleChildListMutation = (mutation: MutationRecord) => {
   if (mutation.addedNodes.length > 0) {
-    mutation.addedNodes.forEach(addPopoversToSet);
+    mutation.addedNodes.forEach(nodeAddedCallback);
   }
 
   if (mutation.removedNodes.length > 0) {
-    mutation.removedNodes.forEach(removePopoversFromSet);
+    mutation.removedNodes.forEach(nodeRemovedCallback);
   }
 };
 
