@@ -11,6 +11,8 @@
   border: 1px solid;
   background: white;
   color: black;
+  background: canvas;
+  color: canvastext;
   overflow: auto;
   margin: auto;
   inset-inline-start: 0;
@@ -35,6 +37,8 @@
   [popover='manual' i] {
     background: black;
     color: white;
+    background: canvas;
+    color: canvastext;
   }
 }
 
