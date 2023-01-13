@@ -1,4 +1,5 @@
 const port = process.env.PORT || 3000;
+
 export default {
   timeout: process.env.CI ? undefined : 3000, // Max execution time of any single test
   expect: {
@@ -6,12 +7,12 @@ export default {
   },
   webServer: {
     command: `PORT=${port} LEVEL=warning npm run serve`,
-    url: `http://localhost:${port}/`,
-    timeout: 10 * 1000,
+    port,
+    timeout: process.env.CI ? 60 * 1000 : 10 * 1000,
     reuseExistingServer: !process.env.CI,
   },
   use: {
-    baseURL: `http://localhost:${port}`,
+    baseURL: `http://localhost:${port}/`,
     browserName: 'chromium',
     headless: true,
     forbidOnly: process.env.CI,
