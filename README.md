@@ -37,7 +37,7 @@ with a `<link rel=stylesheet>` tag:
 ```
 
 Note that default styles will not be applied to shadow roots.
-Each root node will need to include the styles on its separately.
+Each root node will need to include the styles separately.
 
 ### With npm
 
