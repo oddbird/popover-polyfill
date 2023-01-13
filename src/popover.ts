@@ -1,4 +1,4 @@
-import { observePopoversMutations, popovers } from './observar.js';
+import { observePopoversMutations, popovers } from './observer.js';
 
 export function isSupported() {
   return (
