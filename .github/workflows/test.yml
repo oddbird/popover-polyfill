@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'auto-dependency-upgrades'
   pull_request:
 
 concurrency:
