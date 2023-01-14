@@ -1,3 +1,5 @@
+import { observePopoversMutations, popovers } from './observer.js';
+
 export function isSupported() {
   return (
     typeof HTMLElement !== 'undefined' &&
@@ -8,6 +10,34 @@ export function isSupported() {
 
 const notSupportedMessage =
   'Not supported on element that does not have valid popover attribute';
+
+function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
+  const originalAttachShadow = Element.prototype.attachShadow;
+  Element.prototype.attachShadow = function (init) {
+    const shadowRoot = originalAttachShadow.call(this, init);
+    callback(shadowRoot);
+    return shadowRoot;
+  };
+}
+
+const closestElement: (selector: string, target: Element) => Element | null = (
+  selector: string,
+  target: Element,
+) => {
+  const found = target.closest(selector);
+
+  if (found) {
+    return found;
+  }
+
+  const root = target.getRootNode();
+
+  if (root === document || !(root instanceof ShadowRoot)) {
+    return null;
+  }
+
+  return closestElement(selector, root.host);
+};
 
 export function apply() {
   const visibleElements = new WeakSet<HTMLElement>();
@@ -66,11 +96,17 @@ export function apply() {
     },
   });
 
-  document.addEventListener('click', (event: Event) => {
+  const onClick = (event: Event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
-    const doc = target.ownerDocument;
-    let effectedPopover: HTMLElement | null = target.closest('[popover]');
+    const root = target.getRootNode();
+    if (root instanceof ShadowRoot) {
+      event.stopPropagation();
+    } else if (!(root instanceof Document)) return;
+    let effectedPopover = closestElement(
+      '[popover]',
+      target,
+    ) as HTMLElement | null;
     const button = target.closest(
       '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
     );
@@ -78,7 +114,7 @@ export function apply() {
 
     // Handle Popover triggers
     if (isButton && button.hasAttribute('popovershowtarget')) {
-      effectedPopover = doc.getElementById(
+      effectedPopover = root.getElementById(
         button.getAttribute('popovershowtarget') || '',
       );
 
@@ -90,7 +126,7 @@ export function apply() {
         effectedPopover.showPopover();
       }
     } else if (isButton && button.hasAttribute('popoverhidetarget')) {
-      effectedPopover = doc.getElementById(
+      effectedPopover = root.getElementById(
         button.getAttribute('popoverhidetarget') || '',
       );
 
@@ -102,7 +138,7 @@ export function apply() {
         effectedPopover.hidePopover();
       }
     } else if (isButton && button.hasAttribute('popovertoggletarget')) {
-      effectedPopover = doc.getElementById(
+      effectedPopover = root.getElementById(
         button.getAttribute('popovertoggletarget') || '',
       );
 
@@ -116,11 +152,24 @@ export function apply() {
     }
 
     // Dismiss open Popovers
-    for (const popover of doc.querySelectorAll(
-      '[popover="" i].\\:open, [popover=auto i].\\:open',
-    )) {
-      if (popover instanceof HTMLElement && popover !== effectedPopover)
+    for (const popover of [...popovers]) {
+      if (
+        popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
+        popover !== effectedPopover
+      )
         popover.hidePopover();
     }
-  });
+  };
+
+  const addOnClickEventListener = (
+    (callback: (event: Event) => void) => (root: Document | ShadowRoot) => {
+      root.addEventListener('click', callback);
+    }
+  )(onClick);
+
+  observePopoversMutations(document);
+  addOnClickEventListener(document);
+
+  patchAttachShadow(observePopoversMutations);
+  patchAttachShadow(addOnClickEventListener);
 }

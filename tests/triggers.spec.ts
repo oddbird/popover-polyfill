@@ -81,3 +81,29 @@ test('clicking button[popovershowtarget=popover5] then button[popoverhidetarget=
   await page.click('button[popoverhidetarget=popover5]');
   await expect(popover).toBeHidden();
 });
+
+test('clicking button[popovertoggletarget=shadowedPopover] should hide open popover in the same (shadow) tree scope', async ({
+  page,
+}) => {
+  const popover = (await page.locator('#shadowedPopover')).nth(0);
+  await expect(popover).toBeHidden();
+  await expect(
+    await popover.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(popover).toBeVisible();
+  await page.click('button[popovertoggletarget=shadowedPopover]');
+  await expect(popover).toBeHidden();
+});
+
+test('clicking button[popovertoggletarget=shadowedNestedPopover] should hide open nested popover in the same (shadow) tree scope', async ({
+  page,
+}) => {
+  const popover = (await page.locator('#shadowedNestedPopover')).nth(0);
+  await expect(popover).toBeHidden();
+  await expect(
+    await popover.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(popover).toBeVisible();
+  await page.click('button[popovertoggletarget=shadowedNestedPopover]');
+  await expect(popover).toBeHidden();
+});
