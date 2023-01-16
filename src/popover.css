@@ -1,5 +1,6 @@
 [popover] {
   position: fixed;
+  z-index: 2147483647;
   inset: 0;
   padding: 0.25em;
   width: fit-content;
@@ -14,21 +15,16 @@
   margin: auto;
 }
 
+/* stylelint-disable selector-class-pattern */
 [popover]:not(.\:open) {
   display: none;
 }
+/* stylelint-enable selector-class-pattern */
 
 [popover][anchor] {
   inset:auto;
   anchor-scroll: implicit;
 }
-
-/* stylelint-disable selector-class-pattern */
-[popover].\:open {
-  position: fixed;
-  z-index: 2147483647;
-}
-/* stylelint-enable selector-class-pattern */
 
 /* Necessary for compatibility with Chrome */
 [popover]:not(:-internal-popover-hidden) {
