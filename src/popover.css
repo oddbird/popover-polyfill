@@ -1,33 +1,26 @@
-[popover='' i],
-[popover='auto' i],
-[popover='manual' i] {
-  display: none;
+[popover] {
   position: fixed;
-  top: 0;
-  left: 0;
-  padding: 1em;
+  z-index: 2147483647;
+  inset: 0;
+  padding: 0.25em;
   width: fit-content;
   height: fit-content;
-  border: 1px solid;
+  border: solid;
   background: canvas;
   color: canvastext;
   overflow: auto;
   margin: auto;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
-  inset-block-start: 0;
-  inset-block-end: 0;
 }
 
 /* stylelint-disable selector-class-pattern */
-[popover='' i].\:open,
-[popover='auto' i].\:open,
-[popover='manual' i].\:open {
-  display: block;
-  position: fixed;
-  z-index: 2147483647;
+[popover]:not(.\:open) {
+  display: none;
 }
 /* stylelint-enable selector-class-pattern */
+
+[popover][anchor] {
+  inset: auto;
+}
 
 /* Necessary for compatibility with Chrome */
 [popover]:not(:-internal-popover-hidden) {
