@@ -1,5 +1,4 @@
 [popover] {
-  display: none;
   position: fixed;
   inset: 0;
   padding: 0.25em;
@@ -15,6 +14,10 @@
   margin: auto;
 }
 
+[popover]:not(.\:open) {
+  display: none;
+}
+
 [popover][anchor] {
   inset:auto;
   anchor-scroll: implicit;
@@ -22,7 +25,6 @@
 
 /* stylelint-disable selector-class-pattern */
 [popover].\:open {
-  display: block;
   position: fixed;
   z-index: 2147483647;
 }
