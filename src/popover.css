@@ -1,6 +1,4 @@
-[popover='' i],
-[popover='auto' i],
-[popover='manual' i] {
+[popover] {
   display: none;
   position: fixed;
   inset: 0;
@@ -18,9 +16,7 @@
 }
 
 /* stylelint-disable selector-class-pattern */
-[popover='' i].\:open,
-[popover='auto' i].\:open,
-[popover='manual' i].\:open {
+[popover].\:open {
   display: block;
   position: fixed;
   z-index: 2147483647;
