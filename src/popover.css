@@ -5,10 +5,7 @@
   padding: 0.25em;
   width: fit-content;
   height: fit-content;
-  border-width: initial;
-  border-style: solid;
-  border-color: initial;
-  border-image: initial;
+  border: solid;
   background: canvas;
   color: canvastext;
   overflow: auto;
