@@ -3,20 +3,18 @@
 [popover='manual' i] {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  padding: 1em;
+  inset: 0;
+  padding: 0.25em;
   width: fit-content;
   height: fit-content;
-  border: 1px solid;
+  border-width: initial;
+  border-style: solid;
+  border-color: initial;
+  border-image: initial;
   background: canvas;
   color: canvastext;
   overflow: auto;
   margin: auto;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
-  inset-block-start: 0;
-  inset-block-end: 0;
 }
 
 /* stylelint-disable selector-class-pattern */
