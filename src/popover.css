@@ -15,6 +15,11 @@
   margin: auto;
 }
 
+[popover][anchor] {
+  inset:auto;
+  anchor-scroll: implicit;
+}
+
 /* stylelint-disable selector-class-pattern */
 [popover].\:open {
   display: block;
