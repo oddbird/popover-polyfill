@@ -19,8 +19,7 @@
 /* stylelint-enable selector-class-pattern */
 
 [popover][anchor] {
-  inset:auto;
-  anchor-scroll: implicit;
+  inset: auto;
 }
 
 /* Necessary for compatibility with Chrome */
