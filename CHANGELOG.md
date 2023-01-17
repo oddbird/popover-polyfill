@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.0.6: 2023-01-17
+
+- 🚀 NEW: Update CSS to align closer to [Chrome's user-agent CSS](https://github.com/chromium/chromium/blob/main/third_party/blink/renderer/core/css/popover.css) --
+  [#60](https://github.com/oddbird/popover-polyfill/pull/60)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.0.5: 2023-01-14
 
 - 🚀 NEW: Support popovers in shadow roots --
