@@ -98,11 +98,11 @@ export function apply() {
 
   const onClick = (event: Event) => {
     const target = event.target;
-    if (!(target instanceof Element)) return;
+    if (!(target instanceof Element) || target?.shadowRoot) return;
     const root = target.getRootNode();
-    if (root instanceof ShadowRoot) {
-      event.stopPropagation();
-    } else if (!(root instanceof Document)) return;
+    if (!(root instanceof ShadowRoot) && !(root instanceof Document)) {
+      return;
+    }
     let effectedPopover = closestElement(
       '[popover]',
       target,
