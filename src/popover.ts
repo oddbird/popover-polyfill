@@ -100,7 +100,7 @@ export function apply() {
     const target = event.target;
     if (!(target instanceof Element) || target?.shadowRoot) return;
     const root = target.getRootNode();
-    if (!(root instanceof ShadowRoot) && !(root instanceof Document)) {
+    if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
     let effectedPopover = closestElement(
