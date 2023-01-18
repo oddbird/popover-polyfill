@@ -98,7 +98,9 @@ export function apply() {
 
   const onClick = (event: Event) => {
     const target = event.target;
-    if (!(target instanceof Element) || target?.shadowRoot) return;
+    if (!(target instanceof Element) || target?.shadowRoot) {
+      return;
+    }
     const root = target.getRootNode();
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
