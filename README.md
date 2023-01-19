@@ -1,6 +1,6 @@
 # Popover Attribute Polyfill
 
-[Explainer](https://open-ui.org/components/popup.research.explainer)
+[Explainer](https://open-ui.org/components/popover.research.explainer)
 
 This polyfills the HTML `popover` attribute and `showPopover`/`hidePopover` methods onto HTMLElement.
 
