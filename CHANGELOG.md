@@ -6,6 +6,7 @@
   [#64](https://github.com/oddbird/popover-polyfill/pull/64)
 - 🐛 BUGFIX: Remove `stopPropagation` to allow handlers --
   [#63](https://github.com/oddbird/popover-polyfill/pull/63)
+- 🏠 INTERNAL: Upgrade dependencies
 
 ## 0.0.6: 2023-01-17
 
