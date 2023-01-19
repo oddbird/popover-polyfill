@@ -1,5 +1,10 @@
 # Popover Attribute Polyfill Changelog
 
+## UNRELEASED
+
+- 🐛 BUGFIX: Remove `stopPropagation` to allow handlers --
+  [#63](https://github.com/oddbird/popover-polyfill/pull/63)
+
 ## 0.0.6: 2023-01-17
 
 - 🚀 NEW: Update CSS to align closer to [Chrome's user-agent CSS](https://github.com/chromium/chromium/blob/main/third_party/blink/renderer/core/css/popover.css) --
