@@ -1,7 +1,9 @@
 # Popover Attribute Polyfill Changelog
 
-## UNRELEASED
+## 0.0.7: 2023-01-19
 
+- 🐛 BUGFIX: Fix display issue with native popups --
+  [#64](https://github.com/oddbird/popover-polyfill/pull/64)
 - 🐛 BUGFIX: Remove `stopPropagation` to allow handlers --
   [#63](https://github.com/oddbird/popover-polyfill/pull/63)
 
