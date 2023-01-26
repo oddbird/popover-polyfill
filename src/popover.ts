@@ -8,9 +8,6 @@ export function isSupported() {
   );
 }
 
-const notSupportedMessage =
-  'Not supported on element that does not have valid popover attribute';
-
 function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
   const originalAttachShadow = Element.prototype.attachShadow;
   Element.prototype.attachShadow = function (init) {
@@ -42,6 +39,57 @@ const closestElement: (selector: string, target: Element) => Element | null = (
 export function apply() {
   const visibleElements = new WeakSet<HTMLElement>();
 
+  // https://whatpr.org/html/8221/popover.html#check-popover-validity
+  function checkPopoverValidity(
+    element: HTMLElement,
+    expectedToBeShowing: boolean,
+  ) {
+    if (element.popover !== 'auto' && element.popover !== 'manual')
+      return false;
+    if (!element.isConnected) return false;
+    if (element instanceof HTMLDialogElement && element.hasAttribute('open'))
+      return false;
+    if (expectedToBeShowing && !visibleElements.has(element)) return false;
+    if (!expectedToBeShowing && visibleElements.has(element)) return false;
+    if (document.fullscreenElement === element) return false;
+    return true;
+  }
+
+  function assertPopoverValidity(
+    element: HTMLElement,
+    expectedToBeShowing: boolean,
+  ) {
+    if (!checkPopoverValidity(element, expectedToBeShowing)) {
+      throw new DOMException(
+        'Cannot show or hide popover on invalid or already visible element',
+        'InvalidStateError',
+      );
+    }
+  }
+
+  interface BeforeToggleInit extends EventInit {
+    currentState: string;
+    newState: string;
+  }
+
+  class BeforeToggleEvent extends Event {
+    public currentState: string;
+    public newState: string;
+    constructor(
+      type: string,
+      {
+        currentState = '',
+        newState = '',
+        ...init
+      }: Partial<BeforeToggleInit> = {},
+    ) {
+      super(type, init);
+      this.currentState = String(currentState || '');
+      this.newState = String(newState || '');
+    }
+  }
+  window.BeforeToggleEvent = window.BeforeToggleEvent || BeforeToggleEvent;
+
   Object.defineProperties(HTMLElement.prototype, {
     popover: {
       enumerable: true,
@@ -61,13 +109,15 @@ export function apply() {
       enumerable: true,
       configurable: true,
       value() {
-        if (!this.popover)
-          throw new DOMException(notSupportedMessage, 'NotSupportedError');
-        if (visibleElements.has(this))
-          throw new DOMException(
-            'Invalid on already-showing Popovers',
-            'InvalidStateError',
-          );
+        // https://whatpr.org/html/8221/popover.html#show-popover
+        assertPopoverValidity(this, false);
+        const event = new BeforeToggleEvent('beforetoggle', {
+          cancelable: true,
+          currentState: 'closed',
+          newState: 'open',
+        });
+        if (!this.dispatchEvent(event)) return;
+        assertPopoverValidity(this, false);
         this.classList.add(':open');
         visibleElements.add(this);
         if (this.popover === 'auto') {
@@ -83,13 +133,16 @@ export function apply() {
       enumerable: true,
       configurable: true,
       value() {
-        if (!this.popover)
-          throw new DOMException(notSupportedMessage, 'NotSupportedError');
-        if (!visibleElements.has(this))
-          throw new DOMException(
-            'Invalid on already-hidden Popovers',
-            'InvalidStateError',
-          );
+        // https://whatpr.org/html/8221/popover.html#hide-popover
+        assertPopoverValidity(this, true);
+        this.dispatchEvent(
+          new BeforeToggleEvent('beforetoggle', {
+            cancelable: false,
+            currentState: 'open',
+            newState: 'closed',
+          }),
+        );
+        assertPopoverValidity(this, true);
         this.classList.remove(':open');
         visibleElements.delete(this);
       },
