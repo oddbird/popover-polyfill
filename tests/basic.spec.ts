@@ -13,7 +13,9 @@ expect.extend({
     await expect(popover).toBeVisible();
     await expect(
       async () => await popover.evaluate((node) => node.showPopover()),
-    ).rejects.toThrow('DOMException: Invalid on already-showing');
+    ).rejects.toThrow(
+      'DOMException: Cannot show or hide popover on invalid or already visible element',
+    );
     await expect(
       await popover.evaluate((node) => node.hidePopover()),
     ).toBeUndefined();
@@ -47,6 +49,6 @@ test('popover as "invalid"', async ({ page }) => {
   await expect(
     async () => await popover.evaluate((node) => node.showPopover()),
   ).rejects.toThrow(
-    'DOMException: Not supported on element that does not have valid popover attribute',
+    'DOMException: Cannot show or hide popover on invalid or already visible element',
   );
 });
