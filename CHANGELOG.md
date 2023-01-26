@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.0.8: 2023-01-26
+
+- 🚀 NEW: Add support for new [`beforetoggle` event](https://whatpr.org/html/8221/popover.html#show-popover) --
+  [#68](https://github.com/oddbird/popover-polyfill/pull/68)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.0.7: 2023-01-19
 
 - 🐛 BUGFIX: Fix display issue with native popups --
