@@ -7,9 +7,9 @@ declare global {
   }
   interface HTMLElement {
     popover: 'auto' | 'manual' | null;
-    popoverToggleTargetElement: string | HTMLElement | null;
-    popoverShowTargetElement: string | HTMLElement | null;
-    popoverHideTargetElement: string | HTMLElement | null;
+    popoverToggleTargetElement: HTMLElement | undefined;
+    popoverShowTargetElement: HTMLElement | undefined;
+    popoverHideTargetElement: HTMLElement | undefined;
     showPopover(): void;
     hidePopover(): void;
   }

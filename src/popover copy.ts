@@ -158,24 +158,121 @@ export function apply() {
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
-    const containingPopovers: HTMLElement[] = getContainingPopovers(target); // there could be multiple popovers nested inside each other
-    //  = closestElement(
-    //   '[popover]',
-    //   target,
-    // ) as HTMLElement | null;
+    // https://whatpr.org/html/8221/popover.html#popover-trigger
+    // query elements which support the popover target attributes
+    // The popover target attributes are only supported on the following elements:
+    // button elements
+    // input elements in the Button state.
+    // input elements in the Submit Button state.
+    // input elements in the Image Button state.
+    // input elements in the Reset Button state.
+    let effectedPopover = closestElement(
+      '[popover]',
+      target,
+    ) as HTMLElement | null;
 
-    const popoverTargetElement: HTMLElement | null =
-      getPopoverTargetElement(target);
+    const getPopoverTargetElement = (target: Element) => {
+      const popoverInvoker = target.closest(
+        ':is(button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"])',
+      );
 
-    // Dismiss open 'auto' popovers which are not the containing popovers and are not the target popover element
+      const popoverTargetElement = closestElement(
+        '[popoverhidetarget],[popovershowtarget],[popovertoggletarget]',
+        target,
+      ) as HTMLElement | null;
+      return popoverTargetElement;
+    };
+
+    const popoverInvoker = target.closest(
+      ':is(button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"])',
+    );
+
+    const popoverTargetElement
+
+
+    // extract outside to module scope
+    const button = (target: Element) => {
+      const popoverInvoker = target.closest(
+        ':is(button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"])',
+      );
+
+      const popoverTargetElement = closestElement(
+        '[popoverhidetarget],[popovershowtarget],[popovertoggletarget]',
+        target,
+      ) as HTMLElement | null;
+      return popoverTargetElement;
+    };
+    popoverTargetElement: HTMLElement | null = getPopoverTargetElement(target);
+    // const popoverTargetSupportingElements =
+    //   ':is(button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"])'; // css selector for elements which support popover target attributes
+    // const popoverTargetAttributes =
+    //   ':is([popovertoggletarget],[popoverhidetarget],[popovershowtarget])'; // css selector for popover target attributes
+    const isTargettingElement: (el: Element | null) => HTMLElement = (el: Element | null) => {
+      const isButton = popoverTargetElement instanceof HTMLButtonElement;
+      // If node is not supported, then return null.
+      // If node is disabled, then return null.
+      // If node has a form owner and node is a submit button, then return null.
+      // Let idref be null.
+      // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
+      //       Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
+      //       Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
+      // If idref is null, then return null.
+      // Let popoverElement be the first element in tree order, within node's root's descendants, whose ID is idref; otherwise, if there is no such element, null.
+      // If popoverElement is null, then return null.
+      // If popoverElement's popover attribute is in the no popover state, then return null.
+      // Return popoverElement.
+    };
+
+
+    // handle popover invoker
+    if (popoverTargetElement) {
+      effectedPopover = root.getElementById(
+        popoverTargetElement.getAttribute('popovershowtarget') || '',
+      );
+
+      if (
+        effectedPopover &&
+        effectedPopover.popover &&
+        !visibleElements.has(effectedPopover)
+      ) {
+        effectedPopover.showPopover();
+      }
+    } else if (isButton && popoverTargetElement.hasAttribute('popoverhidetarget')) {
+      effectedPopover = root.getElementById(
+        popoverTargetElement.getAttribute('popoverhidetarget') || '',
+      );
+
+      if (
+        effectedPopover &&
+        effectedPopover.popover &&
+        visibleElements.has(effectedPopover)
+      ) {
+        effectedPopover.hidePopover();
+      }
+    } else if (
+      isButton &&
+      popoverTargetElement.hasAttribute('popovertoggletarget')
+    ) {
+      effectedPopover = root.getElementById(
+        popoverTargetElement.getAttribute('popovertoggletarget') || '',
+      );
+
+      if (effectedPopover && effectedPopover.popover) {
+        if (visibleElements.has(effectedPopover)) {
+          effectedPopover.hidePopover();
+        } else {
+          effectedPopover.showPopover();
+        }
+      }
+    }
+
+    // Dismiss open Popovers
     for (const popover of [...popovers]) {
       if (
         popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
-        !containingPopovers.includes(popover) && // is not a containing popover
-        popover !== popoverTargetElement // is not the target popover element
-      ) {
+        popover !== effectedPopover
+      )
         popover.hidePopover();
-      }
     }
   };
 
@@ -190,4 +287,16 @@ export function apply() {
 
   patchAttachShadow(observePopoversMutations);
   patchAttachShadow(addOnClickEventListener);
+
+  Object.defineProperty(HTMLElement.prototype, 'popoverToggleTargetElement', {
+    set: function (el: unknown) {
+      if (!(el instanceof Element)) {
+        throw new TypeError('popoverToggleTargetElement must be an element');
+      }
+      this._popoverToggleTargetElement = new WeakRef(el);
+    },
+    get: function () {
+      return this._popoverToggleTargetElement;
+    },
+  });
 }
