@@ -1,4 +1,5 @@
 import { observePopoversMutations, popovers } from './observer.js';
+import { getContainingPopovers, getPopoverTargetElement } from './utils.js';
 
 export function isSupported() {
   return (
@@ -16,25 +17,6 @@ function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
     return shadowRoot;
   };
 }
-
-const closestElement: (selector: string, target: Element) => Element | null = (
-  selector: string,
-  target: Element,
-) => {
-  const found = target.closest(selector);
-
-  if (found) {
-    return found;
-  }
-
-  const root = target.getRootNode();
-
-  if (root === document || !(root instanceof ShadowRoot)) {
-    return null;
-  }
-
-  return closestElement(selector, root.host);
-};
 
 export function apply() {
   const visibleElements = new WeakSet<HTMLElement>();
@@ -159,11 +141,6 @@ export function apply() {
       return;
     }
     const containingPopovers: HTMLElement[] = getContainingPopovers(target); // there could be multiple popovers nested inside each other
-    //  = closestElement(
-    //   '[popover]',
-    //   target,
-    // ) as HTMLElement | null;
-
     const popoverTargetElement: HTMLElement | null =
       getPopoverTargetElement(target);
 
