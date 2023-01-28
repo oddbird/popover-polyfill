@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Popover Attribute Polyfill</title>
+    <script src="./dist/popover.js"></script>
+    <link rel="stylesheet" href="./dist/popover.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Popover Attribute Polyfill</title>
-  <script src="./dist/popover.js"></script>
-  <link rel="stylesheet" href="./dist/popover.css" />
-</head>
+  <body>
+    <h1>Popover Attribute Polyfill</h1>
 
-<body>
-  <h1>Popover Attribute Polyfill</h1>
-
-  <div id="popovers">
-    <div id="popover1" popover>Popover 1</div>
-    <div id="popover2" popover="">Popover 2</div>
-    <div id="popover3" popover="auto">Popover 3</div>
-    <div id="popover4" popover="hint">Invalid Popover ("hint")</div>
-    <div id="popover5" popover="manual">Popover 5</div>
-    <div id="popover6" popover="invalid">Invalid Popover ("invalid")</div>
-    <div id="popover7" popover="auto">Popover 7 (auto)</div>
-    <div id="popover8" popover="auto">Popover 8 (auto)</div>
-    <div id="popover9" popover="manual">Popover 9 (manual)</div>
-    <div id="popover10" popover="manual">Popover 10 (manual)</div>
-    <div id="popover11" popover="auto">Popover 11 (auto)</div>
-    <div id="host"></div>
-    <script type="module">
-      import sheet from './dist/popover.css' assert { type: 'css' };
-      const host = document.getElementById('host');
-      const shadowRoot = host.attachShadow({ mode: 'open' });
-      shadowRoot.innerHTML = `<button popovertoggletarget="shadowedPopover">
+    <div id="popovers">
+      <div id="popover1" popover>Popover 1</div>
+      <div id="popover2" popover="">Popover 2</div>
+      <div id="popover3" popover="auto">Popover 3</div>
+      <div id="popover4" popover="hint">Invalid Popover ("hint")</div>
+      <div id="popover5" popover="manual">Popover 5</div>
+      <div id="popover6" popover="invalid">Invalid Popover ("invalid")</div>
+      <div id="popover7" popover="auto">Popover 7 (auto)</div>
+      <div id="popover8" popover="auto">Popover 8 (auto)</div>
+      <div id="popover9" popover="manual">Popover 9 (manual)</div>
+      <div id="popover10" popover="manual">Popover 10 (manual)</div>
+      <div id="popover11" popover="auto">Popover 11 (auto)</div>
+      <div id="host"></div>
+      <script type="module">
+        import sheet from './dist/popover.css' assert { type: 'css' };
+        const host = document.getElementById('host');
+        const shadowRoot = host.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = `<button popovertoggletarget="shadowedPopover">
                   Click to toggle shadowed Popover (auto)
                 </button>
                 <button popovertoggletarget="shadowedNestedPopover">
@@ -40,30 +39,25 @@
                 <div>
                   <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
                 </div>`;
-      shadowRoot.adoptedStyleSheets = [sheet];
+        shadowRoot.adoptedStyleSheets = [sheet];
 
-      document.getElementById('button11').popoverToggleTargetElement = shadowRoot.getElementById('shadowedPopover');
-    </script>
-  </div>
+        document.getElementById('button11').popoverToggleTargetElement =
+          shadowRoot.getElementById('shadowedPopover');
+      </script>
+    </div>
 
-  <div id="buttons">
-    <button popovertoggletarget="popover1">Click to toggle Popover 1</button>
-    <button popovertoggletarget="popover2">Click to toggle Popover 2</button>
-    <button popovershowtarget="popover3">Click to show Popover 3</button>
-    <button popovershowtarget="popover5">
-      <span>Click to show Popover 5</span>
-    </button>
-    <button popoverhidetarget="popover5">Click to hide Popover 5</button>
-    <button popovertoggletarget="popover9">
-      <span>Click to toggle Popover 9</span>
-    </button>
-    <button popovertoggletarget="popover10">
-      Click to toggle Popover 10
-    </button>
-    <button id="button11">
-      Click to toggle shadowed Popover
-    </button>
-  </div>
-</body>
-
+    <div id="buttons">
+      <button popovertoggletarget="popover1">Click to toggle Popover 1</button>
+      <button popovertoggletarget="popover2">Click to toggle Popover 2</button>
+      <button popovershowtarget="popover3">Click to show Popover 3</button>
+      <button popovershowtarget="popover5">
+        <span>Click to show Popover 5</span>
+      </button>
+      <button popoverhidetarget="popover5">Click to hide Popover 5</button>
+      <button popovertoggletarget="popover9">
+        <span>Click to toggle Popover 9</span>
+      </button>
+      <button id="button11">Click to toggle shadowed Popover</button>
+    </div>
+  </body>
 </html>
