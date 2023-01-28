@@ -18,6 +18,7 @@ const closestElement: (selector: string, target: Element) => Element | null = (
 };
 
 export const getContainingPopovers = (target: Element) => {
+  // there could be multiple popovers nested inside each other
   const popovers: HTMLElement[] = [];
   let currentPopover = closestElement(
     '[popover]',
@@ -41,54 +42,46 @@ const isSupportingPopoverTargetAttributes = (
   );
 };
 
-export const getPopoverTargetElement: (
-  target: Element,
-) => HTMLElement | null = (element: Element) => {
-  // To get the popover target element given a Node node, perform the following steps. They return an HTML element or null.
-  if (
-    // If node is not supported, then return null.
-    !isSupportingPopoverTargetAttributes(element) ||
-    // If node is disabled, then return null.
-    element.disabled ||
-    // If node has a form owner and node is a submit button, then return null.
-    (element.form && element.type === 'submit')
-  ) {
-    return null;
-  }
-  // Let idref be null.
-  let idref: string | null = null;
-  if (element.hasAttribute('popovertoggletarget')) {
-    // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
-    idref = element.getAttribute('popovertoggletarget');
-  } else if (element.hasAttribute('popovershowtarget')) {
-    // Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
-    idref = element.getAttribute('popovershowtarget');
-  } else if (element.hasAttribute('popoverhidetarget')) {
-    // Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
-    idref = element.getAttribute('popoverhidetarget');
-  }
+export const getPopoverTargetElementFromIdref = (
+  element: Element,
+  attribute: 'popovertoggletarget' | 'popovershowtarget' | 'popoverhidetarget',
+): HTMLElement | null => {
+  const idref = element.getAttribute(attribute);
   if (idref === null) {
     // If idref is null, then return null.
     return null;
   }
+  const root = element.getRootNode();
+  if (!(root instanceof ShadowRoot || root instanceof Document)) {
+    return null;
+  }
   // Let popoverElement be the first element in tree order, within node's root's descendants, whose ID is idref; otherwise, if there is no such element, null.
-  const popoverElement = element.getRootNode().getElementById(idref);
+  const popoverElement = root.getElementById(idref);
   if (popoverElement === null) {
     // If popoverElement is null, then return null.
     return null;
   }
-  if (popoverElement.getAttribute('popover') === 'no') {
+  if (popoverElement.getAttribute('popover') === null) {
     // If popoverElement's popover attribute is in the no popover state, then return null.
     return null;
   }
   // Return popoverElement.
   return popoverElement;
-  // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
-  // Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
-  // Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
-  // If idref is null, then return null.
-  // Let popoverElement be the first element in tree order, within node's root's descendants, whose ID is idref; otherwise, if there is no such element, null.
-  // If popoverElement is null, then return null.
-  // If popoverElement's popover attribute is in the no popover state, then return null.
-  // Return popoverElement.
+};
+
+export const checkInvokerValidity = (element: Element) => {
+  // To get the popover target element given a Node node, perform the following steps. They return an HTML element or null.
+  // If node is not supported, then return null.
+  if (!isSupportingPopoverTargetAttributes(element)) {
+    return false;
+  }
+  // If node is disabled, then return null.
+  if (element.disabled) {
+    return false;
+  }
+  // If node has a form owner and node is a submit button, then return null.
+  if (element.form && element.type === 'submit') {
+    return false;
+  }
+  return true;
 };
