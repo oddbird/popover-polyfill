@@ -1,10 +1,10 @@
+import { observePopoversMutations, popovers } from './observer.js';
 import {
   checkInvokerValidity,
   getContainingPopovers,
   getPopoverTargetElementFromIdref,
   SupportingPopoverTargetAttributesSelector,
-} from './invokers.js';
-import { observePopoversMutations, popovers } from './observer.js';
+} from './triggers.js';
 
 export function isSupported() {
   return (
