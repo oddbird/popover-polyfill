@@ -145,11 +145,14 @@ export function apply() {
       return;
     }
     let popoverTargetElement: HTMLElement | null = null;
-    if (target instanceof HTMLElement && checkInvokerValidity(target)) {
+    const invoker = target.closest(
+      '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
+    );
+    if (invoker instanceof HTMLElement && checkInvokerValidity(invoker)) {
       // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
       popoverTargetElement ??=
-        getPopoverTargetElementFromIdref(target, 'popovertoggletarget') ||
-        target.popoverToggleTargetElement;
+        getPopoverTargetElementFromIdref(invoker, 'popovertoggletarget') ||
+        invoker.popoverToggleTargetElement;
       if (popoverTargetElement && popoverTargetElement.popover) {
         if (visibleElements.has(popoverTargetElement)) {
           popoverTargetElement.hidePopover();
@@ -159,20 +162,22 @@ export function apply() {
       }
       // Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
       popoverTargetElement ??=
-        getPopoverTargetElementFromIdref(target, 'popovershowtarget') ||
-        target.popoverShowTargetElement;
+        getPopoverTargetElementFromIdref(invoker, 'popovershowtarget') ||
+        invoker.popoverShowTargetElement;
       if (
-        popoverTargetElement !== null &&
+        popoverTargetElement &&
+        popoverTargetElement.popover &&
         !visibleElements.has(popoverTargetElement)
       ) {
         popoverTargetElement.showPopover();
       }
       // Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
       popoverTargetElement ??=
-        getPopoverTargetElementFromIdref(target, 'popoverhidetarget') ||
-        target.popoverHideTargetElement;
+        getPopoverTargetElementFromIdref(invoker, 'popoverhidetarget') ||
+        invoker.popoverHideTargetElement;
       if (
-        popoverTargetElement !== null &&
+        popoverTargetElement &&
+        popoverTargetElement.popover &&
         visibleElements.has(popoverTargetElement)
       ) {
         popoverTargetElement.hidePopover();
