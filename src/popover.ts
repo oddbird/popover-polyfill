@@ -1,7 +1,7 @@
 import { observePopoversMutations, popovers } from './observer.js';
 import {
   checkInvokerValidity,
-  getContainingPopovers,
+  getPopoversAncestors,
   getPopoverTargetElementFromIdref,
   SupportingPopoverTargetAttributesSelector,
 } from './triggers.js';
@@ -182,17 +182,15 @@ export function apply() {
           invoker.popoverHideTargetElement;
         popoverTargetElement?.hidePopover();
       }
-      // Dismiss open 'auto' popovers which are not the containing popovers and are not the target popover element
-      for (const popover of [...popovers]) {
-        if (
-          popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
-          ![
-            ...getContainingPopovers(target),
-            ...(popoverTargetElement ? [popoverTargetElement] : []),
-          ].includes(popover)
-        ) {
-          popover.hidePopover();
-        }
+    }
+    // Dismiss open 'auto' popovers which are not the containing popovers and are not the target popover element
+    for (const popover of [...popovers]) {
+      if (
+        popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
+        popover !== popoverTargetElement &&
+        !getPopoversAncestors(target).includes(popover)
+      ) {
+        popover.hidePopover();
       }
     }
   };

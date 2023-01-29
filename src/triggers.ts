@@ -17,21 +17,18 @@ const closestElement: (selector: string, target: Element) => Element | null = (
   return closestElement(selector, root.host);
 };
 
-export const getContainingPopovers = (target: Element) => {
+export const getPopoversAncestors = (
+  element: Element,
+  popovers: Element[] = [],
+): Element[] => {
   // there could be multiple popovers nested inside each other
-  const popovers: HTMLElement[] = [];
-  let currentPopover = closestElement(
-    '[popover]',
-    target,
-  ) as HTMLElement | null;
-  while (currentPopover) {
-    popovers.push(currentPopover);
-    currentPopover = closestElement(
-      '[popover]',
-      currentPopover,
-    ) as HTMLElement | null;
-  }
-  return popovers;
+  const popoverAncestor = closestElement('[popover]', element);
+  const parent =
+    popoverAncestor?.parentElement ||
+    (popoverAncestor?.getRootNode() as ShadowRoot)?.host;
+  return popoverAncestor && parent
+    ? getPopoversAncestors(parent, [popoverAncestor, ...popovers])
+    : popovers;
 };
 
 export const SupportingPopoverTargetAttributesSelector =
