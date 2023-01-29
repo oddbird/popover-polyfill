@@ -34,12 +34,13 @@ export const getContainingPopovers = (target: Element) => {
   return popovers;
 };
 
+export const SupportingPopoverTargetAttributesSelector =
+  ':is(button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"])';
+
 const isSupportingPopoverTargetAttributes = (
   element: Element,
 ): element is HTMLButtonElement | HTMLInputElement => {
-  return element.matches(
-    ':is(button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"])',
-  );
+  return element.matches(SupportingPopoverTargetAttributesSelector);
 };
 
 export const getPopoverTargetElementFromIdref = (

@@ -1,9 +1,10 @@
-import { observePopoversMutations, popovers } from './observer.js';
 import {
   checkInvokerValidity,
   getContainingPopovers,
   getPopoverTargetElementFromIdref,
-} from './utils.js';
+  SupportingPopoverTargetAttributesSelector,
+} from './invokers.js';
+import { observePopoversMutations, popovers } from './observer.js';
 
 export function isSupported() {
   return (
@@ -145,54 +146,53 @@ export function apply() {
       return;
     }
     let popoverTargetElement: HTMLElement | null = null;
-    const invoker = target.closest(
-      '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
-    );
+    const invoker = target.closest(SupportingPopoverTargetAttributesSelector);
     if (invoker instanceof HTMLElement && checkInvokerValidity(invoker)) {
-      // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
-      popoverTargetElement ??=
-        getPopoverTargetElementFromIdref(invoker, 'popovertoggletarget') ||
-        invoker.popoverToggleTargetElement;
-      if (popoverTargetElement && popoverTargetElement.popover) {
-        if (visibleElements.has(popoverTargetElement)) {
-          popoverTargetElement.hidePopover();
-        } else {
-          popoverTargetElement.showPopover();
+      if (
+        // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
+        invoker.getAttribute('popovertoggletarget') ||
+        invoker.popoverToggleTargetElement
+      ) {
+        popoverTargetElement =
+          getPopoverTargetElementFromIdref(invoker, 'popovertoggletarget') ||
+          invoker.popoverToggleTargetElement;
+        if (popoverTargetElement) {
+          if (visibleElements.has(popoverTargetElement)) {
+            popoverTargetElement.hidePopover();
+          } else {
+            popoverTargetElement.showPopover();
+          }
         }
-      }
-      // Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
-      popoverTargetElement ??=
-        getPopoverTargetElementFromIdref(invoker, 'popovershowtarget') ||
-        invoker.popoverShowTargetElement;
-      if (
-        popoverTargetElement &&
-        popoverTargetElement.popover &&
-        !visibleElements.has(popoverTargetElement)
+      } else if (
+        // Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
+        invoker.getAttribute('popovershowtarget') ||
+        invoker.popoverShowTargetElement
       ) {
-        popoverTargetElement.showPopover();
-      }
-      // Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
-      popoverTargetElement ??=
-        getPopoverTargetElementFromIdref(invoker, 'popoverhidetarget') ||
-        invoker.popoverHideTargetElement;
-      if (
-        popoverTargetElement &&
-        popoverTargetElement.popover &&
-        visibleElements.has(popoverTargetElement)
+        popoverTargetElement =
+          getPopoverTargetElementFromIdref(invoker, 'popovershowtarget') ||
+          invoker.popoverShowTargetElement;
+        popoverTargetElement?.showPopover();
+      } else if (
+        // Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
+        invoker.getAttribute('popoverhidetarget') ||
+        invoker.popoverHideTargetElement
       ) {
-        popoverTargetElement.hidePopover();
+        popoverTargetElement =
+          getPopoverTargetElementFromIdref(invoker, 'popoverhidetarget') ||
+          invoker.popoverHideTargetElement;
+        popoverTargetElement?.hidePopover();
       }
-    }
-    // Dismiss open 'auto' popovers which are not the containing popovers and are not the target popover element
-    for (const popover of [...popovers]) {
-      if (
-        popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
-        ![
-          ...getContainingPopovers(target),
-          ...(popoverTargetElement ? [popoverTargetElement] : []),
-        ].includes(popover)
-      ) {
-        popover.hidePopover();
+      // Dismiss open 'auto' popovers which are not the containing popovers and are not the target popover element
+      for (const popover of [...popovers]) {
+        if (
+          popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
+          ![
+            ...getContainingPopovers(target),
+            ...(popoverTargetElement ? [popoverTargetElement] : []),
+          ].includes(popover)
+        ) {
+          popover.hidePopover();
+        }
       }
     }
   };
