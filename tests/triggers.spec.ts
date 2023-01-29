@@ -107,3 +107,16 @@ test('clicking button[popovertoggletarget=shadowedNestedPopover] should hide ope
   await page.click('button[popovertoggletarget=shadowedNestedPopover]');
   await expect(popover).toBeHidden();
 });
+
+test("clicking light tree button with 'popoverToggleTargetElement' property should open shadowed popover", async ({
+  page,
+}) => {
+  const popover = (await page.locator('#shadowedNestedPopover')).nth(0);
+  await expect(popover).toBeHidden();
+  await expect(
+    await popover.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(popover).toBeVisible();
+  await page.click('button#crossTreeToggle');
+  await expect(popover).toBeHidden();
+});
