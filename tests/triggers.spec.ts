@@ -108,6 +108,18 @@ test('clicking button[popovertoggletarget=shadowedNestedPopover] should hide ope
   await expect(popover).toBeHidden();
 });
 
+// test("button's 'popoverToggleTargetElement' property should return target element", async ({
+//   page,
+// }) => { });
+
+// test("button's 'popoverToggleTargetElement' property should return target element across different tree scope", async ({
+//   page,
+// }) => { });
+
+// test("button's invalid 'popoverToggleTargetElement' property should fail returning target element", async ({
+//   page,
+// }) => { });
+
 test("clicking light tree button with 'popoverToggleTargetElement' property should open shadowed popover", async ({
   page,
 }) => {

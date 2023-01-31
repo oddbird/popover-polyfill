@@ -1,10 +1,5 @@
 import { observePopoversMutations, popovers } from './observer.js';
-import {
-  checkInvokerValidity,
-  getPopoversAncestors,
-  getPopoverTargetElementFromIdref,
-  SupportingPopoverTargetAttributesSelector,
-} from './triggers.js';
+import { queryAncestorAll } from './triggers.js';
 
 export function isSupported() {
   return (
@@ -136,6 +131,90 @@ export function apply() {
     },
   });
 
+  const popoverTargetAttributesSupportedElementsSelector =
+    ':is(button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"])';
+
+  const definePopoverTargetElementProperty = (name: string) => {
+    const invokersMap = new WeakMap<Element, Element>();
+    Object.defineProperty(HTMLElement.prototype, `${name}Element`, {
+      set(targetElement: unknown) {
+        if (targetElement === null) {
+          this.removeAttribute(name.toLowerCase());
+          invokersMap.delete(this);
+        } else if (!(targetElement instanceof Element)) {
+          throw new TypeError(`${name}Element must be an element or null`);
+        } else {
+          this.setAttribute(name.toLowerCase(), '');
+          invokersMap.set(this, targetElement);
+        }
+      },
+      get() {
+        // If node is not supported, then return null.
+        if (!this.matches(popoverTargetAttributesSupportedElementsSelector)) {
+          return null;
+        }
+        // If node is disabled, then return null.
+        if (this.disabled) {
+          return null;
+        }
+        // If node has a form owner and node is a submit button, then return null.
+        if (this.form && this.type === 'submit') {
+          return null;
+        }
+        // workaround weakref not being available in all browsers by only returning connected elements, explicitly dropping the reference if the element isn't connected
+        const targetElement = invokersMap.get(this);
+        if (!targetElement?.isConnected) {
+          invokersMap.delete(this);
+        }
+        // Let idref be null.
+        // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
+        // Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
+        // Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
+        // If idref is null, then return null.
+        // Let popoverElement be the first element in tree order, within node's root's descendants, whose ID is idref; otherwise, if there is no such element, null.
+        // If popoverElement is null, then return null.
+        // If popoverElement's popover attribute is in the no popover state, then return null.
+        // Return popoverElement.
+        if (targetElement) {
+          return targetElement;
+        }
+        return (
+          this.getRootNode().getElementById(
+            this.getAttribute(name.toLowerCase()),
+          ) || null
+        );
+      },
+    });
+  };
+
+  definePopoverTargetElementProperty('popoverToggleTarget');
+  definePopoverTargetElementProperty('popoverShowTarget');
+  definePopoverTargetElementProperty('popoverHideTarget');
+
+  const handlePopoverTargetElementInvokation = (invoker: Element | null) => {
+    if (!(invoker instanceof HTMLButtonElement)) {
+      return;
+    }
+    let popoverTargetElement: HTMLElement | null = null;
+    if (invoker.popoverToggleTargetElement) {
+      popoverTargetElement = invoker.popoverToggleTargetElement;
+      if (popoverTargetElement) {
+        if (visibleElements.has(popoverTargetElement)) {
+          popoverTargetElement.hidePopover();
+        } else {
+          popoverTargetElement.showPopover();
+        }
+      }
+    } else if (invoker.popoverShowTargetElement) {
+      popoverTargetElement = invoker.popoverShowTargetElement;
+      popoverTargetElement?.showPopover();
+    } else if (invoker.popoverHideTargetElement) {
+      popoverTargetElement = invoker.popoverHideTargetElement;
+      popoverTargetElement?.hidePopover();
+    }
+    return popoverTargetElement;
+  };
+
   const onClick = (event: Event) => {
     const target = event.target;
     if (!(target instanceof Element) || target?.shadowRoot) {
@@ -145,50 +224,18 @@ export function apply() {
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
-    let popoverTargetElement: HTMLElement | null = null;
-    const invoker = target.closest(SupportingPopoverTargetAttributesSelector);
-    if (invoker instanceof HTMLElement && checkInvokerValidity(invoker)) {
-      if (
-        // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
-        invoker.getAttribute('popovertoggletarget') ||
-        invoker.popoverToggleTargetElement
-      ) {
-        popoverTargetElement =
-          getPopoverTargetElementFromIdref(invoker, 'popovertoggletarget') ||
-          invoker.popoverToggleTargetElement;
-        if (popoverTargetElement) {
-          if (visibleElements.has(popoverTargetElement)) {
-            popoverTargetElement.hidePopover();
-          } else {
-            popoverTargetElement.showPopover();
-          }
-        }
-      } else if (
-        // Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
-        invoker.getAttribute('popovershowtarget') ||
-        invoker.popoverShowTargetElement
-      ) {
-        popoverTargetElement =
-          getPopoverTargetElementFromIdref(invoker, 'popovershowtarget') ||
-          invoker.popoverShowTargetElement;
-        popoverTargetElement?.showPopover();
-      } else if (
-        // Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
-        invoker.getAttribute('popoverhidetarget') ||
-        invoker.popoverHideTargetElement
-      ) {
-        popoverTargetElement =
-          getPopoverTargetElementFromIdref(invoker, 'popoverhidetarget') ||
-          invoker.popoverHideTargetElement;
-        popoverTargetElement?.hidePopover();
-      }
-    }
+    const invoker = target.closest(
+      popoverTargetAttributesSupportedElementsSelector,
+    );
+    // if (invoker instanceof HTMLElement && checkInvokerValidity(invoker)) {
+    const popoverTargetElement = handlePopoverTargetElementInvokation(invoker);
+    // }
     // Dismiss open 'auto' popovers which are not the containing popovers and are not the target popover element
     for (const popover of [...popovers]) {
       if (
         popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
         popover !== popoverTargetElement &&
-        !getPopoversAncestors(target).includes(popover)
+        !queryAncestorAll(target, '[popover]').includes(popover)
       ) {
         popover.hidePopover();
       }
@@ -206,40 +253,4 @@ export function apply() {
 
   patchAttachShadow(observePopoversMutations);
   patchAttachShadow(addOnClickEventListener);
-
-  Object.defineProperty(HTMLElement.prototype, 'popoverToggleTargetElement', {
-    set: function (el: unknown) {
-      if (!(el instanceof Element)) {
-        throw new TypeError('popoverToggleTargetElement must be an element');
-      }
-      this._popoverToggleTargetElement = new WeakRef(el);
-    },
-    get: function () {
-      return this._popoverToggleTargetElement?.deref() || null;
-    },
-  });
-
-  Object.defineProperty(HTMLElement.prototype, 'popoverShowTargetElement', {
-    set: function (el: unknown) {
-      if (!(el instanceof Element)) {
-        throw new TypeError('popoverShowTargetElement must be an element');
-      }
-      this._popoverShowTargetElement = new WeakRef(el);
-    },
-    get: function () {
-      return this._popoverShowTargetElement?.deref() || null;
-    },
-  });
-
-  Object.defineProperty(HTMLElement.prototype, 'popoverHideTargetElement', {
-    set: function (el: unknown) {
-      if (!(el instanceof Element)) {
-        throw new TypeError('popoverHideTargetElement must be an element');
-      }
-      this._popoverHideTargetElement = new WeakRef(el);
-    },
-    get: function () {
-      return this._popoverHideTargetElement?.deref() || null;
-    },
-  });
 }
