@@ -8,6 +8,15 @@ export function isSupported() {
   );
 }
 
+function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
+  const originalAttachShadow = Element.prototype.attachShadow;
+  Element.prototype.attachShadow = function (init) {
+    const shadowRoot = originalAttachShadow.call(this, init);
+    callback(shadowRoot);
+    return shadowRoot;
+  };
+}
+
 const closestElement: (selector: string, target: Element) => Element | null = (
   selector: string,
   target: Element,
@@ -40,15 +49,6 @@ const queryAncestorAll = (
     ? queryAncestorAll(parent, selector, [ancestor, ...popovers])
     : popovers;
 };
-
-function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
-  const originalAttachShadow = Element.prototype.attachShadow;
-  Element.prototype.attachShadow = function (init) {
-    const shadowRoot = originalAttachShadow.call(this, init);
-    callback(shadowRoot);
-    return shadowRoot;
-  };
-}
 
 export function apply() {
   const visibleElements = new WeakSet<HTMLElement>();
