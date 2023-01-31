@@ -27,20 +27,6 @@ const closestAncestor: (selector: string, target: Element) => Element | null = (
   return closestAncestor(selector, root.host);
 };
 
-const queryAncestorAll = (
-  element: Element,
-  selector: string,
-  popovers: Element[] = [],
-): Element[] => {
-  // there could be multiple popovers nested inside each other
-  const ancestor = closestAncestor(selector, element);
-  const parent =
-    ancestor?.parentElement || (ancestor?.getRootNode() as ShadowRoot)?.host;
-  return ancestor && parent
-    ? queryAncestorAll(parent, selector, [ancestor, ...popovers])
-    : popovers;
-};
-
 function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
   const originalAttachShadow = Element.prototype.attachShadow;
   Element.prototype.attachShadow = function (init) {
