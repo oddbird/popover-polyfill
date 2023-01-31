@@ -168,7 +168,11 @@ export function apply() {
 
   const definePopoverTargetElementProperty = (name: string) => {
     const invokersMap = new WeakMap<Element, Element>();
-    Object.defineProperty(HTMLElement.prototype, `${name}Element`, {
+    function obj(this: HTMLButtonElement | HTMLInputElement) {
+      return;
+    }
+    const invokerDescriptor: PropertyDescriptor &
+      ThisType<HTMLButtonElement | HTMLInputElement> = {
       set(targetElement: unknown) {
         if (targetElement === null) {
           this.removeAttribute(name.toLowerCase());
@@ -210,13 +214,24 @@ export function apply() {
         if (targetElement) {
           return targetElement;
         }
-        return (
-          this.getRootNode().getElementById(
-            this.getAttribute(name.toLowerCase()),
-          ) || null
-        );
+        const root = this.getRootNode();
+        const idref = this.getAttribute(name.toLowerCase());
+        if ((root instanceof Document || root instanceof ShadowRoot) && idref) {
+          return root.getElementById(idref) || null;
+        }
+        return null;
       },
-    });
+    };
+    Object.defineProperty(
+      HTMLButtonElement.prototype,
+      `${name}Element`,
+      invokerDescriptor,
+    );
+    Object.defineProperty(
+      HTMLInputElement.prototype,
+      `${name}Element`,
+      invokerDescriptor,
+    );
   };
 
   definePopoverTargetElementProperty('popoverToggleTarget');
@@ -224,7 +239,10 @@ export function apply() {
   definePopoverTargetElementProperty('popoverHideTarget');
 
   const handlePopoverTargetElementInvokation = (invoker: Element | null) => {
-    if (!(invoker instanceof HTMLButtonElement)) {
+    if (
+      !(invoker instanceof HTMLButtonElement) &&
+      !(invoker instanceof HTMLInputElement)
+    ) {
       return;
     }
     let popoverTargetElement: HTMLElement | null = null;
