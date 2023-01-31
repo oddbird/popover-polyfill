@@ -108,7 +108,7 @@ test('clicking button[popovertoggletarget=shadowedNestedPopover] should hide ope
   await expect(popover).toBeHidden();
 });
 
-// test("button's 'popoverToggleTargetElement' property should return target element", async ({
+// test("button 'popoverToggleTargetElement' property should return HTML element", async ({
 //   page,
 // }) => { });
 
@@ -119,6 +119,24 @@ test('clicking button[popovertoggletarget=shadowedNestedPopover] should hide ope
 // test("button's invalid 'popoverToggleTargetElement' property should fail returning target element", async ({
 //   page,
 // }) => { });
+
+// test("assign HTML element to invoker's 'popoverToggleTargetElement' property should assign empty string ('') to its 'popovertoggletarget' attribute", async ({
+//   page,
+// }) => { });
+
+test("assign null to invoker's 'popoverToggleTargetElement' property should remove its 'popovertoggletarget' attribute", async ({
+  page,
+}) => {
+  const button = (await page.locator('button#crossTreeToggle')).nth(0);
+  await expect(
+    await button.evaluate((node) => (node.popoverToggleTargetElement = null)),
+  ).toBeNull();
+  await expect(
+    await button.evaluate(
+      (node) => node.getAttribute('popovertoggletarget') === null,
+    ),
+  ).toBe(true);
+});
 
 test("clicking light tree button with 'popoverToggleTargetElement' property should open shadowed popover", async ({
   page,
