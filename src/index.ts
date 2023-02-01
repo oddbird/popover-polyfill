@@ -1,5 +1,11 @@
 import { apply, isSupported } from './popover.js';
 
+interface PopoverToggleTargetElementInvoker {
+  popoverToggleTargetElement: HTMLElement | null;
+  popoverShowTargetElement: HTMLElement | null;
+  popoverHideTargetElement: HTMLElement | null;
+}
+
 declare global {
   interface BeforeToggleEvent extends Event {
     currentState: string;
@@ -10,16 +16,10 @@ declare global {
     showPopover(): void;
     hidePopover(): void;
   }
-  interface HTMLButtonElement {
-    popoverToggleTargetElement: HTMLElement | null;
-    popoverShowTargetElement: HTMLElement | null;
-    popoverHideTargetElement: HTMLElement | null;
-  }
-  interface HTMLInputElement {
-    popoverToggleTargetElement: HTMLElement | null;
-    popoverShowTargetElement: HTMLElement | null;
-    popoverHideTargetElement: HTMLElement | null;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface HTMLButtonElement extends PopoverToggleTargetElementInvoker {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface HTMLInputElement extends PopoverToggleTargetElementInvoker {}
   interface Window {
     BeforeToggleEvent: BeforeToggleEvent;
   }
