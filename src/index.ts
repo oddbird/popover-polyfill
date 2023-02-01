@@ -7,11 +7,18 @@ declare global {
   }
   interface HTMLElement {
     popover: 'auto' | 'manual' | null;
+    showPopover(): void;
+    hidePopover(): void;
+  }
+  interface HTMLButtonElement {
     popoverToggleTargetElement: HTMLElement | null;
     popoverShowTargetElement: HTMLElement | null;
     popoverHideTargetElement: HTMLElement | null;
-    showPopover(): void;
-    hidePopover(): void;
+  }
+  interface HTMLInputElement {
+    popoverToggleTargetElement: HTMLElement | null;
+    popoverShowTargetElement: HTMLElement | null;
+    popoverHideTargetElement: HTMLElement | null;
   }
   interface Window {
     BeforeToggleEvent: BeforeToggleEvent;
