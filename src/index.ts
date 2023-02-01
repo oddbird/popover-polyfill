@@ -16,10 +16,10 @@ declare global {
     showPopover(): void;
     hidePopover(): void;
   }
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  /* eslint-disable @typescript-eslint/no-empty-interface */
   interface HTMLButtonElement extends PopoverToggleTargetElementInvoker {}
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface HTMLInputElement extends PopoverToggleTargetElementInvoker {}
+  /* eslint-enable @typescript-eslint/no-empty-interface */
   interface Window {
     BeforeToggleEvent: BeforeToggleEvent;
   }
