@@ -183,7 +183,12 @@ export function apply() {
       },
       get() {
         // If node is not supported, then return null.
-        if (!this.matches(popoverTargetAttributesSupportedElementsSelector)) {
+        if (this.localName !== 'button' && this.localName !== 'input') {
+          return null;
+        }
+        
+        // If the node is not the correct input type, then return null.
+        if (this.localName === 'input' && this.type !== 'reset' && this.type !== 'image' && this.type !== 'button') {
           return null;
         }
         // If node is disabled, then return null.
