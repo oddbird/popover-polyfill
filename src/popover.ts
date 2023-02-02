@@ -186,9 +186,13 @@ export function apply() {
         if (this.localName !== 'button' && this.localName !== 'input') {
           return null;
         }
-        
         // If the node is not the correct input type, then return null.
-        if (this.localName === 'input' && this.type !== 'reset' && this.type !== 'image' && this.type !== 'button') {
+        if (
+          this.localName === 'input' &&
+          this.type !== 'reset' &&
+          this.type !== 'image' &&
+          this.type !== 'button'
+        ) {
           return null;
         }
         // If node is disabled, then return null.
