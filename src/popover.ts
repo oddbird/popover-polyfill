@@ -164,7 +164,7 @@ export function apply() {
   });
 
   const popoverTargetAttributesSupportedElementsSelector =
-    ':is(button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"])';
+    'button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"]';
 
   const definePopoverTargetElementProperty = (name: string) => {
     const invokersMap = new WeakMap<Element, Element>();
