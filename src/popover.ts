@@ -41,7 +41,6 @@ const queryAncestorAll = (
   selector: string,
   popovers: Element[] = [],
 ): Element[] => {
-  // there could be multiple popovers nested inside each other
   const ancestor = closestElement(selector, element);
   const parent =
     ancestor?.parentElement || (ancestor?.getRootNode() as ShadowRoot)?.host;
@@ -182,11 +181,9 @@ export function apply() {
         }
       },
       get() {
-        // If node is not supported, then return null.
         if (this.localName !== 'button' && this.localName !== 'input') {
           return null;
         }
-        // If the node is not the correct input type, then return null.
         if (
           this.localName === 'input' &&
           this.type !== 'reset' &&
@@ -195,28 +192,16 @@ export function apply() {
         ) {
           return null;
         }
-        // If node is disabled, then return null.
         if (this.disabled) {
           return null;
         }
-        // If node has a form owner and node is a submit button, then return null.
         if (this.form && this.type === 'submit') {
           return null;
         }
-        // workaround weakref not being available in all browsers by only returning connected elements, explicitly dropping the reference if the element isn't connected
         const targetElement = invokersMap.get(this);
         if (!targetElement?.isConnected) {
           invokersMap.delete(this);
         }
-        // Let idref be null.
-        // If node has a popovertoggletarget attribute, then set idref to the value of node's popovertoggletarget attribute.
-        // Otherwise, if node has a popovershowtarget attribute, then set idref to the value of node's popovershowtarget attribute.
-        // Otherwise, if node has a popoverhidetarget attribute, then set idref to the value of node's popoverhidetarget attribute.
-        // If idref is null, then return null.
-        // Let popoverElement be the first element in tree order, within node's root's descendants, whose ID is idref; otherwise, if there is no such element, null.
-        // If popoverElement is null, then return null.
-        // If popoverElement's popover attribute is in the no popover state, then return null.
-        // Return popoverElement.
         if (targetElement) {
           return targetElement;
         }
@@ -283,10 +268,7 @@ export function apply() {
     const invoker = target.closest(
       popoverTargetAttributesSupportedElementsSelector,
     );
-    // if (invoker instanceof HTMLElement && checkInvokerValidity(invoker)) {
     const popoverTargetElement = handlePopoverTargetElementInvokation(invoker);
-    // }
-    // Dismiss open 'auto' popovers which are not the containing popovers and are not the target popover element
     for (const popover of [...popovers]) {
       if (
         popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
