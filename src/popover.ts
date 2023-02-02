@@ -168,9 +168,6 @@ export function apply() {
 
   const definePopoverTargetElementProperty = (name: string) => {
     const invokersMap = new WeakMap<Element, Element>();
-    function obj(this: HTMLButtonElement | HTMLInputElement) {
-      return;
-    }
     const invokerDescriptor: PropertyDescriptor &
       ThisType<HTMLButtonElement | HTMLInputElement> = {
       set(targetElement: unknown) {
