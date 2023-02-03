@@ -39,6 +39,8 @@
                   <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
                 </div>`;
         shadowRoot.adoptedStyleSheets = [sheet];
+        document.getElementById('crossTreeToggle').popoverToggleTargetElement =
+          shadowRoot.getElementById('shadowedPopover');
       </script>
     </div>
 
@@ -56,6 +58,8 @@
       <button popovertoggletarget="popover10">
         Click to toggle Popover 10
       </button>
+      <button popovertoggletarget="notExist">Click to toggle nothing</button>
+      <button id="crossTreeToggle">Click to toggle shadowed Popover</button>
     </div>
   </body>
 </html>

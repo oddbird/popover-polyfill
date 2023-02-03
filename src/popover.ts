@@ -36,6 +36,19 @@ const closestElement: (selector: string, target: Element) => Element | null = (
   return closestElement(selector, root.host);
 };
 
+const queryAncestorAll = (
+  element: Element,
+  selector: string,
+  popovers: Element[] = [],
+): Element[] => {
+  const ancestor = closestElement(selector, element);
+  const parent =
+    ancestor?.parentElement || (ancestor?.getRootNode() as ShadowRoot)?.host;
+  return ancestor && parent
+    ? queryAncestorAll(parent, selector, [ancestor, ...popovers])
+    : popovers;
+};
+
 export function apply() {
   const visibleElements = new WeakSet<HTMLElement>();
 
@@ -149,6 +162,100 @@ export function apply() {
     },
   });
 
+  const popoverTargetAttributesSupportedElementsSelector =
+    'button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"]';
+
+  const definePopoverTargetElementProperty = (name: string) => {
+    const invokersMap = new WeakMap<Element, Element>();
+    const invokerDescriptor: PropertyDescriptor &
+      ThisType<HTMLButtonElement | HTMLInputElement> = {
+      set(targetElement: unknown) {
+        if (targetElement === null) {
+          this.removeAttribute(name.toLowerCase());
+          invokersMap.delete(this);
+        } else if (!(targetElement instanceof Element)) {
+          throw new TypeError(`${name}Element must be an element or null`);
+        } else {
+          this.setAttribute(name.toLowerCase(), '');
+          invokersMap.set(this, targetElement);
+        }
+      },
+      get() {
+        if (this.localName !== 'button' && this.localName !== 'input') {
+          return null;
+        }
+        if (
+          this.localName === 'input' &&
+          this.type !== 'reset' &&
+          this.type !== 'image' &&
+          this.type !== 'button'
+        ) {
+          return null;
+        }
+        if (this.disabled) {
+          return null;
+        }
+        if (this.form && this.type === 'submit') {
+          return null;
+        }
+        const targetElement = invokersMap.get(this);
+        if (!targetElement?.isConnected) {
+          invokersMap.delete(this);
+        }
+        if (targetElement) {
+          return targetElement;
+        }
+        const root = this.getRootNode();
+        const idref = this.getAttribute(name.toLowerCase());
+        if ((root instanceof Document || root instanceof ShadowRoot) && idref) {
+          return root.getElementById(idref) || null;
+        }
+        return null;
+      },
+    };
+    Object.defineProperty(
+      HTMLButtonElement.prototype,
+      `${name}Element`,
+      invokerDescriptor,
+    );
+    Object.defineProperty(
+      HTMLInputElement.prototype,
+      `${name}Element`,
+      invokerDescriptor,
+    );
+  };
+
+  definePopoverTargetElementProperty('popoverToggleTarget');
+  definePopoverTargetElementProperty('popoverShowTarget');
+  definePopoverTargetElementProperty('popoverHideTarget');
+
+  const handlePopoverTargetElementInvocation = (invoker: Element | null) => {
+    if (
+      !(invoker instanceof HTMLButtonElement) &&
+      !(invoker instanceof HTMLInputElement)
+    ) {
+      return;
+    }
+    let popoverTargetElement: HTMLElement | null = null;
+    if (invoker.popoverToggleTargetElement) {
+      popoverTargetElement = invoker.popoverToggleTargetElement;
+      if (popoverTargetElement) {
+        if (visibleElements.has(popoverTargetElement)) {
+          popoverTargetElement.hidePopover();
+        } else {
+          popoverTargetElement.showPopover();
+        }
+      }
+    } else if (invoker.popoverShowTargetElement) {
+      popoverTargetElement = invoker.popoverShowTargetElement;
+      popoverTargetElement?.showPopover();
+    } else if (invoker.popoverHideTargetElement) {
+      popoverTargetElement = invoker.popoverHideTargetElement;
+      popoverTargetElement?.hidePopover();
+    }
+    return popoverTargetElement;
+  };
+
   const onClick = (event: Event) => {
     const target = event.target;
     if (!(target instanceof Element) || target?.shadowRoot) {
@@ -158,61 +265,18 @@ export function apply() {
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
-    let effectedPopover = closestElement(
-      '[popover]',
-      target,
-    ) as HTMLElement | null;
-    const button = target.closest(
-      '[popovertoggletarget],[popoverhidetarget],[popovershowtarget]',
+    const invoker = target.closest(
+      popoverTargetAttributesSupportedElementsSelector,
     );
-    const isButton = button instanceof HTMLButtonElement;
-
-    // Handle Popover triggers
-    if (isButton && button.hasAttribute('popovershowtarget')) {
-      effectedPopover = root.getElementById(
-        button.getAttribute('popovershowtarget') || '',
-      );
-
-      if (
-        effectedPopover &&
-        effectedPopover.popover &&
-        !visibleElements.has(effectedPopover)
-      ) {
-        effectedPopover.showPopover();
-      }
-    } else if (isButton && button.hasAttribute('popoverhidetarget')) {
-      effectedPopover = root.getElementById(
-        button.getAttribute('popoverhidetarget') || '',
-      );
-
-      if (
-        effectedPopover &&
-        effectedPopover.popover &&
-        visibleElements.has(effectedPopover)
-      ) {
-        effectedPopover.hidePopover();
-      }
-    } else if (isButton && button.hasAttribute('popovertoggletarget')) {
-      effectedPopover = root.getElementById(
-        button.getAttribute('popovertoggletarget') || '',
-      );
-
-      if (effectedPopover && effectedPopover.popover) {
-        if (visibleElements.has(effectedPopover)) {
-          effectedPopover.hidePopover();
-        } else {
-          effectedPopover.showPopover();
-        }
-      }
-    }
-
-    // Dismiss open Popovers
+    const popoverTargetElement = handlePopoverTargetElementInvocation(invoker);
     for (const popover of [...popovers]) {
       if (
         popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
-        popover !== effectedPopover
-      )
+        popover !== popoverTargetElement &&
+        !queryAncestorAll(target, '[popover]').includes(popover)
+      ) {
         popover.hidePopover();
+      }
     }
   };
 
