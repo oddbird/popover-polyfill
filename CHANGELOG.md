@@ -1,5 +1,12 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.0.9: 2023-02-03
+
+- 🚀 NEW: Add support for JavaScript (IDL) reflections (e.g.
+  `popoverToggleTargetElement`) --
+  [#70](https://github.com/oddbird/popover-polyfill/pull/70)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.0.8: 2023-01-26
 
 - 🚀 NEW: Add support for new [`beforetoggle` event](https://whatpr.org/html/8221/popover.html#show-popover) --
