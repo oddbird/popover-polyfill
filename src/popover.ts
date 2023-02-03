@@ -268,7 +268,7 @@ export function apply() {
     const invoker = target.closest(
       popoverTargetAttributesSupportedElementsSelector,
     );
-    const popoverTargetElement = handlePopoverTargetElementInvokation(invoker);
+    const popoverTargetElement = handlePopoverTargetElementInvocation(invoker);
     for (const popover of [...popovers]) {
       if (
         popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
