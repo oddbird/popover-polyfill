@@ -229,7 +229,7 @@ export function apply() {
   definePopoverTargetElementProperty('popoverShowTarget');
   definePopoverTargetElementProperty('popoverHideTarget');
 
-  const handlePopoverTargetElementInvokation = (invoker: Element | null) => {
+  const handlePopoverTargetElementInvocation = (invoker: Element | null) => {
     if (
       !(invoker instanceof HTMLButtonElement) &&
       !(invoker instanceof HTMLInputElement)
