@@ -1,5 +1,9 @@
 # Popover Attribute Polyfill Changelog
 
+## UNRELEASED
+
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.0.9: 2023-02-03
 
 - 🚀 NEW: Add support for JavaScript (IDL) reflections (e.g.
