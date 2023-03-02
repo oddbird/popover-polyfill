@@ -57,11 +57,13 @@ export function apply() {
     element: HTMLElement,
     expectedToBeShowing: boolean,
   ) {
-    if (element.popover !== 'auto' && element.popover !== 'manual')
+    if (element.popover !== 'auto' && element.popover !== 'manual') {
       return false;
+    }
     if (!element.isConnected) return false;
-    if (element instanceof HTMLDialogElement && element.hasAttribute('open'))
+    if (element instanceof HTMLDialogElement && element.hasAttribute('open')) {
       return false;
+    }
     if (expectedToBeShowing && !visibleElements.has(element)) return false;
     if (!expectedToBeShowing && visibleElements.has(element)) return false;
     if (document.fullscreenElement === element) return false;
@@ -103,6 +105,42 @@ export function apply() {
   }
   window.BeforeToggleEvent = window.BeforeToggleEvent || BeforeToggleEvent;
 
+  const popoverTargetAttributesSupportedElements = [
+    'button',
+    'input[type="button"]',
+    'input[type="submit"]',
+    'input[type="image"]',
+    'input[type="reset"]',
+  ] as const;
+
+  const popoverAttributes = [
+    'popoverToggleTarget',
+    'popoverShowTarget',
+    'popoverHideTarget',
+  ] as const;
+
+  const popoverTargetSelector = popoverTargetAttributesSupportedElements
+    .flatMap((s) => {
+      return popoverAttributes.map((a) => `${s}[${a}]`);
+    })
+    .join(', ');
+
+  function* getAllInvokers(popover: Element) {
+    for (const invoker of popover.ownerDocument.querySelectorAll(
+      popoverTargetSelector,
+    )) {
+      if (
+        (invoker instanceof HTMLButtonElement ||
+          invoker instanceof HTMLInputElement) &&
+        (invoker.popoverShowTargetElement === popover ||
+          invoker.popoverHideTargetElement === popover ||
+          invoker.popoverToggleTargetElement === popover)
+      ) {
+        yield invoker;
+      }
+    }
+  }
+
   Object.defineProperties(HTMLElement.prototype, {
     popover: {
       enumerable: true,
@@ -139,6 +177,12 @@ export function apply() {
             : this.querySelector('[autofocus]');
           focusEl?.focus();
         }
+
+        for (const button of getAllInvokers(this)) {
+          if (button.hasAttribute('aria-expanded')) {
+            button.setAttribute('aria-expanded', 'true');
+          }
+        }
       },
     },
 
@@ -158,12 +202,17 @@ export function apply() {
         assertPopoverValidity(this, true);
         this.classList.remove(':open');
         visibleElements.delete(this);
+        for (const button of getAllInvokers(this)) {
+          if (button.hasAttribute('aria-expanded')) {
+            button.setAttribute('aria-expanded', 'false');
+          }
+        }
       },
     },
   });
 
   const popoverTargetAttributesSupportedElementsSelector =
-    'button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"]';
+    popoverTargetAttributesSupportedElements.join(', ');
 
   const definePopoverTargetElementProperty = (name: string) => {
     const invokersMap = new WeakMap<Element, Element>();
@@ -225,9 +274,9 @@ export function apply() {
     );
   };
 
-  definePopoverTargetElementProperty('popoverToggleTarget');
-  definePopoverTargetElementProperty('popoverShowTarget');
-  definePopoverTargetElementProperty('popoverHideTarget');
+  popoverAttributes.forEach((name: string) =>
+    definePopoverTargetElementProperty(name),
+  );
 
   const handlePopoverTargetElementInvocation = (invoker: Element | null) => {
     if (
