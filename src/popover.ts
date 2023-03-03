@@ -1,4 +1,6 @@
-import { observePopoversMutations, popovers } from './observer.js';
+import { popoverInvokerSelector, popovers } from './data.js';
+import { observePopoversMutations } from './observer.js';
+import { getInvokersFor, setInvokerAriaExpanded } from './popover-helpers.js';
 
 export function isSupported() {
   return (
@@ -57,11 +59,13 @@ export function apply() {
     element: HTMLElement,
     expectedToBeShowing: boolean,
   ) {
-    if (element.popover !== 'auto' && element.popover !== 'manual')
+    if (element.popover !== 'auto' && element.popover !== 'manual') {
       return false;
+    }
     if (!element.isConnected) return false;
-    if (element instanceof HTMLDialogElement && element.hasAttribute('open'))
+    if (element instanceof HTMLDialogElement && element.hasAttribute('open')) {
       return false;
+    }
     if (expectedToBeShowing && !visibleElements.has(element)) return false;
     if (!expectedToBeShowing && visibleElements.has(element)) return false;
     if (document.fullscreenElement === element) return false;
@@ -138,6 +142,9 @@ export function apply() {
             ? this
             : this.querySelector('[autofocus]');
           focusEl?.focus();
+          for (const invoker of getInvokersFor(this)) {
+            setInvokerAriaExpanded(invoker);
+          }
         }
       },
     },
@@ -158,12 +165,14 @@ export function apply() {
         assertPopoverValidity(this, true);
         this.classList.remove(':open');
         visibleElements.delete(this);
+        if (this.popover === 'auto') {
+          for (const invoker of getInvokersFor(this)) {
+            setInvokerAriaExpanded(invoker);
+          }
+        }
       },
     },
   });
-
-  const popoverTargetAttributesSupportedElementsSelector =
-    'button, input[type="button"], input[type="submit"], input[type="image"], input[type="reset"]';
 
   const definePopoverTargetElementProperty = (name: string) => {
     const invokersMap = new WeakMap<Element, Element>();
@@ -265,9 +274,7 @@ export function apply() {
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
-    const invoker = target.closest(
-      popoverTargetAttributesSupportedElementsSelector,
-    );
+    const invoker = target.closest(popoverInvokerSelector);
     const popoverTargetElement = handlePopoverTargetElementInvocation(invoker);
     for (const popover of [...popovers]) {
       if (

@@ -3,6 +3,8 @@
 ## UNRELEASED
 
 - 🏠 INTERNAL: Upgrade dependencies
+- 🚀 NEW: Add support for `aria-expanded` on invokers --
+  [#77](https://github.com/oddbird/popover-polyfill/pull/77)
 
 ## 0.0.9: 2023-02-03
 

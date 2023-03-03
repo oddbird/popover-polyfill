@@ -38,6 +38,23 @@ test('clicking button[popovertoggletarget=popover1] should show then hide open p
   await expect(popover).toBeHidden();
 });
 
+test('clicking button[popovertoggletarget=popover1] should set button aria-expanded attribute appropriately', async ({
+  page,
+}) => {
+  const popover = (await page.locator('#popover1')).nth(0);
+  const button = (
+    await page.locator('button[popovertoggletarget="popover1"]')
+  ).nth(0);
+  await expect(popover).toBeHidden();
+  await expect(button).toHaveAttribute('aria-expanded', 'false');
+  await button.click();
+  await expect(popover).toBeVisible();
+  await expect(button).toHaveAttribute('aria-expanded', 'true');
+  await button.click();
+  await expect(popover).toBeHidden();
+  await expect(button).toHaveAttribute('aria-expanded', 'false');
+});
+
 test('clicking button[popovershowtarget=popover3] should show open popover', async ({
   page,
 }) => {
