@@ -1,9 +1,4 @@
-import {
-  invokers,
-  popoverInvokerAttributes,
-  popoverInvokerSelector,
-  popovers,
-} from './data.js';
+import { invokers, popoverInvokerAttributes, popovers } from './data.js';
 import {
   getInvokersFromNode,
   getPopoversFromNode,
