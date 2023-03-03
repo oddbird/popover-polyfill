@@ -86,10 +86,10 @@
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "@playwright/test": "^1.31.1",
-    "@types/node": "^18.14.2",
-    "@typescript-eslint/eslint-plugin": "^5.53.0",
-    "@typescript-eslint/parser": "^5.53.0",
+    "@playwright/test": "^1.31.2",
+    "@types/node": "^18.14.6",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
     "esbuild": "^0.17.10",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
