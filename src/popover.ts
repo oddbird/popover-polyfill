@@ -1,4 +1,6 @@
-import { observePopoversMutations, popovers } from './observer.js';
+import { popoverInvokerSelector, popovers } from './data.js';
+import { observePopoversMutations } from './observer.js';
+import { getInvokersFor, setInvokerAriaExpanded } from './popover-helpers.js';
 
 export function isSupported() {
   return (
@@ -105,42 +107,6 @@ export function apply() {
   }
   window.BeforeToggleEvent = window.BeforeToggleEvent || BeforeToggleEvent;
 
-  const popoverTargetAttributesSupportedElements = [
-    'button',
-    'input[type="button"]',
-    'input[type="submit"]',
-    'input[type="image"]',
-    'input[type="reset"]',
-  ] as const;
-
-  const popoverAttributes = [
-    'popoverToggleTarget',
-    'popoverShowTarget',
-    'popoverHideTarget',
-  ] as const;
-
-  const popoverTargetSelector = popoverTargetAttributesSupportedElements
-    .flatMap((s) => {
-      return popoverAttributes.map((a) => `${s}[${a}]`);
-    })
-    .join(', ');
-
-  function* getAllInvokers(popover: Element) {
-    for (const invoker of popover.ownerDocument.querySelectorAll(
-      popoverTargetSelector,
-    )) {
-      if (
-        (invoker instanceof HTMLButtonElement ||
-          invoker instanceof HTMLInputElement) &&
-        (invoker.popoverShowTargetElement === popover ||
-          invoker.popoverHideTargetElement === popover ||
-          invoker.popoverToggleTargetElement === popover)
-      ) {
-        yield invoker;
-      }
-    }
-  }
-
   Object.defineProperties(HTMLElement.prototype, {
     popover: {
       enumerable: true,
@@ -176,11 +142,8 @@ export function apply() {
             ? this
             : this.querySelector('[autofocus]');
           focusEl?.focus();
-        }
-
-        for (const button of getAllInvokers(this)) {
-          if (button.hasAttribute('aria-expanded')) {
-            button.setAttribute('aria-expanded', 'true');
+          for (const invoker of getInvokersFor(this)) {
+            setInvokerAriaExpanded(invoker);
           }
         }
       },
@@ -202,17 +165,14 @@ export function apply() {
         assertPopoverValidity(this, true);
         this.classList.remove(':open');
         visibleElements.delete(this);
-        for (const button of getAllInvokers(this)) {
-          if (button.hasAttribute('aria-expanded')) {
-            button.setAttribute('aria-expanded', 'false');
+        if (this.popover === 'auto') {
+          for (const invoker of getInvokersFor(this)) {
+            setInvokerAriaExpanded(invoker);
           }
         }
       },
     },
   });
-
-  const popoverTargetAttributesSupportedElementsSelector =
-    popoverTargetAttributesSupportedElements.join(', ');
 
   const definePopoverTargetElementProperty = (name: string) => {
     const invokersMap = new WeakMap<Element, Element>();
@@ -274,9 +234,9 @@ export function apply() {
     );
   };
 
-  popoverAttributes.forEach((name: string) =>
-    definePopoverTargetElementProperty(name),
-  );
+  definePopoverTargetElementProperty('popoverToggleTarget');
+  definePopoverTargetElementProperty('popoverShowTarget');
+  definePopoverTargetElementProperty('popoverHideTarget');
 
   const handlePopoverTargetElementInvocation = (invoker: Element | null) => {
     if (
@@ -314,9 +274,7 @@ export function apply() {
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
-    const invoker = target.closest(
-      popoverTargetAttributesSupportedElementsSelector,
-    );
+    const invoker = target.closest(popoverInvokerSelector);
     const popoverTargetElement = handlePopoverTargetElementInvocation(invoker);
     for (const popover of [...popovers]) {
       if (
