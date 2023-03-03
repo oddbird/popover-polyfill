@@ -1,6 +1,6 @@
 {
   "name": "@oddbird/popover-polyfill",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Popover Attribute Polyfill",
   "license": "BSD-3-Clause",
   "publishConfig": {
@@ -87,7 +87,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.31.2",
-    "@types/node": "^18.14.6",
+    "@types/node": "*",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "esbuild": "^0.17.10",

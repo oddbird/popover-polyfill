@@ -85,7 +85,7 @@ attributes to the HTMLElement class.
 
 ## Caveats
 
-This polyfill is not a perfect replacement for the native behavior, there are
+This polyfill is not a perfect replacement for the native behavior; there are
 some caveats which will need accommodations:
 
 - Native `popover` has an `:open` and `:closed` pseudo selector state. This is
@@ -98,7 +98,7 @@ some caveats which will need accommodations:
   - Using native `:open` in CSS that does not support native `popover` results
     in an invalid selector, and so the entire declaration is thrown away. This
     is important because if you intend to style a popover using `.\:open` it
-    will need to be a separate declaration. e.g.
+    will need to be a separate declaration. For example,
     `[popover]:open, [popover].\:open` will not work.
 
 - Native `popover` elements use the `:top-layer` pseudo element which gets
@@ -108,7 +108,7 @@ some caveats which will need accommodations:
   `overflow:` or `position:` CSS, then there will be visual differences between
   the polyfill and the native behavior.
 
-- Native _invokers_ (that is: buttons or inputs using the `popoverHideTarget`,
+- Native _invokers_ (that is, buttons or inputs using the `popoverHideTarget`,
   `popoverShowTarget`, or `popoverToggleTarget` attributes) on `popover=auto`
   will render in the accessibility tree as elements with `expanded`. The only
   way to do this in the polyfill is setting the `aria-expanded` attribute on
