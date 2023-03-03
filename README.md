@@ -83,6 +83,39 @@ performance and robustness.
 After installation the polyfill will automatically add the correct methods and
 attributes to the HTMLElement class.
 
+## Caveats
+
+This polyfill is not a perfect replacement for the native behavior, there are
+some caveats which will need accommodations:
+
+- Native `popover` has an `:open` and `:closed` pseudo selector state. This is
+  not possible to polyfill, so instead this adds the `.\:open` CSS class to any
+  open popover.
+
+  - `:closed` is not implemented due to difficulty in finding popover elements
+    during page load. As such, you'll need to style them using `:not(.\:open)`.
+
+  - Using native `:open` in CSS that does not support native `popover` results
+    in an invalid selector, and so the entire declaration is thrown away. This
+    is important because if you intend to style a popover using `.\:open` it
+    will need to be a separate declaration. e.g.
+    `[popover]:open, [popover].\:open` will not work.
+
+- Native `popover` elements use the `:top-layer` pseudo element which gets
+  placed above all other elements on the page, regardless of overflow or
+  z-index. This is not possible to polyfill, and so this library simply sets a
+  really high `z-index`. This means if a popover is within an element that has
+  `overflow:` or `position:` CSS, then there will be visual differences between
+  the polyfill and the native behavior.
+
+- Native _invokers_ (that is: buttons or inputs using the `popoverHideTarget`,
+  `popoverShowTarget`, or `popoverToggleTarget` attributes) on `popover=auto`
+  will render in the accessibility tree as elements with `expanded`. The only
+  way to do this in the polyfill is setting the `aria-expanded` attribute on
+  those elements. This _may_ impact mutation observers or frameworks which do
+  DOM diffing, or it may interfere with other code which sets `aria-expanded` on
+  elements.
+
 ## Contributing
 
 Visit our [contribution guidelines](https://github.com/oddbird/popover-polyfill/blob/main/CONTRIBUTING.md).
