@@ -1,6 +1,11 @@
-import { popoverInvokerSelector, popovers } from './data.js';
+import { openPopoverSelector, popoverInvokerSelector } from './data.js';
 import { observePopoversMutations } from './observer.js';
-import { getInvokersFor, setInvokerAriaExpanded } from './popover-helpers.js';
+import {
+  closestShadowPenetrating,
+  getInvokersFor,
+  hideOpenAutoPopovers,
+  setInvokerAriaExpanded,
+} from './popover-helpers.js';
 
 export function isSupported() {
   return (
@@ -18,38 +23,6 @@ function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
     return shadowRoot;
   };
 }
-
-const closestElement: (selector: string, target: Element) => Element | null = (
-  selector: string,
-  target: Element,
-) => {
-  const found = target.closest(selector);
-
-  if (found) {
-    return found;
-  }
-
-  const root = target.getRootNode();
-
-  if (root === document || !(root instanceof ShadowRoot)) {
-    return null;
-  }
-
-  return closestElement(selector, root.host);
-};
-
-const queryAncestorAll = (
-  element: Element,
-  selector: string,
-  popovers: Element[] = [],
-): Element[] => {
-  const ancestor = closestElement(selector, element);
-  const parent =
-    ancestor?.parentElement || (ancestor?.getRootNode() as ShadowRoot)?.host;
-  return ancestor && parent
-    ? queryAncestorAll(parent, selector, [ancestor, ...popovers])
-    : popovers;
-};
 
 export function apply() {
   const visibleElements = new WeakSet<HTMLElement>();
@@ -149,6 +122,7 @@ export function apply() {
           for (const invoker of getInvokersFor(this)) {
             setInvokerAriaExpanded(invoker);
           }
+          hideOpenAutoPopovers(this);
         }
       },
     },
@@ -246,33 +220,6 @@ export function apply() {
   definePopoverTargetElementProperty('popoverShowTarget');
   definePopoverTargetElementProperty('popoverHideTarget');
 
-  const handlePopoverTargetElementInvocation = (invoker: Element | null) => {
-    if (
-      !(invoker instanceof HTMLButtonElement) &&
-      !(invoker instanceof HTMLInputElement)
-    ) {
-      return;
-    }
-    let popoverTargetElement: HTMLElement | null = null;
-    if (invoker.popoverToggleTargetElement) {
-      popoverTargetElement = invoker.popoverToggleTargetElement;
-      if (popoverTargetElement) {
-        if (visibleElements.has(popoverTargetElement)) {
-          popoverTargetElement.hidePopover();
-        } else {
-          popoverTargetElement.showPopover();
-        }
-      }
-    } else if (invoker.popoverShowTargetElement) {
-      popoverTargetElement = invoker.popoverShowTargetElement;
-      popoverTargetElement?.showPopover();
-    } else if (invoker.popoverHideTargetElement) {
-      popoverTargetElement = invoker.popoverHideTargetElement;
-      popoverTargetElement?.hidePopover();
-    }
-    return popoverTargetElement;
-  };
-
   const onClick = (event: Event) => {
     const target = event.target;
     if (!(target instanceof Element) || target?.shadowRoot) {
@@ -283,23 +230,44 @@ export function apply() {
       return;
     }
     const invoker = target.closest(popoverInvokerSelector);
-    const popoverTargetElement = handlePopoverTargetElementInvocation(invoker);
-    for (const popover of [...popovers]) {
-      if (
-        popover.matches('[popover="" i].\\:open, [popover=auto i].\\:open') &&
-        popover !== popoverTargetElement &&
-        !queryAncestorAll(target, '[popover]').includes(popover)
-      ) {
-        popover.hidePopover();
+    let popoverTargetElement: HTMLElement | null = null;
+    if (
+      invoker instanceof HTMLButtonElement ||
+      invoker instanceof HTMLInputElement
+    ) {
+      if (invoker.popoverToggleTargetElement) {
+        popoverTargetElement = invoker.popoverToggleTargetElement;
+        if (popoverTargetElement) {
+          if (visibleElements.has(popoverTargetElement)) {
+            popoverTargetElement.hidePopover();
+          } else {
+            popoverTargetElement.showPopover();
+          }
+        }
+      } else if (invoker.popoverShowTargetElement) {
+        popoverTargetElement = invoker.popoverShowTargetElement;
+        if (
+          popoverTargetElement &&
+          !visibleElements.has(popoverTargetElement)
+        ) {
+          popoverTargetElement.showPopover();
+        }
+      } else if (invoker.popoverHideTargetElement) {
+        popoverTargetElement = invoker.popoverHideTargetElement;
+        if (popoverTargetElement && visibleElements.has(popoverTargetElement)) {
+          popoverTargetElement.hidePopover();
+        }
       }
     }
+    hideOpenAutoPopovers(
+      popoverTargetElement ||
+        closestShadowPenetrating(openPopoverSelector, target),
+    );
   };
 
-  const addOnClickEventListener = (
-    (callback: (event: Event) => void) => (root: Document | ShadowRoot) => {
-      root.addEventListener('click', callback);
-    }
-  )(onClick);
+  const addOnClickEventListener = (root: Document | ShadowRoot) => {
+    root.addEventListener('click', onClick);
+  };
 
   observePopoversMutations(document);
   addOnClickEventListener(document);

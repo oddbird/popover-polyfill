@@ -20,3 +20,6 @@ export const popoverInvokerSelector = popoverInvokerSupportedElements
     return popoverInvokerAttributes.map((a) => `${s}[${a}]`);
   })
   .join(', ');
+
+export const openPopoverSelector =
+  '[popover="" i].\\:open, [popover=auto i].\\:open';

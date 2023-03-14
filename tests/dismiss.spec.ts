@@ -64,3 +64,20 @@ test('click inside auto popover does not dismiss itself', async ({ page }) => {
   await popover7.evaluate((node) => node.click());
   await expect(popover7).toBeVisible();
 });
+
+test('showing an auto popover should close all other auto popovers', async ({
+  page,
+}) => {
+  const popover3 = (await page.locator('#popover3')).nth(0);
+  const popover7 = (await page.locator('#popover7')).nth(0);
+  await expect(
+    await popover3.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(popover3).toBeVisible();
+  await expect(popover7).toBeHidden();
+  await expect(
+    await popover7.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(popover7).toBeVisible();
+  await expect(popover3).toBeHidden();
+});
