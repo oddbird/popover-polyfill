@@ -81,3 +81,30 @@ test('showing an auto popover should close all other auto popovers', async ({
   await expect(popover7).toBeVisible();
   await expect(popover3).toBeHidden();
 });
+
+test('pressing Escape dismisses auto popovers', async ({ page }) => {
+  const popover7 = (await page.locator('#popover7')).nth(0);
+  await expect(
+    await popover7.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(popover7).toBeVisible();
+
+  await page.keyboard.press('Escape');
+
+  await expect(popover7).toBeHidden();
+});
+
+test('pressing Escape focused in popover dismisses auto popovers', async ({
+  page,
+}) => {
+  const popover3 = (await page.locator('#popover3')).nth(0);
+  await expect(
+    await popover3.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(popover3).toBeVisible();
+  await page.locator('#popover3 a[href]').focus();
+
+  await page.keyboard.press('Escape');
+
+  await expect(popover3).toBeHidden();
+});

@@ -265,8 +265,16 @@ export function apply() {
     );
   };
 
+  const onKeydown = (event: Event) => {
+    const key = (event as KeyboardEvent).key;
+    if (key === 'Escape' || key === 'Esc') {
+      hideOpenAutoPopovers();
+    }
+  };
+
   const addOnClickEventListener = (root: Document | ShadowRoot) => {
     root.addEventListener('click', onClick);
+    root.addEventListener('keydown', onKeydown);
   };
 
   observePopoversMutations(document);
