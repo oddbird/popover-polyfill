@@ -53,6 +53,7 @@ const queryAncestorAll = (
 
 export function apply() {
   const visibleElements = new WeakSet<HTMLElement>();
+  let lastFocusedElement: HTMLElement | null = null;
 
   // https://whatpr.org/html/8221/popover.html#check-popover-validity
   function checkPopoverValidity(
@@ -137,11 +138,14 @@ export function apply() {
         assertPopoverValidity(this, false);
         this.classList.add(':open');
         visibleElements.add(this);
+        const focusEl = this.hasAttribute('autofocus')
+          ? this
+          : this.querySelector('[autofocus]');
+        if (this.ownerDocument.activeElement instanceof HTMLElement) {
+          lastFocusedElement = this.ownerDocument.activeElement;
+        }
+        focusEl?.focus();
         if (this.popover === 'auto') {
-          const focusEl = this.hasAttribute('autofocus')
-            ? this
-            : this.querySelector('[autofocus]');
-          focusEl?.focus();
           for (const invoker of getInvokersFor(this)) {
             setInvokerAriaExpanded(invoker);
           }
@@ -166,6 +170,10 @@ export function apply() {
         this.classList.remove(':open');
         visibleElements.delete(this);
         if (this.popover === 'auto') {
+          if (lastFocusedElement) {
+            lastFocusedElement.focus();
+            lastFocusedElement = null;
+          }
           for (const invoker of getInvokersFor(this)) {
             setInvokerAriaExpanded(invoker);
           }
