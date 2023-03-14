@@ -1,5 +1,10 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🚀 NEW: Add support for focus restoration on popover close --
+  [#81](https://github.com/oddbird/popover-polyfill/pull/81)
+
 ## 0.0.10: 2023-03-03
 
 - 🚀 NEW: Add support for `aria-expanded` on invokers --
