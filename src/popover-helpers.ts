@@ -55,21 +55,6 @@ export function closestShadowPenetrating(
   return closestShadowPenetrating(selector, root.host);
 }
 
-export function hasPopoverAncestor(
-  element: Element,
-  popover: Element,
-): boolean {
-  let parent = element;
-  do {
-    const ancestor = closestShadowPenetrating('[popover]', parent);
-    if (!ancestor) return false;
-    if (ancestor === popover) return true;
-    parent =
-      ancestor.parentElement || (ancestor.getRootNode() as ShadowRoot)?.host;
-  } while (parent);
-  return false;
-}
-
 export function setInvokerAriaExpanded(
   el: HTMLButtonElement | HTMLInputElement,
 ) {
