@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 🚀 NEW: Showing an `auto` popover closes other `auto` popovers --
+  [#83](https://github.com/oddbird/popover-polyfill/pull/83)
 - 🚀 NEW: Add support for focus restoration on popover close --
   [#81](https://github.com/oddbird/popover-polyfill/pull/81)
 

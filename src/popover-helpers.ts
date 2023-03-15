@@ -1,4 +1,9 @@
-import { invokers, popoverInvokerSelector, popovers } from './data.js';
+import {
+  invokers,
+  openPopoverSelector,
+  popoverInvokerSelector,
+  popovers,
+} from './data.js';
 export const initialAriaExpandedValue = new WeakMap<
   HTMLButtonElement | HTMLInputElement,
   null | string
@@ -17,6 +22,37 @@ export function getPopoverFor(el: HTMLButtonElement | HTMLInputElement) {
     el.popoverShowTargetElement ||
     el.popoverHideTargetElement
   );
+}
+
+export function* getOpenAutoPopovers() {
+  for (const popover of popovers) {
+    if (popover.matches(openPopoverSelector)) {
+      yield popover;
+    }
+  }
+}
+
+export function hideOpenAutoPopovers(except?: Element) {
+  for (const popover of getOpenAutoPopovers()) {
+    if (popover !== except) popover.hidePopover();
+  }
+}
+
+export function closestShadowPenetrating(
+  selector: string,
+  target: Element,
+): Element | undefined {
+  const found = target.closest(selector);
+  if (found) {
+    return found;
+  }
+
+  const root = target.getRootNode();
+  if (root === document || !(root instanceof ShadowRoot)) {
+    return;
+  }
+
+  return closestShadowPenetrating(selector, root.host);
 }
 
 export function setInvokerAriaExpanded(
