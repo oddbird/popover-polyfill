@@ -1,6 +1,6 @@
 # Popover Attribute Polyfill Changelog
 
-## Unreleased
+## 0.0.11: 2023-03-15
 
 - 🚀 NEW: Add support for Escape to dismiss auto popovers --
   [#82](https://github.com/oddbird/popover-polyfill/pull/82)
