@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 🚀 NEW: Add support for Escape to dismiss auto popovers --
+  [#82](https://github.com/oddbird/popover-polyfill/pull/82)
 - 🚀 NEW: Showing an `auto` popover closes other `auto` popovers --
   [#83](https://github.com/oddbird/popover-polyfill/pull/83)
 - 🚀 NEW: Add support for focus restoration on popover close --
