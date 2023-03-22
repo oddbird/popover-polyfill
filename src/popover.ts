@@ -16,15 +16,6 @@ export function isSupported() {
   );
 }
 
-function patchAttachShadow(callback: (shadowRoot: ShadowRoot) => void) {
-  const originalAttachShadow = Element.prototype.attachShadow;
-  Element.prototype.attachShadow = function (init) {
-    const shadowRoot = originalAttachShadow.call(this, init);
-    callback(shadowRoot);
-    return shadowRoot;
-  };
-}
-
 export function apply() {
   window.ToggleEvent = window.ToggleEvent || ToggleEvent;
 
@@ -152,7 +143,8 @@ export function apply() {
 
   const handleInvokerActivation = (event: Event) => {
     if (!event.isTrusted) return;
-    const target = event.target;
+    // Composed path allows us to find the target within shadowroots
+    const target = event.composedPath()[0] as HTMLElement;
     if (!(target instanceof Element) || target?.shadowRoot) {
       return;
     }
@@ -183,5 +175,4 @@ export function apply() {
   };
 
   addEventListeners(document);
-  patchAttachShadow(addEventListeners);
 }

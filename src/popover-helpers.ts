@@ -335,7 +335,9 @@ const popoverPointerDownTargets = new WeakMap<Document, HTMLElement>();
 // https://html.spec.whatwg.org/#topmost-clicked-popover
 export function lightDismissOpenPopovers(event: Event) {
   if (!event.isTrusted) return;
-  const target = event.target as HTMLElement;
+  // Composed path allows us to find the target within shadowroots
+  const target = event.composedPath()[0] as HTMLElement;
+  if (!target) return;
   const document = target.ownerDocument;
   const topMostPopover = topMostAutoPopover(document);
   if (!topMostPopover) return;
