@@ -7,7 +7,7 @@ interface PopoverToggleTargetElementInvoker {
 
 declare global {
   interface ToggleEvent extends Event {
-    currentState: string;
+    oldState: string;
     newState: string;
   }
   interface HTMLElement {
