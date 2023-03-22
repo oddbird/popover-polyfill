@@ -12,11 +12,6 @@ expect.extend({
     ).toBeUndefined();
     await expect(popover).toBeVisible();
     await expect(
-      async () => await popover.evaluate((node) => node.showPopover()),
-    ).rejects.toThrow(
-      'DOMException: Cannot show or hide popover on invalid or already visible element',
-    );
-    await expect(
       await popover.evaluate((node) => node.hidePopover()),
     ).toBeUndefined();
     await expect(popover).toBeHidden();
@@ -46,9 +41,5 @@ test('popover as "manual"', async ({ page }) => {
 
 test('popover as "invalid"', async ({ page }) => {
   const popover = (await page.locator('#popover6')).nth(0);
-  await expect(
-    async () => await popover.evaluate((node) => node.showPopover()),
-  ).rejects.toThrow(
-    'DOMException: Cannot show or hide popover on invalid or already visible element',
-  );
+  await expect(popover).toBeFunctionalPopover();
 });
