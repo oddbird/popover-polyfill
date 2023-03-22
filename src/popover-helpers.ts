@@ -339,13 +339,13 @@ export function lightDismissOpenPopovers(event: Event) {
   const document = target.ownerDocument;
   const topMostPopover = topMostAutoPopover(document);
   if (!topMostPopover) return;
-  if (event.type === 'pointerdown') {
-    popoverPointerDownTargets.set(document, event.target as HTMLElement);
+  const ancestor = topMostClickedPopover(target);
+  if (ancestor && event.type === 'pointerdown') {
+    popoverPointerDownTargets.set(document, ancestor as HTMLElement);
   } else if (event.type === 'pointerup') {
-    const ancestor = topMostClickedPopover(target);
     const sameTarget = popoverPointerDownTargets.get(document) === ancestor;
     popoverPointerDownTargets.delete(document);
-    if (!sameTarget) {
+    if (sameTarget) {
       hideAllPopoversUntil(ancestor || document, false, true);
     }
   }
