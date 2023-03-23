@@ -307,7 +307,7 @@ export function hideAllPopoversUntil(
 ) {
   const document = endpoint.ownerDocument || endpoint;
   if (endpoint instanceof Document) {
-    return closeAllOpenPopovers(document);
+    return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
   }
   let lastToHide = null;
   let foundEndpoint = false;
@@ -320,7 +320,7 @@ export function hideAllPopoversUntil(
     }
   }
   if (!foundEndpoint) {
-    return closeAllOpenPopovers(document);
+    return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
   }
   while (
     lastToHide &&
