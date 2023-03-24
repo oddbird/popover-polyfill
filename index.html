@@ -50,7 +50,6 @@
       <div id="host"></div>
 
       <script type="module">
-        import sheet from './dist/popover.css' assert { type: 'css' };
         const host = document.getElementById('host');
         const shadowRoot = host.attachShadow({ mode: 'open' });
         shadowRoot.innerHTML = `<button popovertarget="shadowedPopover">
@@ -63,7 +62,10 @@
                 <div>
                   <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
                 </div>`;
-        shadowRoot.adoptedStyleSheets = [sheet];
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = './dist/popover.css';
+        shadowRoot.prepend(link);
         document.getElementById('crossTreeToggle').popoverTargetElement =
           shadowRoot.getElementById('shadowedPopover');
       </script>
@@ -71,7 +73,7 @@
 
     <div id="buttons">
       <button popovertarget="popover1" aria-expanded="false">
-        Click to toggle Popover 1
+        <span>Click to toggle Popover 1</span>
       </button>
       <button popovertarget="popover2">Click to toggle Popover 2</button>
       <button popovertargetaction="show" popovertarget="popover3">

@@ -36,6 +36,21 @@ test('clicking button[popovertarget=popover1] should show then hide open popover
   await expect(popover).toBeVisible();
   await page.click('button[popovertarget=popover1]');
   await expect(popover).toBeHidden();
+  await page.click('button[popovertarget=popover1]');
+  await expect(popover).toBeVisible();
+});
+
+test('clicking element inside button[popovertarget=popover1] should show then hide open popover', async ({
+  page,
+}) => {
+  const popover = (await page.locator('#popover1')).nth(0);
+  await expect(popover).toBeHidden();
+  await page.click('button[popovertarget=popover1] span');
+  await expect(popover).toBeVisible();
+  await page.click('button[popovertarget=popover1] span');
+  await expect(popover).toBeHidden();
+  await page.click('button[popovertarget=popover1] span');
+  await expect(popover).toBeVisible();
 });
 
 test('clicking button[popovertarget=popover1] should set button aria-expanded attribute appropriately', async ({
@@ -132,6 +147,10 @@ test('clicking button[popovertarget=shadowedNestedPopover] should hide open nest
   await expect(
     await popover.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
+  await expect(popover).toBeVisible();
+  await page.click('button[popovertarget=shadowedNestedPopover]');
+  await expect(popover).toBeHidden();
+  await page.click('button[popovertarget=shadowedNestedPopover]');
   await expect(popover).toBeVisible();
   await page.click('button[popovertarget=shadowedNestedPopover]');
   await expect(popover).toBeHidden();
