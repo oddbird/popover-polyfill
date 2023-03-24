@@ -10,7 +10,7 @@ test('popover emits beforetoggle before showing', async ({ page }) => {
     await popover7.evaluate((node) => {
       let states = [];
       node.addEventListener('beforetoggle', (e) => {
-        states = [e.currentState, e.newState];
+        states = [e.oldState, e.newState];
       });
       node.showPopover();
       return states;
@@ -27,7 +27,7 @@ test('popover showPopover can be prevented by cancelling beforetoggle', async ({
     await popover7.evaluate((node) => {
       let states = [];
       node.addEventListener('beforetoggle', (e) => {
-        states = [e.currentState, e.newState];
+        states = [e.oldState, e.newState];
         e.preventDefault();
       });
       node.showPopover();
@@ -47,7 +47,7 @@ test('popover emits beforetoggle before closing', async ({ page }) => {
     await popover7.evaluate((node) => {
       let states = [];
       node.addEventListener('beforetoggle', (e) => {
-        states = [e.currentState, e.newState];
+        states = [e.oldState, e.newState];
       });
       node.hidePopover();
       return states;
@@ -68,7 +68,7 @@ test('popover hidePopover cannot be prevented by cancelling beforetoggle', async
     await popover7.evaluate((node) => {
       let states = [];
       node.addEventListener('beforetoggle', (e) => {
-        states = [e.currentState, e.newState];
+        states = [e.oldState, e.newState];
         e.preventDefault();
       });
       node.hidePopover();

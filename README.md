@@ -2,7 +2,7 @@
 
 [Explainer](https://open-ui.org/components/popover.research.explainer)
 
-This polyfills the HTML `popover` attribute and `showPopover`/`hidePopover` methods onto HTMLElement.
+This polyfills the HTML `popover` attribute and `showPopover`/`hidePopover`/`togglePopover` methods onto HTMLElement, as well as the `popovertarget` and `popovertargetaction` attributes on Button elements.
 
 ## Polyfill Installation
 
@@ -108,13 +108,12 @@ some caveats which will need accommodations:
   `overflow:` or `position:` CSS, then there will be visual differences between
   the polyfill and the native behavior.
 
-- Native _invokers_ (that is, buttons or inputs using the `popoverHideTarget`,
-  `popoverShowTarget`, or `popoverToggleTarget` attributes) on `popover=auto`
-  will render in the accessibility tree as elements with `expanded`. The only
-  way to do this in the polyfill is setting the `aria-expanded` attribute on
-  those elements. This _may_ impact mutation observers or frameworks which do
-  DOM diffing, or it may interfere with other code which sets `aria-expanded` on
-  elements.
+- Native _invokers_ (that is, buttons or inputs using the `popovertarget`
+  attribute) on `popover=auto` will render in the accessibility tree as elements
+  with `expanded`. The only way to do this in the polyfill is setting the
+  `aria-expanded` attribute on those elements. This _may_ impact mutation
+  observers or frameworks which do DOM diffing, or it may interfere with other
+  code which sets `aria-expanded` on elements.
 
 ## Contributing
 

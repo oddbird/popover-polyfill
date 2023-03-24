@@ -1,5 +1,15 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 💥 BREAKING: Drop support for `popovertoggletarget`, `popovershowtarget` and
+  `popoverhidetarget`. These are now `popovertarget` and `popovertargetaction`.
+- 💥 BREAKING: Invalid popover attribute values now default to manual, meaning
+  `popover=invalid` is, in fact, a valid popover.
+- The old `BeforeToggleEvent` has been replaced with `ToggleEvent` which has a
+  type of `'beforetoggle'` or `'toggle'`, and the old `currentState` is now
+  `oldState`. `newState` remains the same.
+
 ## 0.0.11: 2023-03-15
 
 - 🚀 NEW: Add support for Escape to dismiss auto popovers --

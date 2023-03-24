@@ -1,44 +1,359 @@
-import {
-  invokers,
-  openPopoverSelector,
-  popoverInvokerSelector,
-  popovers,
-} from './data.js';
-export const initialAriaExpandedValue = new WeakMap<
-  HTMLButtonElement | HTMLInputElement,
-  null | string
+import { queuePopoverToggleEventTask, ToggleEvent } from './events.js';
+
+const topLayerElements = new WeakMap<Document, Set<HTMLElement>>();
+const autoPopoverList = new WeakMap<Document, Set<HTMLElement>>();
+export const visibilityState = new WeakMap<HTMLElement, 'hidden' | 'showing'>();
+function getPopoverVisibilityState(popover: HTMLElement): 'hidden' | 'showing' {
+  return visibilityState.get(popover) || 'hidden';
+}
+
+const popoverInvoker = new WeakMap<
+  HTMLElement,
+  HTMLButtonElement | HTMLInputElement
 >();
 
-export function* getInvokersFor(el: HTMLElement) {
-  if (!popovers.has(el)) return;
-  for (const invoker of invokers) {
-    if (getPopoverFor(invoker) === el) yield invoker;
+// https://html.spec.whatwg.org/#popover-target-attribute-activation-behavior
+export function popoverTargetAttributeActivationBehavior(
+  element: HTMLButtonElement | HTMLInputElement,
+) {
+  const popover = element.popoverTargetElement;
+  if (!popover) {
+    return;
+  }
+  const visibility = getPopoverVisibilityState(popover);
+  if (element.popoverTargetAction === 'show' && visibility === 'showing') {
+    return;
+  }
+  if (element.popoverTargetAction === 'hide' && visibility === 'hidden') return;
+  if (visibility === 'showing') {
+    hidePopover(popover, true, true);
+  } else if (checkPopoverValidity(popover, false)) {
+    popoverInvoker.set(popover, element);
+    showPopover(popover);
   }
 }
 
-export function getPopoverFor(el: HTMLButtonElement | HTMLInputElement) {
+// https://whatpr.org/html/8221/popover.html#check-popover-validity
+function checkPopoverValidity(
+  element: HTMLElement,
+  expectedToBeShowing: boolean,
+) {
+  if (element.popover !== 'auto' && element.popover !== 'manual') {
+    return false;
+  }
+  if (!element.isConnected) return false;
+  if (expectedToBeShowing && getPopoverVisibilityState(element) !== 'showing') {
+    return false;
+  }
+  if (!expectedToBeShowing && getPopoverVisibilityState(element) !== 'hidden') {
+    return false;
+  }
+  if (element instanceof HTMLDialogElement && element.hasAttribute('open')) {
+    return false;
+  }
+  if (document.fullscreenElement === element) return false;
+  return true;
+}
+
+function getStackPosition(popover?: Element) {
+  if (!popover) return 0;
   return (
-    el.popoverToggleTargetElement ||
-    el.popoverShowTargetElement ||
-    el.popoverHideTargetElement
+    Array.from(autoPopoverList.get(popover.ownerDocument) || []).indexOf(
+      popover as HTMLElement,
+    ) + 1
   );
 }
 
-export function* getOpenAutoPopovers() {
-  for (const popover of popovers) {
-    if (popover.matches(openPopoverSelector)) {
-      yield popover;
+function topMostClickedPopover(target: HTMLElement) {
+  const clickedPopover = nearestInclusiveOpenPopover(target);
+  const invokerPopover = nearestInclusiveOpenPopover(
+    (target as HTMLButtonElement).popoverTargetElement,
+  );
+  if (getStackPosition(clickedPopover) > getStackPosition(invokerPopover)) {
+    return clickedPopover;
+  }
+  return invokerPopover;
+}
+
+// https://html.spec.whatwg.org/#topmost-auto-popover
+function topMostAutoPopover(document: Document): HTMLElement | null {
+  return Array.from(autoPopoverList.get(document) || []).pop() || null;
+}
+
+// https://html.spec.whatwg.org/#nearest-inclusive-open-popover
+function nearestInclusiveOpenPopover(target: HTMLElement | null) {
+  if (!target) return;
+  return closestShadowPenetrating(
+    '[popover="" i].\\:open, [popover=auto i].\\:open',
+    target,
+  );
+}
+
+// https://html.spec.whatwg.org/#topmost-popover-ancestor
+function topMostPopoverAncestor(newPopover: HTMLElement): HTMLElement | null {
+  const popoverPositions = new Map();
+  let i = 0;
+  const document = newPopover.ownerDocument;
+  for (const popover of autoPopoverList.get(document) || []) {
+    popoverPositions.set(popover, i);
+    i += 1;
+  }
+  popoverPositions.set(newPopover, i);
+  i += 1;
+  let topMostPopoverAncestor: HTMLElement | null = null;
+  function checkAncestor(candidate: HTMLElement | null) {
+    const candidateAncestor = nearestInclusiveOpenPopover(candidate);
+    if (candidateAncestor === null) return null;
+    const candidatePosition = popoverPositions.get(candidateAncestor);
+    if (
+      topMostPopoverAncestor === null ||
+      popoverPositions.get(topMostPopoverAncestor) < candidatePosition
+    ) {
+      topMostPopoverAncestor = candidateAncestor as HTMLElement;
+    }
+  }
+  checkAncestor(newPopover?.parentElement as HTMLElement | null);
+  return topMostPopoverAncestor;
+}
+
+function isFocusable(focusTarget: HTMLElement) {
+  if (focusTarget.hidden) return false;
+  if (
+    focusTarget instanceof HTMLButtonElement ||
+    focusTarget instanceof HTMLInputElement ||
+    focusTarget instanceof HTMLSelectElement ||
+    focusTarget instanceof HTMLTextAreaElement ||
+    focusTarget instanceof HTMLOptGroupElement ||
+    focusTarget instanceof HTMLOptionElement ||
+    focusTarget instanceof HTMLFieldSetElement
+  ) {
+    if (focusTarget.disabled) return false;
+  }
+  if (
+    focusTarget instanceof HTMLInputElement &&
+    focusTarget.type === 'hidden'
+  ) {
+    return false;
+  }
+  if (focusTarget instanceof HTMLAnchorElement && focusTarget.href === '') {
+    return false;
+  }
+  return focusTarget.tabIndex !== -1;
+}
+
+// https://html.spec.whatwg.org/#focus-delegate
+function focusDelegate(focusTarget: HTMLElement) {
+  if (
+    focusTarget.shadowRoot &&
+    focusTarget.shadowRoot.delegatesFocus !== true
+  ) {
+    return null;
+  }
+  let whereToLook: DocumentFragment | HTMLElement = focusTarget;
+  if (whereToLook.shadowRoot) {
+    whereToLook = whereToLook.shadowRoot;
+  }
+  const autoFocusDelegate = whereToLook.querySelector('[autofocus]');
+  if (autoFocusDelegate) {
+    return autoFocusDelegate;
+  }
+  const walker = focusTarget.ownerDocument.createTreeWalker(
+    whereToLook,
+    NodeFilter.SHOW_ELEMENT,
+  );
+  let descendant: Node | null = walker.currentNode;
+  while (descendant) {
+    // TODO: this is not spec compliant
+    if (isFocusable(descendant as HTMLElement)) {
+      return descendant;
+    }
+    descendant = walker.nextNode();
+  }
+}
+
+// https://html.spec.whatwg.org/#popover-focusing-steps
+function popoverFocusingSteps(subject: HTMLElement) {
+  (focusDelegate(subject) as HTMLElement)?.focus();
+}
+
+const previouslyFocusedElements = new WeakMap<HTMLElement, HTMLElement>();
+
+// https://html.spec.whatwg.org/#show-popover
+export function showPopover(element: HTMLElement) {
+  if (!checkPopoverValidity(element, false)) {
+    return;
+  }
+  const document = element.ownerDocument;
+  if (
+    !element.dispatchEvent(
+      new ToggleEvent('beforetoggle', {
+        cancelable: true,
+        oldState: 'closed',
+        newState: 'open',
+      }),
+    )
+  ) {
+    return;
+  }
+  if (!checkPopoverValidity(element, false)) {
+    return;
+  }
+  let shouldRestoreFocus = false;
+  if (element.popover === 'auto') {
+    const originalType = element.getAttribute('popover');
+    const ancestor = topMostPopoverAncestor(element) || document;
+    hideAllPopoversUntil(ancestor, false, true);
+    if (
+      originalType !== element.getAttribute('popover') ||
+      !checkPopoverValidity(element, false)
+    ) {
+      return;
+    }
+  }
+  if (!topMostAutoPopover(document)) {
+    shouldRestoreFocus = true;
+  }
+  previouslyFocusedElements.delete(element);
+  const originallyFocusedElement = document.activeElement as HTMLElement;
+  element.classList.add(':open');
+  visibilityState.set(element, 'showing');
+  if (!topLayerElements.has(document)) {
+    topLayerElements.set(document, new Set());
+  }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  topLayerElements.get(document)!.add(element);
+  popoverFocusingSteps(element);
+  if (element.popover === 'auto') {
+    if (!autoPopoverList.has(document)) {
+      autoPopoverList.set(document, new Set());
+    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    autoPopoverList.get(document)!.add(element);
+    setInvokerAriaExpanded(popoverInvoker.get(element), true);
+  }
+  if (
+    shouldRestoreFocus &&
+    originallyFocusedElement &&
+    element.popover === 'auto'
+  ) {
+    previouslyFocusedElements.set(element, originallyFocusedElement);
+  }
+  queuePopoverToggleEventTask(element, 'closed', 'open');
+}
+
+// https://html.spec.whatwg.org/#hide-popover
+export function hidePopover(
+  element: HTMLElement,
+  focusPreviousElement = false,
+  fireEvents = false,
+) {
+  // https://whatpr.org/html/8221/popover.html#hide-popover
+  if (!checkPopoverValidity(element, true)) {
+    return;
+  }
+  const document = element.ownerDocument;
+  if (element.popover === 'auto') {
+    hideAllPopoversUntil(element, focusPreviousElement, fireEvents);
+    if (!checkPopoverValidity(element, true)) {
+      return;
+    }
+  }
+  setInvokerAriaExpanded(popoverInvoker.get(element), false);
+  popoverInvoker.delete(element);
+  if (fireEvents) {
+    element.dispatchEvent(
+      new ToggleEvent('beforetoggle', {
+        oldState: 'open',
+        newState: 'closed',
+      }),
+    );
+    if (!checkPopoverValidity(element, true)) {
+      return;
+    }
+  }
+  topLayerElements.get(document)?.delete(element);
+  autoPopoverList.get(document)?.delete(element);
+  element.classList.remove(':open');
+  visibilityState.set(element, 'hidden');
+  if (fireEvents) {
+    queuePopoverToggleEventTask(element, 'open', 'closed');
+  }
+  const previouslyFocusedElement = previouslyFocusedElements.get(element);
+  if (previouslyFocusedElement) {
+    previouslyFocusedElements.delete(element);
+    if (focusPreviousElement) {
+      previouslyFocusedElement.focus();
     }
   }
 }
 
-export function hideOpenAutoPopovers(except?: Element) {
-  for (const popover of getOpenAutoPopovers()) {
-    if (popover !== except) popover.hidePopover();
+function closeAllOpenPopovers(
+  document: Document,
+  focusPreviousElement = false,
+  fireEvents = false,
+) {
+  let popover = topMostAutoPopover(document);
+  while (popover) {
+    hidePopover(popover, focusPreviousElement, fireEvents);
+    popover = topMostAutoPopover(document);
   }
 }
 
-export function closestShadowPenetrating(
+// https://html.spec.whatwg.org/#hide-all-popovers-until
+export function hideAllPopoversUntil(
+  endpoint: Element | Document,
+  focusPreviousElement: boolean,
+  fireEvents: boolean,
+) {
+  const document = endpoint.ownerDocument || endpoint;
+  if (endpoint instanceof Document) {
+    return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
+  }
+  let lastToHide = null;
+  let foundEndpoint = false;
+  for (const popover of autoPopoverList.get(document) || []) {
+    if (popover === endpoint) {
+      foundEndpoint = true;
+    } else if (foundEndpoint) {
+      lastToHide = popover;
+      break;
+    }
+  }
+  if (!foundEndpoint) {
+    return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
+  }
+  while (
+    lastToHide &&
+    getPopoverVisibilityState(lastToHide) === 'showing' &&
+    autoPopoverList.get(document)?.size
+  ) {
+    hidePopover(lastToHide, focusPreviousElement, fireEvents);
+  }
+}
+
+const popoverPointerDownTargets = new WeakMap<Document, HTMLElement>();
+// https://html.spec.whatwg.org/#topmost-clicked-popover
+export function lightDismissOpenPopovers(event: Event) {
+  if (!event.isTrusted) return;
+  // Composed path allows us to find the target within shadowroots
+  const target = event.composedPath()[0] as HTMLElement;
+  if (!target) return;
+  const document = target.ownerDocument;
+  const topMostPopover = topMostAutoPopover(document);
+  if (!topMostPopover) return;
+  const ancestor = topMostClickedPopover(target);
+  if (ancestor && event.type === 'pointerdown') {
+    popoverPointerDownTargets.set(document, ancestor as HTMLElement);
+  } else if (event.type === 'pointerup') {
+    const sameTarget = popoverPointerDownTargets.get(document) === ancestor;
+    popoverPointerDownTargets.delete(document);
+    if (sameTarget) {
+      hideAllPopoversUntil(ancestor || document, false, true);
+    }
+  }
+}
+
+function closestShadowPenetrating(
   selector: string,
   target: Element,
 ): Element | undefined {
@@ -55,68 +370,28 @@ export function closestShadowPenetrating(
   return closestShadowPenetrating(selector, root.host);
 }
 
-export function setInvokerAriaExpanded(
-  el: HTMLButtonElement | HTMLInputElement,
+const initialAriaExpandedValue = new WeakMap<
+  HTMLButtonElement | HTMLInputElement,
+  null | string
+>();
+
+function setInvokerAriaExpanded(
+  el?: HTMLButtonElement | HTMLInputElement,
+  force = false,
 ) {
+  if (!el) return;
   if (!initialAriaExpandedValue.has(el)) {
     initialAriaExpandedValue.set(el, el.getAttribute('aria-expanded'));
   }
-  const popover = getPopoverFor(el);
-  if (popover) {
-    invokers.add(el);
-  } else {
-    invokers.delete(el);
-  }
+  const popover = el.popoverTargetElement;
   if (popover && popover.popover === 'auto') {
-    el.setAttribute(
-      'aria-expanded',
-      String(popover.classList.contains(':open')),
-    );
+    el.setAttribute('aria-expanded', String(force));
   } else {
     const initialValue = initialAriaExpandedValue.get(el);
     if (!initialValue) {
       el.removeAttribute('aria-expanded');
     } else {
       el.setAttribute('aria-expanded', initialValue);
-    }
-  }
-}
-
-export function* getPopoversFromNode(node: Node) {
-  if (node instanceof HTMLElement && node.hasAttribute('popover')) {
-    yield node;
-  }
-  if (
-    node instanceof Document ||
-    node instanceof ShadowRoot ||
-    node instanceof HTMLElement
-  ) {
-    for (const el of node.querySelectorAll('[popover]')) {
-      if (el instanceof HTMLElement) {
-        yield el;
-      }
-    }
-  }
-}
-
-export function* getInvokersFromNode(
-  node: Node,
-): Generator<HTMLButtonElement | HTMLInputElement> {
-  if (
-    (node instanceof HTMLInputElement || node instanceof HTMLButtonElement) &&
-    node.matches(popoverInvokerSelector)
-  ) {
-    yield node;
-  }
-  if (
-    node instanceof Document ||
-    node instanceof ShadowRoot ||
-    node instanceof HTMLElement
-  ) {
-    for (const el of node.querySelectorAll(popoverInvokerSelector)) {
-      if (el instanceof HTMLInputElement || el instanceof HTMLButtonElement) {
-        yield el;
-      }
     }
   }
 }
