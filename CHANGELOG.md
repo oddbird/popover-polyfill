@@ -1,6 +1,6 @@
 # Popover Attribute Polyfill Changelog
 
-## Unreleased
+## 0.1.0: 2023-03-24
 
 - 💥 BREAKING: Drop support for `popovertoggletarget`, `popovershowtarget` and
   `popoverhidetarget`. These are now `popovertarget` and `popovertargetaction`.
