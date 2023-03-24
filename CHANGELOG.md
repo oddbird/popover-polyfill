@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.1.1: 2023-03-24
+
+- 🐛 BUGFIX: Fix regression when targets have nested elements --
+  [#88](https://github.com/oddbird/popover-polyfill/pull/88)
+- 📝 DOCS: Add demo site: https://popover-polyfill.netlify.app/
+
 ## 0.1.0: 2023-03-24
 
 - 💥 BREAKING: Drop support for `popovertoggletarget`, `popovershowtarget` and
@@ -9,6 +15,7 @@
 - The old `BeforeToggleEvent` has been replaced with `ToggleEvent` which has a
   type of `'beforetoggle'` or `'toggle'`, and the old `currentState` is now
   `oldState`. `newState` remains the same.
+- 🏠 INTERNAL: Upgrade dependencies
 
 ## 0.0.11: 2023-03-15
 
@@ -18,6 +25,7 @@
   [#83](https://github.com/oddbird/popover-polyfill/pull/83)
 - 🚀 NEW: Add support for focus restoration on popover close --
   [#81](https://github.com/oddbird/popover-polyfill/pull/81)
+- 🏠 INTERNAL: Upgrade dependencies
 
 ## 0.0.10: 2023-03-03
 
