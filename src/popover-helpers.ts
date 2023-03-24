@@ -66,9 +66,7 @@ function getStackPosition(popover?: Element) {
 
 function topMostClickedPopover(target: HTMLElement) {
   const clickedPopover = nearestInclusiveOpenPopover(target);
-  const invokerPopover = nearestInclusiveOpenPopover(
-    (target as HTMLButtonElement).popoverTargetElement,
-  );
+  const invokerPopover = nearestInclusiveTargetPopoverForInvoker(target);
   if (getStackPosition(clickedPopover) > getStackPosition(invokerPopover)) {
     return clickedPopover;
   }
@@ -81,12 +79,34 @@ function topMostAutoPopover(document: Document): HTMLElement | null {
 }
 
 // https://html.spec.whatwg.org/#nearest-inclusive-open-popover
-function nearestInclusiveOpenPopover(target: HTMLElement | null) {
-  if (!target) return;
-  return closestShadowPenetrating(
-    '[popover="" i].\\:open, [popover=auto i].\\:open',
-    target,
-  );
+function nearestInclusiveOpenPopover(
+  node: Node | null,
+): HTMLElement | undefined {
+  while (node) {
+    if (
+      node instanceof HTMLElement &&
+      node.popover === 'auto' &&
+      visibilityState.get(node) === 'showing'
+    ) {
+      return node;
+    }
+    node = node.parentElement || node.getRootNode();
+    if (node instanceof ShadowRoot) node = node.host;
+    if (node instanceof Document) return;
+  }
+}
+
+// https://html.spec.whatwg.org/#popover-light-dismiss:nearest-inclusive-target-popover-for-invoker
+function nearestInclusiveTargetPopoverForInvoker(
+  node: Node | null,
+): HTMLElement | undefined {
+  while (node) {
+    const nodePopover = (node as HTMLButtonElement).popoverTargetElement;
+    if (nodePopover) return nodePopover;
+    node = node.parentElement || node.getRootNode();
+    if (node instanceof ShadowRoot) node = node.host;
+    if (node instanceof Document) return;
+  }
 }
 
 // https://html.spec.whatwg.org/#topmost-popover-ancestor
@@ -351,23 +371,6 @@ export function lightDismissOpenPopovers(event: Event) {
       hideAllPopoversUntil(ancestor || document, false, true);
     }
   }
-}
-
-function closestShadowPenetrating(
-  selector: string,
-  target: Element,
-): Element | undefined {
-  const found = target.closest(selector);
-  if (found) {
-    return found;
-  }
-
-  const root = target.getRootNode();
-  if (root === document || !(root instanceof ShadowRoot)) {
-    return;
-  }
-
-  return closestShadowPenetrating(selector, root.host);
 }
 
 const initialAriaExpandedValue = new WeakMap<
