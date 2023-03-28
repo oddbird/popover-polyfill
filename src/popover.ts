@@ -16,8 +16,50 @@ export function isSupported() {
   );
 }
 
+function patchSelectorFn<K extends string>(
+  object: Record<PropertyKey & K, unknown>,
+  name: K,
+  mapper: (selector: string) => string,
+) {
+  const original = object[name] as (selectors: string) => NodeList;
+  Object.defineProperty(object, name, {
+    value(selector: string) {
+      return original.call(this, mapper(selector));
+    },
+  });
+}
+
+const nonEscapedPopoverSelector = /(^|[^\\]):popover-open\b/g;
+
 export function apply() {
   window.ToggleEvent = window.ToggleEvent || ToggleEvent;
+
+  function rewriteSelector(selector: string) {
+    if (selector.includes(':popover-open')) {
+      selector = selector.replace(
+        nonEscapedPopoverSelector,
+        '$1.\\:popover-open',
+      );
+    }
+    return selector;
+  }
+
+  patchSelectorFn(Document.prototype, 'querySelector', rewriteSelector);
+  patchSelectorFn(Document.prototype, 'querySelectorAll', rewriteSelector);
+  patchSelectorFn(Element.prototype, 'querySelector', rewriteSelector);
+  patchSelectorFn(Element.prototype, 'querySelectorAll', rewriteSelector);
+  patchSelectorFn(Element.prototype, 'matches', rewriteSelector);
+  patchSelectorFn(Element.prototype, 'closest', rewriteSelector);
+  patchSelectorFn(
+    DocumentFragment.prototype,
+    'querySelectorAll',
+    rewriteSelector,
+  );
+  patchSelectorFn(
+    DocumentFragment.prototype,
+    'querySelectorAll',
+    rewriteSelector,
+  );
 
   Object.defineProperties(HTMLElement.prototype, {
     popover: {

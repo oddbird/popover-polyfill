@@ -14,12 +14,22 @@
 
 /* stylelint-disable selector-class-pattern */
 @supports not selector([popover]:open) {
-  [popover]:not(.\:open) {
+  [popover]:not(.\:popover-open, dialog[open]) {
     display: none;
+  }
+
+  [anchor].\:popover-open {
+    inset: auto;
+  }
+}
+
+@supports not selector([popover]:popover-open) {
+  [popover]:not(.\:popover-open, dialog[open]) {
+    display: none;
+  }
+
+  [anchor].\:popover-open {
+    inset: auto;
   }
 }
 /* stylelint-enable selector-class-pattern */
-
-[popover][anchor] {
-  inset: auto;
-}
