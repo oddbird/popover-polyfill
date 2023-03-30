@@ -106,6 +106,7 @@ export function apply() {
           const targetElement = popoverTargetAssociatedElements.get(this);
           if (!targetElement?.isConnected) {
             popoverTargetAssociatedElements.delete(this);
+            return null;
           }
           if (targetElement) {
             return targetElement;
