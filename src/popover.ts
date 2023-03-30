@@ -104,11 +104,7 @@ export function apply() {
             return null;
           }
           const targetElement = popoverTargetAssociatedElements.get(this);
-          if (!targetElement?.isConnected) {
-            popoverTargetAssociatedElements.delete(this);
-            return null;
-          }
-          if (targetElement) {
+          if (targetElement && targetElement.isConnected) {
             return targetElement;
           }
           const root = this.getRootNode();
