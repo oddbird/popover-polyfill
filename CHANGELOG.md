@@ -1,5 +1,10 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🐛 BUGFIX: Return `null` for disconnected elements --
+  [#90](https://github.com/oddbird/popover-polyfill/pull/90)
+
 ## 0.1.1: 2023-03-24
 
 - 🐛 BUGFIX: Fix regression when targets have nested elements --

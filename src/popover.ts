@@ -104,11 +104,11 @@ export function apply() {
             return null;
           }
           const targetElement = popoverTargetAssociatedElements.get(this);
-          if (!targetElement?.isConnected) {
-            popoverTargetAssociatedElements.delete(this);
-          }
-          if (targetElement) {
+          if (targetElement && targetElement.isConnected) {
             return targetElement;
+          } else if (targetElement && !targetElement.isConnected) {
+            popoverTargetAssociatedElements.delete(this);
+            return null;
           }
           const root = this.getRootNode();
           const idref = this.getAttribute('popovertarget');
