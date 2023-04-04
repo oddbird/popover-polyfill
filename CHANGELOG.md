@@ -1,8 +1,10 @@
 # Popover Attribute Polyfill Changelog
 
-## 0.2.0: 2023-03-24
+## Unreleased
 
-- 🚀 NEW: Support for `:popover-open` psuedo selector
+- 🚀 NEW: Support for `:popover-open` pseudo selector, including a polyfill for
+  JavaScript API methods (`querySelector`, `querySelectorAll`, `matches`, and
+  `closest`) --
   [#84](https://github.com/oddbird/popover-polyfill/pull/84)
 
 ## 0.1.1: 2023-03-24
@@ -47,7 +49,8 @@
 
 ## 0.0.8: 2023-01-26
 
-- 🚀 NEW: Add support for new [`beforetoggle` event](https://whatpr.org/html/8221/popover.html#show-popover) --
+- 🚀 NEW: Add support for new [`beforetoggle`
+  event](https://whatpr.org/html/8221/popover.html#show-popover) --
   [#68](https://github.com/oddbird/popover-polyfill/pull/68)
 - 🏠 INTERNAL: Upgrade dependencies
 
@@ -61,8 +64,9 @@
 
 ## 0.0.6: 2023-01-17
 
-- 🚀 NEW: Update CSS to align closer to [Chrome's user-agent CSS](https://github.com/chromium/chromium/blob/main/third_party/blink/renderer/core/css/popover.css) --
-  [#60](https://github.com/oddbird/popover-polyfill/pull/60)
+- 🚀 NEW: Update CSS to align closer to [Chrome's user-agent
+  CSS](https://github.com/chromium/chromium/blob/main/third_party/blink/renderer/core/css/popover.css)
+  -- [#60](https://github.com/oddbird/popover-polyfill/pull/60)
 - 🏠 INTERNAL: Upgrade dependencies
 
 ## 0.0.5: 2023-01-14

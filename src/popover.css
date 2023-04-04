@@ -13,6 +13,9 @@
 }
 
 /* stylelint-disable selector-class-pattern */
+
+/* This older `:open` pseudo selector is deprecated and support will be removed
+in a later release. */
 @supports not selector([popover]:open) {
   [popover]:not(.\:popover-open, dialog[open]) {
     display: none;
