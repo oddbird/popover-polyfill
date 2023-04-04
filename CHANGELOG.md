@@ -6,6 +6,8 @@
   JavaScript API methods (`querySelector`, `querySelectorAll`, `matches`, and
   `closest`) --
   [#84](https://github.com/oddbird/popover-polyfill/pull/84)
+- 🐛 BUGFIX: Return `null` for disconnected elements --
+  [#90](https://github.com/oddbird/popover-polyfill/pull/90)
 
 ## 0.1.1: 2023-03-24
 
