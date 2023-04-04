@@ -1,6 +1,6 @@
 # Popover Attribute Polyfill Changelog
 
-## Unreleased
+## 0.2.0: 2023-04-04
 
 - 🚀 NEW: Support for `:popover-open` pseudo selector, including a polyfill for
   JavaScript API methods (`querySelector`, `querySelectorAll`, `matches`, and
@@ -8,6 +8,7 @@
   [#84](https://github.com/oddbird/popover-polyfill/pull/84)
 - 🐛 BUGFIX: Return `null` for disconnected elements --
   [#90](https://github.com/oddbird/popover-polyfill/pull/90)
+- 🏠 INTERNAL: Upgrade dependencies
 
 ## 0.1.1: 2023-03-24
 
