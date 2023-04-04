@@ -93,18 +93,24 @@ attributes to the HTMLElement class.
 This polyfill is not a perfect replacement for the native behavior; there are
 some caveats which will need accommodations:
 
-- Native `popover` has an `:open` and `:closed` pseudo selector state. This is
-  not possible to polyfill, so instead this adds the `.\:open` CSS class to any
-  open popover.
+- A native `popover` has a `:popover-open` pseudo selector when in the open
+  state. Pseudo selectors cannot be polyfilled within CSS, and so instead the
+  polyfill will add the `.\:popover-open` CSS class to any open popover. In
+  other words a popover in the open state will have `class=":popover-open"`. In
+  CSS the `:` character must be escaped with a backslash.
 
-  - `:closed` is not implemented due to difficulty in finding popover elements
-    during page load. As such, you'll need to style them using `:not(.\:open)`.
+  - The `:popover-open` selector within JavaScript methods has been polyfilled,
+    so both `.querySelector(':popover-open')` _and_
+    `.querySelector('.\:popover-open')` will work to select the same element.
+    `matches` and `closest` have also been patched, so
+    `.matches(':popover-open')` will work the same as
+    `.matches('.\:popover-open')`.
 
-  - Using native `:open` in CSS that does not support native `popover` results
-    in an invalid selector, and so the entire declaration is thrown away. This
-    is important because if you intend to style a popover using `.\:open` it
-    will need to be a separate declaration. For example,
-    `[popover]:open, [popover].\:open` will not work.
+  - Using native `:popover-open` in CSS that does not support native `popover`
+    results in an invalid selector, and so the entire declaration is thrown
+    away. This is important because if you intend to style a popover using
+    `.\:popover-open` it will need to be a separate declaration. For example,
+    `[popover]:popover-open, [popover].\:popover-open` will not work.
 
 - Native `popover` elements use the `:top-layer` pseudo element which gets
   placed above all other elements on the page, regardless of overflow or

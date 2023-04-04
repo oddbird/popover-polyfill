@@ -12,9 +12,44 @@ expect.extend({
     ).toBeUndefined();
     await expect(popover).toBeVisible();
     await expect(
+      await popover.evaluate((node) => node.matches(':popover-open')),
+    ).toEqual(true);
+    await expect(
+      await popover.evaluate((node) => node.closest(':popover-open') === node),
+    ).toEqual(true);
+    await expect(
+      await popover.evaluate((node) => node.matches(':not(:popover-open)')),
+    ).toEqual(false);
+    await expect(
+      await popover.evaluate(
+        () => document.querySelectorAll(':popover-open').length,
+      ),
+    ).toEqual(1);
+    await expect(
       await popover.evaluate((node) => node.hidePopover()),
     ).toBeUndefined();
     await expect(popover).toBeHidden();
+    await expect(
+      await popover.evaluate((node) => node.matches(':popover-open')),
+    ).toEqual(false);
+    await expect(
+      await popover.evaluate((node) => node.matches(':not(:popover-open)')),
+    ).toEqual(true);
+    await expect(
+      await popover.evaluate(
+        (node) => node.closest(':not(:popover-open)') === node,
+      ),
+    ).toEqual(true);
+    await expect(
+      await popover.evaluate(
+        () => document.querySelectorAll(':popover-open').length,
+      ),
+    ).toEqual(0);
+    await expect(
+      await popover.evaluate(
+        () => document.querySelectorAll('[popover]:popover-open').length,
+      ),
+    ).toEqual(0);
     return { pass: true };
   },
 });

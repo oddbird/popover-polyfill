@@ -235,7 +235,7 @@ export function showPopover(element: HTMLElement) {
   }
   previouslyFocusedElements.delete(element);
   const originallyFocusedElement = document.activeElement as HTMLElement;
-  element.classList.add(':open');
+  element.classList.add(':popover-open');
   visibilityState.set(element, 'showing');
   if (!topLayerElements.has(document)) {
     topLayerElements.set(document, new Set());
@@ -293,7 +293,7 @@ export function hidePopover(
   }
   topLayerElements.get(document)?.delete(element);
   autoPopoverList.get(document)?.delete(element);
-  element.classList.remove(':open');
+  element.classList.remove(':popover-open');
   visibilityState.set(element, 'hidden');
   if (fireEvents) {
     queuePopoverToggleEventTask(element, 'open', 'closed');
