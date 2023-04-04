@@ -1,5 +1,10 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.2.0: 2023-03-24
+
+- 🚀 NEW: Support for `:popover-open` psuedo selector
+  [#84](https://github.com/oddbird/popover-polyfill/pull/84)
+
 ## 0.1.1: 2023-03-24
 
 - 🐛 BUGFIX: Fix regression when targets have nested elements --
