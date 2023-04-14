@@ -34,7 +34,9 @@
     "./fn": {
       "types": "./dist/index-fn.d.ts",
       "import": "./dist/popover-fn.js"
-    }
+    },
+    "./css": "./dist/popover.css",
+    "./dist/popover.css": "./dist/popover.css"
   },
   "typesVersions": {
     "*": {

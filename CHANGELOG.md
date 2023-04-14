@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🐛 BUGFIX: Expose CSS entry point as `@oddbird/popover-polyfill/css` and
+  `@oddbird/popover-polyfill/dist/popover.css`
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.2.0: 2023-04-04
 
 - 🚀 NEW: Support for `:popover-open` pseudo selector, including a polyfill for
