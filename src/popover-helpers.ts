@@ -75,7 +75,16 @@ function topMostClickedPopover(target: HTMLElement) {
 
 // https://html.spec.whatwg.org/#topmost-auto-popover
 function topMostAutoPopover(document: Document): HTMLElement | null {
-  return Array.from(autoPopoverList.get(document) || []).pop() || null;
+  const documentPopovers = autoPopoverList.get(document);
+  for (const popover of documentPopovers || []) {
+    if (!popover.isConnected) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      documentPopovers!.delete(popover);
+    } else {
+      return popover;
+    }
+  }
+  return null;
 }
 
 // https://html.spec.whatwg.org/#nearest-inclusive-open-popover
