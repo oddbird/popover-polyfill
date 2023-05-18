@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('removing an autoPopover from document doesnt crash page', async ({
+test("removing an autoPopover from document doesn't crash page", async ({
   page,
 }) => {
   const popover = (await page.locator('#popover1')).nth(0);

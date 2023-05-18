@@ -78,6 +78,7 @@ function topMostAutoPopover(document: Document): HTMLElement | null {
   const documentPopovers = autoPopoverList.get(document);
   for (const popover of documentPopovers || []) {
     if (!popover.isConnected) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       documentPopovers!.delete(popover);
     } else {
       return popover;
