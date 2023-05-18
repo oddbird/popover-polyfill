@@ -1,7 +1,9 @@
 # Popover Attribute Polyfill Changelog
 
-## Unreleased
+## 0.2.1: 2023-05-17
 
+- 🐛 BUGFIX: Fix infinite loop for removed popovers --
+  [#99](https://github.com/oddbird/popover-polyfill/pull/99)
 - 🐛 BUGFIX: Expose CSS entry point as `@oddbird/popover-polyfill/css` and
   `@oddbird/popover-polyfill/dist/popover.css`
 - 🏠 INTERNAL: Upgrade dependencies
