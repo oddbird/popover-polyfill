@@ -26,10 +26,10 @@ export function popoverTargetAttributeActivationBehavior(
   }
   if (element.popoverTargetAction === 'hide' && visibility === 'hidden') return;
   if (visibility === 'showing') {
-    hidePopover(popover, true, true);
+    hidePopover(popover, element, true, true);
   } else if (checkPopoverValidity(popover, false)) {
     popoverInvoker.set(popover, element);
-    showPopover(popover);
+    showPopover(popover, element);
   }
 }
 
@@ -208,7 +208,7 @@ function popoverFocusingSteps(subject: HTMLElement) {
 const previouslyFocusedElements = new WeakMap<HTMLElement, HTMLElement>();
 
 // https://html.spec.whatwg.org/#show-popover
-export function showPopover(element: HTMLElement) {
+export function showPopover(element: HTMLElement, invoker?: HTMLElement) {
   if (!checkPopoverValidity(element, false)) {
     return;
   }
@@ -219,6 +219,7 @@ export function showPopover(element: HTMLElement) {
         cancelable: true,
         oldState: 'closed',
         newState: 'open',
+        relatedTarget: invoker,
       }),
     )
   ) {
@@ -273,6 +274,7 @@ export function showPopover(element: HTMLElement) {
 // https://html.spec.whatwg.org/#hide-popover
 export function hidePopover(
   element: HTMLElement,
+  invoker?: HTMLElement,
   focusPreviousElement = false,
   fireEvents = false,
 ) {
@@ -294,6 +296,7 @@ export function hidePopover(
       new ToggleEvent('beforetoggle', {
         oldState: 'open',
         newState: 'closed',
+        relatedTarget: invoker,
       }),
     );
     if (!checkPopoverValidity(element, true)) {
@@ -323,7 +326,7 @@ function closeAllOpenPopovers(
 ) {
   let popover = topMostAutoPopover(document);
   while (popover) {
-    hidePopover(popover, focusPreviousElement, fireEvents);
+    hidePopover(popover, undefined, focusPreviousElement, fireEvents);
     popover = topMostAutoPopover(document);
   }
 }
@@ -356,7 +359,7 @@ export function hideAllPopoversUntil(
     getPopoverVisibilityState(lastToHide) === 'showing' &&
     autoPopoverList.get(document)?.size
   ) {
-    hidePopover(lastToHide, focusPreviousElement, fireEvents);
+    hidePopover(lastToHide, undefined, focusPreviousElement, fireEvents);
   }
 }
 

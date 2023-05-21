@@ -79,30 +79,31 @@ export function apply() {
     showPopover: {
       enumerable: true,
       configurable: true,
-      value() {
-        showPopover(this);
+      value(options?: { invoker?: HTMLElement }) {
+        showPopover(this, options?.invoker);
       },
     },
 
     hidePopover: {
       enumerable: true,
       configurable: true,
-      value() {
-        hidePopover(this, true, true);
+      value(options?: { invoker?: HTMLElement }) {
+        hidePopover(this, options?.invoker, true, true);
       },
     },
 
     togglePopover: {
       enumerable: true,
       configurable: true,
-      value(force: boolean) {
+      value(options?: { force?: boolean; invoker?: HTMLElement }) {
         if (
-          (visibilityState.get(this) === 'showing' && force === undefined) ||
-          force === false
+          (visibilityState.get(this) === 'showing' &&
+            options?.force === undefined) ||
+          options?.force === false
         ) {
-          hidePopover(this, true, true);
-        } else if (force === undefined || force === true) {
-          showPopover(this);
+          hidePopover(this, options?.invoker, true, true);
+        } else if (options?.force === undefined || options?.force === true) {
+          showPopover(this, options?.invoker);
         }
       },
     },
