@@ -1,5 +1,9 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.2.1: 2023-05-17
 
 - 🐛 BUGFIX: Fix infinite loop for removed popovers --
