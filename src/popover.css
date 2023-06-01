@@ -34,18 +34,24 @@ in a later release. */
   [popover]:not(.\:popover-open, dialog[open]) {
     display: revert;
   }
-  [anchor]:open {
+
+  /* stylelint-disable selector-pseudo-class-no-unknown */
+  [anchor]:is(:open) {
     inset: auto;
   }
+  /* stylelint-enable selector-pseudo-class-no-unknown */
 }
 
 @supports selector([popover]:popover-open) {
   [popover]:not(.\:popover-open, dialog[open]) {
     display: revert;
   }
-  [anchor]:popover-open {
+
+  /* stylelint-disable selector-pseudo-class-no-unknown */
+  [anchor]:is(:popover-open) {
     inset: auto;
   }
+  /* stylelint-enable selector-pseudo-class-no-unknown */
 }
 /* stylelint-enable selector-class-pattern */
 
