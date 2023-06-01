@@ -34,11 +34,17 @@ in a later release. */
   [popover]:not(.\:popover-open, dialog[open]) {
     display: revert;
   }
+  [anchor]:open {
+    inset: auto;
+  }
 }
 
 @supports selector([popover]:popover-open) {
   [popover]:not(.\:popover-open, dialog[open]) {
     display: revert;
+  }
+  [anchor]:popover-open {
+    inset: auto;
   }
 }
 /* stylelint-enable selector-class-pattern */
