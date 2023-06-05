@@ -34,7 +34,7 @@ const nonEscapedPopoverSelector = /(^|[^\\]):popover-open\b/g;
 export function apply() {
   window.ToggleEvent = window.ToggleEvent || ToggleEvent;
 
-  function rewriteSelector(selector: string | null | undefined) {
+  function rewriteSelector(selector: string) {
     if (selector?.includes(':popover-open')) {
       selector = selector.replace(
         nonEscapedPopoverSelector,
