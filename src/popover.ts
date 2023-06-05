@@ -35,7 +35,7 @@ export function apply() {
   window.ToggleEvent = window.ToggleEvent || ToggleEvent;
 
   function rewriteSelector(selector: string) {
-    if (selector.includes(':popover-open')) {
+    if (selector?.includes(':popover-open')) {
       selector = selector.replace(
         nonEscapedPopoverSelector,
         '$1.\\:popover-open',
