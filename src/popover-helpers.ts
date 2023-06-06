@@ -1,5 +1,11 @@
 import { queuePopoverToggleEventTask, ToggleEvent } from './events.js';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const ShadowRoot = globalThis.ShadowRoot || function () {};
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const HTMLDialogElement = globalThis.HTMLDialogElement || function () {};
+
 const topLayerElements = new WeakMap<Document, Set<HTMLElement>>();
 const autoPopoverList = new WeakMap<Document, Set<HTMLElement>>();
 export const visibilityState = new WeakMap<HTMLElement, 'hidden' | 'showing'>();
@@ -87,6 +93,14 @@ function topMostAutoPopover(document: Document): HTMLElement | null {
   return null;
 }
 
+export function getRootNode(node: Node): Node {
+  if (typeof node.getRootNode === 'function') {
+    return node.getRootNode();
+  }
+  if (node.parentNode) return getRootNode(node.parentNode);
+  return node;
+}
+
 // https://html.spec.whatwg.org/#nearest-inclusive-open-popover
 function nearestInclusiveOpenPopover(
   node: Node | null,
@@ -99,7 +113,7 @@ function nearestInclusiveOpenPopover(
     ) {
       return node;
     }
-    node = node.parentElement || node.getRootNode();
+    node = node.parentElement || getRootNode(node);
     if (node instanceof ShadowRoot) node = node.host;
     if (node instanceof Document) return;
   }
@@ -112,7 +126,7 @@ function nearestInclusiveTargetPopoverForInvoker(
   while (node) {
     const nodePopover = (node as HTMLButtonElement).popoverTargetElement;
     if (nodePopover) return nodePopover;
-    node = node.parentElement || node.getRootNode();
+    node = node.parentElement || getRootNode(node);
     if (node instanceof ShadowRoot) node = node.host;
     if (node instanceof Document) return;
   }

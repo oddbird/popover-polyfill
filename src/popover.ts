@@ -1,5 +1,6 @@
 import { ToggleEvent } from './events.js';
 import {
+  getRootNode,
   hideAllPopoversUntil,
   hidePopover,
   lightDismissOpenPopovers,
@@ -7,6 +8,9 @@ import {
   showPopover,
   visibilityState,
 } from './popover-helpers.js';
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const ShadowRoot = globalThis.ShadowRoot || function () {};
 
 export function isSupported() {
   return (
@@ -152,7 +156,7 @@ export function apply() {
             popoverTargetAssociatedElements.delete(this);
             return null;
           }
-          const root = this.getRootNode();
+          const root = getRootNode(this);
           const idref = this.getAttribute('popovertarget');
           if (
             (root instanceof Document || root instanceof ShadowRoot) &&
@@ -190,7 +194,7 @@ export function apply() {
     if (!(target instanceof Element) || target?.shadowRoot) {
       return;
     }
-    const root = target.getRootNode();
+    const root = getRootNode(target);
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
