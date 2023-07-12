@@ -28,7 +28,7 @@ jobs:
           cache: npm
       - name: Upgrade dependencies
         run: |
-          npx --yes npm-check-updates -u
+          npx --yes npm-check-updates -u --reject "@playwright/test"
           npm install
       - name: Detect changes
         id: changes

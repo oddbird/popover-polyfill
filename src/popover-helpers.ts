@@ -152,10 +152,10 @@ function topMostPopoverAncestor(newPopover: HTMLElement): HTMLElement | null {
       topMostPopoverAncestor === null ||
       popoverPositions.get(topMostPopoverAncestor) < candidatePosition
     ) {
-      topMostPopoverAncestor = candidateAncestor as HTMLElement;
+      topMostPopoverAncestor = candidateAncestor!;
     }
   }
-  checkAncestor(newPopover?.parentElement as HTMLElement | null);
+  checkAncestor(newPopover?.parentElement);
   return topMostPopoverAncestor;
 }
 
@@ -386,7 +386,7 @@ export function lightDismissOpenPopovers(event: Event) {
   if (!topMostPopover) return;
   const ancestor = topMostClickedPopover(target);
   if (ancestor && event.type === 'pointerdown') {
-    popoverPointerDownTargets.set(document, ancestor as HTMLElement);
+    popoverPointerDownTargets.set(document, ancestor);
   } else if (event.type === 'pointerup') {
     const sameTarget = popoverPointerDownTargets.get(document) === ancestor;
     popoverPointerDownTargets.delete(document);
