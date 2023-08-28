@@ -90,23 +90,23 @@
   "devDependencies": {
     "@playwright/test": "1.33.0",
     "@types/node": "*",
-    "@typescript-eslint/eslint-plugin": "^6.4.0",
-    "@typescript-eslint/parser": "^6.4.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
     "esbuild": "^0.19.2",
-    "eslint": "^8.47.0",
+    "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "husky": "^8.0.3",
-    "lint-staged": "^14.0.0",
+    "lint-staged": "^14.0.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.2",
     "stylelint": "^15.10.3",
     "stylelint-config-standard": "^34.0.0",
     "stylis": "^4.3.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "lint-staged": {
     "*.{js,ts}": [
