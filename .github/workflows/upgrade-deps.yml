@@ -28,7 +28,7 @@ jobs:
           cache: npm
       - name: Upgrade dependencies
         run: |
-          npx --yes npm-check-updates -u --reject "@playwright/test"
+          npx --yes npm-check-updates -u --reject "@playwright/test" --reject typescript
           npm install
       - name: Detect changes
         id: changes
