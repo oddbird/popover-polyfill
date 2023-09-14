@@ -35,6 +35,10 @@ in a later release. */
     display: revert;
   }
 
+  [popover]:not(:open) {
+    display: none;
+  }
+
   /* stylelint-disable selector-pseudo-class-no-unknown */
   [anchor]:is(:open) {
     inset: auto;
@@ -45,6 +49,10 @@ in a later release. */
 @supports selector([popover]:popover-open) {
   [popover]:not(.\:popover-open, dialog[open]) {
     display: revert;
+  }
+
+  [popover]:not(:popover-open) {
+    display: none;
   }
 
   /* stylelint-disable selector-pseudo-class-no-unknown */
