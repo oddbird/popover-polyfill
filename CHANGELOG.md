@@ -1,6 +1,6 @@
 # Popover Attribute Polyfill Changelog
 
-## UNRELEASED
+## 0.2.3: 2023-09-18
 
 - 💥 BREAKING: Drop `:open` styles --
   [#128](https://github.com/oddbird/popover-polyfill/pull/128)
