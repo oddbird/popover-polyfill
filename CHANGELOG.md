@@ -1,5 +1,13 @@
 # Popover Attribute Polyfill Changelog
 
+## UNRELEASED
+
+- 💥 BREAKING: Drop `:open` styles --
+  [#128](https://github.com/oddbird/popover-polyfill/pull/128)
+- 📝 DOCS: Fix link in README --
+  [#108](https://github.com/oddbird/popover-polyfill/pull/108)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.2.2: 2023-06-06
 
 - 🚀 NEW: Add support for older browsers, e.g. Firefox 91, Chrome ~80 --
