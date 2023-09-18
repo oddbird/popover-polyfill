@@ -38,7 +38,7 @@ to the appropriate directory in your project. Then, include it where necessary
 with a `<link rel=stylesheet>` tag:
 
 ```html
-<link rel="stylesheet" src="/path/to/popover.css" />
+<link rel="stylesheet" href="/path/to/popover.css" />
 ```
 
 Note that default styles will not be applied to shadow roots.

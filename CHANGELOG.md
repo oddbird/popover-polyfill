@@ -1,7 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
-## Unreleased
+## 0.2.2: 2023-06-06
 
+- 🚀 NEW: Add support for older browsers, e.g. Firefox 91, Chrome ~80 --
+  [#103](https://github.com/oddbird/popover-polyfill/pull/103)
+- 🐛 BUGFIX: Do not error if `querySelector` APIs are invoked with `null` or
+  `undefined` -- [#105](https://github.com/oddbird/popover-polyfill/pull/105)
 - 🏠 INTERNAL: Upgrade dependencies
 
 ## 0.2.1: 2023-05-17
