@@ -15,10 +15,6 @@
   margin: auto;
 }
 
-[popover]:not(.\:popover-open) {
-  display: none;
-}
-
 [popover]:is(dialog[open]) {
   display: revert;
 }
@@ -27,14 +23,8 @@
   inset: auto;
 }
 
-@supports selector([popover]:popover-open) {
-  [popover]:not(.\:popover-open, dialog[open]) {
-    display: revert;
-  }
-
-  [anchor]:is(:popover-open) {
-    inset: auto;
-  }
+[anchor]:is(:popover-open) {
+  inset: auto;
 }
 
 @supports not (background-color: canvas) {

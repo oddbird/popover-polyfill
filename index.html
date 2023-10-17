@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Popover Attribute Polyfill</title>
     <script src="./dist/popover.js"></script>
-    <link rel="stylesheet" href="./dist/popover.css" />
   </head>
 
   <body>
@@ -63,10 +62,6 @@
                 <div>
                   <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
                 </div>`;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = './dist/popover.css';
-        shadowRoot.prepend(link);
         document.getElementById('crossTreeToggle').popoverTargetElement =
           shadowRoot.getElementById('shadowedPopover');
       </script>
