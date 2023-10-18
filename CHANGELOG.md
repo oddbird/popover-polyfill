@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 💥 BREAKING: Automatically inject styles from JS --
+  [#137](https://github.com/oddbird/popover-polyfill/pull/137)
 - 🏠 INTERNAL: Upgrade dependencies
 
 ## 0.2.3: 2023-09-18
