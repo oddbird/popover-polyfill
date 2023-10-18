@@ -1,5 +1,9 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.2.3: 2023-09-18
 
 - 💥 BREAKING: Drop `:open` styles --
