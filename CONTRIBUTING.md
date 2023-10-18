@@ -21,9 +21,9 @@ Please follow the [OddBird Code of Conduct](https://www.oddbird.net/conduct/).
 
 ## Code style
 
-JS code is formatted with prettier, and CSS is formatted with stylelint. You can
-lint the code by running `npm run lint` and format it with `npm run format`. We
-recommend setting up your IDE to automatically format code for you.
+JS code is formatted with prettier. You can lint the code by running `npm run
+lint` and format it with `npm run format`. We recommend setting up your IDE to
+automatically format code for you.
 
 ## Testing
 

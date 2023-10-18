@@ -45,9 +45,6 @@ npm install @oddbird/popover-polyfill
 After installing, you’ll need to use appropriate tooling to use
 `node_modules/@oddbird/popover-polyfill/dist/popover.js`.
 
-You will also likely need to include the CSS stylesheet which is found in
-`node_modules/@oddbird/popover-polyfill/dist/popover.css`.
-
 If you want to manually apply the polyfill, you can instead import the
 `isSupported` and `apply` functions directly from
 `node_modules/@oddbird/popover-polyfill/dist/popover-fn.js` file.
@@ -60,11 +57,6 @@ reasons](https://blog.wesleyac.com/posts/why-not-javascript-cdn) such as
 performance and robustness.
 
 ```html
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest/dist/popover.css"
-  crossorigin="anonymous"
-/>
 <script
   src="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest"
   crossorigin="anonymous"
