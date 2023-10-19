@@ -35,6 +35,86 @@ function patchSelectorFn<K extends string>(
 
 const nonEscapedPopoverSelector = /(^|[^\\]):popover-open\b/g;
 
+const styles = `
+  [popover] {
+    position: fixed;
+    z-index: 2147483647;
+    inset: 0;
+    padding: 0.25em;
+    width: fit-content;
+    height: fit-content;
+    border-width: initial;
+    border-color: initial;
+    border-image: initial;
+    border-style: solid;
+    background-color: canvas;
+    color: canvastext;
+    overflow: auto;
+    margin: auto;
+  }
+
+  [popover]:is(dialog[open]) {
+    display: revert;
+  }
+
+  [anchor].\\:popover-open {
+    inset: auto;
+  }
+
+  [anchor]:is(:popover-open) {
+    inset: auto;
+  }
+
+  @supports not (background-color: canvas) {
+    [popover] {
+      background-color: white;
+      color: black;
+    }
+  }
+
+  @supports (width: -moz-fit-content) {
+    [popover] {
+      width: -moz-fit-content;
+      height: -moz-fit-content;
+    }
+  }
+
+  @supports not (inset: 0) {
+    [popover] {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  [popover]:not(.\\:popover-open) {
+    display: none;
+  }
+`;
+let popoverStyleSheet: null | false | CSSStyleSheet = null;
+export function injectStyles(root: Document | ShadowRoot) {
+  if (popoverStyleSheet === null) {
+    try {
+      popoverStyleSheet = new CSSStyleSheet();
+      popoverStyleSheet.replaceSync(styles);
+    } catch {
+      popoverStyleSheet = false;
+    }
+  }
+  if (popoverStyleSheet === false) {
+    const sheet = document.createElement('style');
+    sheet.textContent = styles;
+    if (root instanceof Document) {
+      root.head.append(sheet);
+    } else {
+      root.append(sheet);
+    }
+  } else {
+    root.adoptedStyleSheets.push(popoverStyleSheet);
+  }
+}
+
 export function apply() {
   window.ToggleEvent = window.ToggleEvent || ToggleEvent;
 
@@ -111,6 +191,39 @@ export function apply() {
       },
     },
   });
+
+  const originalAttachShadow = Element.prototype.attachShadow;
+  if (originalAttachShadow) {
+    Object.defineProperties(Element.prototype, {
+      attachShadow: {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value(options: ShadowRootInit) {
+          const shadowRoot = originalAttachShadow.call(this, options);
+          injectStyles(shadowRoot);
+          return shadowRoot;
+        },
+      },
+    });
+  }
+  const originalAttachInternals = HTMLElement.prototype.attachInternals;
+  if (originalAttachInternals) {
+    Object.defineProperties(HTMLElement.prototype, {
+      attachInternals: {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+        value() {
+          const internals = originalAttachInternals.call(this);
+          if (internals.shadowRoot) {
+            injectStyles(internals.shadowRoot);
+          }
+          return internals;
+        },
+      },
+    });
+  }
 
   const popoverTargetAssociatedElements = new WeakMap<Element, Element>();
   function applyPopoverInvokerElementMixin(ElementClass: typeof HTMLElement) {
@@ -221,4 +334,5 @@ export function apply() {
   };
 
   addEventListeners(document);
+  injectStyles(document);
 }

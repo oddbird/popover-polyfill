@@ -34,9 +34,7 @@
     "./fn": {
       "types": "./dist/index-fn.d.ts",
       "import": "./dist/popover-fn.js"
-    },
-    "./css": "./dist/popover.css",
-    "./dist/popover.css": "./dist/popover.css"
+    }
   },
   "typesVersions": {
     "*": {
@@ -48,7 +46,7 @@
   "files": [
     "README.md",
     "src/**/*.ts",
-    "dist/**/*.{ts,js,map,css}",
+    "dist/**/*.{ts,js,map}",
     "package.json"
   ],
   "sideEffects": [
@@ -58,7 +56,6 @@
     "./dist/popover.iife.min.js"
   ],
   "scripts": {
-    "build:css": "esbuild src/popover.css --outdir=dist/",
     "build:iife": "esbuild --bundle src/index.ts --outfile=dist/popover.iife.min.js --format=iife --minify --sourcemap",
     "build:esm": "esbuild --bundle src/index.ts --outfile=dist/popover.js --format=esm --sourcemap",
     "build:esm-min": "esbuild --bundle src/index.ts --outfile=dist/popover.min.js --format=esm --minify --sourcemap",
@@ -73,10 +70,8 @@
     "prettier:fix": "prettier --write .",
     "eslint:check": "eslint .",
     "eslint:fix": "npm run eslint:check -- --fix",
-    "format:css": "npm run lint:css -- --fix",
     "format:js": "run-s prettier:fix eslint:fix tsc",
     "format": "run-p format:*",
-    "lint:css": "stylelint \"**/*.css\"",
     "lint:js": "run-s prettier:check eslint:check tsc",
     "lint": "run-p lint:*",
     "test:unit": "playwright test",
@@ -102,9 +97,6 @@
     "lint-staged": "^15.0.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
-    "stylelint": "^15.10.3",
-    "stylelint-config-standard": "^34.0.0",
-    "stylis": "^4.3.0",
     "ts-node": "^10.9.1",
     "typescript": "5.1.6"
   },
@@ -112,9 +104,6 @@
     "*.{js,ts}": [
       "eslint --cache --fix",
       "prettier --write"
-    ],
-    "*.{css,scss}": [
-      "stylelint --fix"
     ],
     "*.{json,yml,md,html}": [
       "prettier --write"

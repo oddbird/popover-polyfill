@@ -31,18 +31,7 @@ Or without [JavaScript modules](https://developer.mozilla.org/en-US/docs/Web/Jav
 <script src="/path/to/popover.iife.min.js"></script>
 ```
 
-You will also likely need the CSS file, which supplies some default styles.
-Download `popover.css` [from
-unpkg.com](https://unpkg.com/browse/@oddbird/popover-polyfill/dist/) and add it
-to the appropriate directory in your project. Then, include it where necessary
-with a `<link rel=stylesheet>` tag:
-
-```html
-<link rel="stylesheet" href="/path/to/popover.css" />
-```
-
-Note that default styles will not be applied to shadow roots.
-Each root node will need to include the styles separately.
+Note that the JS will inject CSS styles into your document (or ShadowRoot).
 
 ### With npm
 
@@ -56,9 +45,6 @@ npm install @oddbird/popover-polyfill
 After installing, you’ll need to use appropriate tooling to use
 `node_modules/@oddbird/popover-polyfill/dist/popover.js`.
 
-You will also likely need to include the CSS stylesheet which is found in
-`node_modules/@oddbird/popover-polyfill/dist/popover.css`.
-
 If you want to manually apply the polyfill, you can instead import the
 `isSupported` and `apply` functions directly from
 `node_modules/@oddbird/popover-polyfill/dist/popover-fn.js` file.
@@ -71,11 +57,6 @@ reasons](https://blog.wesleyac.com/posts/why-not-javascript-cdn) such as
 performance and robustness.
 
 ```html
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest/dist/popover.css"
-  crossorigin="anonymous"
-/>
 <script
   src="https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest"
   crossorigin="anonymous"
@@ -125,6 +106,22 @@ some caveats which will need accommodations:
   `aria-expanded` attribute on those elements. This _may_ impact mutation
   observers or frameworks which do DOM diffing, or it may interfere with other
   code which sets `aria-expanded` on elements.
+
+- The polyfill uses `adoptedStyleSheets` to inject CSS onto the page (and each
+  Shadow DOM). If it can't use that it'll generate a `<style>` tag instead. This
+  means you may see a `<style>` tag you didn't put there, and this _may_ impact
+  mutation observers or frameworks.
+
+  - For browsers which don't support `adoptedStyleSheets` on Shadow Roots, if
+    you are building a ShadowRoot by setting `.innerHTML`, you'll remove the
+    StyleSheet. Either polyfill `adoptedStyleSheets` or call
+    `injectStyles(myShadow)` to add the styles back in.
+
+  - Similarly, if you're using Declarative ShadowDOM or otherwise creating a
+    shadow root without calling `attachShadow`/`attachInternals`, then the
+    polyfill won't inject the styles (because it can't reference the
+    `shadowRoot`). You'll need to manually inject the styles yourself with
+    `injectStyles(myShadow)`.
 
 ## Contributing
 
