@@ -1,6 +1,6 @@
 # Popover Attribute Polyfill Changelog
 
-## Unreleased
+## 0.3.0: 2023-10-19
 
 - 💥 BREAKING: Automatically inject styles from JS --
   [#137](https://github.com/oddbird/popover-polyfill/pull/137)
