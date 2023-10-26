@@ -111,7 +111,7 @@ export function injectStyles(root: Document | ShadowRoot) {
       root.append(sheet);
     }
   } else {
-    root.adoptedStyleSheets.push(popoverStyleSheet);
+    root.adoptedStyleSheets = [...root.adoptedStyleSheets, popoverStyleSheet];
   }
 }
 
