@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.3.1: 2023-10-28
+
+- 🐛 BUGFIX: Assign to `adoptedStyleSheets` rather than using `push` --
+  [#141](https://github.com/oddbird/popover-polyfill/pull/141)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.3.0: 2023-10-19
 
 - 💥 BREAKING: Automatically inject styles from JS --
