@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.3.2: 2023-11-13
+
+- 🚀 NEW: Update TypeScript definitions to be compatible with v5 --
+  [#146](https://github.com/oddbird/popover-polyfill/pull/146)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.3.1: 2023-10-28
 
 - 🐛 BUGFIX: Assign to `adoptedStyleSheets` rather than using `push` --
