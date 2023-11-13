@@ -23,7 +23,7 @@ export function popoverTargetAttributeActivationBehavior(
   element: HTMLButtonElement | HTMLInputElement,
 ) {
   const popover = element.popoverTargetElement;
-  if (!popover) {
+  if (!(popover instanceof HTMLElement)) {
     return;
   }
   const visibility = getPopoverVisibilityState(popover);
@@ -125,7 +125,7 @@ function nearestInclusiveTargetPopoverForInvoker(
 ): HTMLElement | undefined {
   while (node) {
     const nodePopover = (node as HTMLButtonElement).popoverTargetElement;
-    if (nodePopover) return nodePopover;
+    if (nodePopover instanceof HTMLElement) return nodePopover;
     node = node.parentElement || getRootNode(node);
     if (node instanceof ShadowRoot) node = node.host;
     if (node instanceof Document) return;
@@ -410,7 +410,7 @@ function setInvokerAriaExpanded(
     initialAriaExpandedValue.set(el, el.getAttribute('aria-expanded'));
   }
   const popover = el.popoverTargetElement;
-  if (popover && popover.popover === 'auto') {
+  if (popover instanceof HTMLElement && popover.popover === 'auto') {
     el.setAttribute('aria-expanded', String(force));
   } else {
     const initialValue = initialAriaExpandedValue.get(el);
