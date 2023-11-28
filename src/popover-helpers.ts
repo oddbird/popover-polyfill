@@ -196,9 +196,24 @@ function focusDelegate(focusTarget: HTMLElement) {
   if (whereToLook.shadowRoot) {
     whereToLook = whereToLook.shadowRoot;
   }
-  const autoFocusDelegate = whereToLook.querySelector('[autofocus]');
+  let autoFocusDelegate = whereToLook.querySelector('[autofocus]');
   if (autoFocusDelegate) {
     return autoFocusDelegate;
+  } else {
+    const slots = whereToLook.querySelectorAll('slot');
+    for (const slot of slots) {
+      const assignedElements = slot.assignedElements({ flatten: true });
+      for (const el of assignedElements) {
+        if (el.hasAttribute('autofocus')) {
+          return el;
+        } else {
+          autoFocusDelegate = el.querySelector('[autofocus]');
+          if (autoFocusDelegate) {
+            return autoFocusDelegate;
+          }
+        }
+      }
+    }
   }
   const walker = focusTarget.ownerDocument.createTreeWalker(
     whereToLook,
