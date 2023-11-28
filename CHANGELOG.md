@@ -2,7 +2,7 @@
 
 ## 0.3.4: 2023-11-28
 
-- 🚀 NEW: Wrap styles in `:where()` to lower specificity in the cascade--
+- 🚀 NEW: Wrap styles in `:where()` to lower specificity in the cascade --
   [#153](https://github.com/oddbird/popover-polyfill/pull/153)
 
 ## 0.3.3: 2023-11-28
