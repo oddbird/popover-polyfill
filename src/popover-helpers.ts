@@ -184,7 +184,10 @@ function isFocusable(focusTarget: HTMLElement) {
   return focusTarget.tabIndex !== -1;
 }
 
-// https://html.spec.whatwg.org/#focus-delegate
+// This method is not spec compliant, as it also looks in slotted content
+// for autofocus elements.
+// See: https://github.com/oddbird/popover-polyfill/issues/149
+// Spec: https://html.spec.whatwg.org/#focus-delegate
 function focusDelegate(focusTarget: HTMLElement) {
   if (
     focusTarget.shadowRoot &&
@@ -221,7 +224,7 @@ function focusDelegate(focusTarget: HTMLElement) {
   );
   let descendant: Node | null = walker.currentNode;
   while (descendant) {
-    // TODO: this is not spec compliant
+    // this is not spec compliant
     if (isFocusable(descendant as HTMLElement)) {
       return descendant;
     }

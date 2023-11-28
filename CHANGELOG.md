@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.3.3: 2023-11-28
+
+- 🐛 BUGFIX: Check slotted content for autofocus delegate --
+  [#150](https://github.com/oddbird/popover-polyfill/pull/150)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.3.2: 2023-11-13
 
 - 🚀 NEW: Update TypeScript definitions to be compatible with v5 --
