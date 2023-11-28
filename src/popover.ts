@@ -35,8 +35,10 @@ function patchSelectorFn<K extends string>(
 
 const nonEscapedPopoverSelector = /(^|[^\\]):popover-open\b/g;
 
+// To emulate a UA stylesheet which is the lowest priority in the cascade,
+// all selectors must be wrapped in a :where() which has a specificity of zero.
 const styles = `
-  [popover] {
+  :where([popover]) {
     position: fixed;
     z-index: 2147483647;
     inset: 0;
@@ -53,34 +55,34 @@ const styles = `
     margin: auto;
   }
 
-  [popover]:is(dialog[open]) {
+  :where(dialog[popover][open]) {
     display: revert;
   }
 
-  [anchor].\\:popover-open {
+  :where([anchor].\\:popover-open) {
     inset: auto;
   }
 
-  [anchor]:is(:popover-open) {
+  :where([anchor]:popover-open) {
     inset: auto;
   }
 
   @supports not (background-color: canvas) {
-    [popover] {
+    :where([popover]) {
       background-color: white;
       color: black;
     }
   }
 
   @supports (width: -moz-fit-content) {
-    [popover] {
+    :where([popover]) {
       width: -moz-fit-content;
       height: -moz-fit-content;
     }
   }
 
   @supports not (inset: 0) {
-    [popover] {
+    :where([popover]) {
       top: 0;
       left: 0;
       right: 0;
@@ -88,7 +90,7 @@ const styles = `
     }
   }
 
-  [popover]:not(.\\:popover-open) {
+  :where([popover]:not(.\\:popover-open)) {
     display: none;
   }
 `;
