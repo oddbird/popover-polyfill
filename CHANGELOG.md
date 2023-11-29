@@ -1,5 +1,12 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.3.5: 2023-11-29
+
+- 🐛 BUGFIX: Fix incorrect `isFocusable` result for `ShadowRoot` --
+  [#155](https://github.com/oddbird/popover-polyfill/pull/155)
+- 🚀 NEW: Prepend default styles to lower specificity in the cascade --
+  [#156](https://github.com/oddbird/popover-polyfill/pull/156)
+
 ## 0.3.4: 2023-11-28
 
 - 🚀 NEW: Wrap styles in `:where()` to lower specificity in the cascade --
