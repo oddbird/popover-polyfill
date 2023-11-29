@@ -108,12 +108,12 @@ export function injectStyles(root: Document | ShadowRoot) {
     const sheet = document.createElement('style');
     sheet.textContent = styles;
     if (root instanceof Document) {
-      root.head.append(sheet);
+      root.head.prepend(sheet);
     } else {
-      root.append(sheet);
+      root.prepend(sheet);
     }
   } else {
-    root.adoptedStyleSheets = [...root.adoptedStyleSheets, popoverStyleSheet];
+    root.adoptedStyleSheets = [popoverStyleSheet, ...root.adoptedStyleSheets];
   }
 }
 
