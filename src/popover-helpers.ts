@@ -160,7 +160,7 @@ function topMostPopoverAncestor(newPopover: HTMLElement): HTMLElement | null {
 }
 
 function isFocusable(focusTarget: HTMLElement) {
-  if (focusTarget.hidden) return false;
+  if (focusTarget.hidden || focusTarget instanceof ShadowRoot) return false;
   if (
     focusTarget instanceof HTMLButtonElement ||
     focusTarget instanceof HTMLInputElement ||
@@ -181,7 +181,9 @@ function isFocusable(focusTarget: HTMLElement) {
   if (focusTarget instanceof HTMLAnchorElement && focusTarget.href === '') {
     return false;
   }
-  return focusTarget.tabIndex !== -1;
+  return (
+    typeof focusTarget.tabIndex === 'number' && focusTarget.tabIndex !== -1
+  );
 }
 
 // This method is not spec compliant, as it also looks in slotted content
