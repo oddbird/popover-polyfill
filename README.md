@@ -123,8 +123,8 @@ some caveats which will need accommodations:
     `shadowRoot`). You'll need to manually inject the styles yourself with
     `injectStyles(myShadow)`.
 
-  - As stylesheet is injected into the main document, if your host element is
-    a popover, styling with `:host` gets tricky, beause `:host` styles always
+  - As a stylesheet is injected into the main document, if your host element is
+    a popover, styling with `:host` gets tricky beause `:host` styles always
     take lower precedence than the main document styles. This is a limitation
     of CSS and there's not a reasonable workaround. The best workaround for
     now is to add `!important` to conflicting properties in your `:host` rule.
