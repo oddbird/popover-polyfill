@@ -323,7 +323,11 @@ export function apply() {
   const onKeydown = (event: Event) => {
     const key = (event as KeyboardEvent).key;
     const target = event.target as Element;
-    if (target && (key === 'Escape' || key === 'Esc')) {
+    if (
+      !event.defaultPrevented &&
+      target &&
+      (key === 'Escape' || key === 'Esc')
+    ) {
       hideAllPopoversUntil(target.ownerDocument, true, true);
     }
   };
