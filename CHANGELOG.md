@@ -1,5 +1,12 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.3.6: 2023-12-01
+
+- 🐛 BUGFIX: Allow `Esc` to be preventable --
+  [#158](https://github.com/oddbird/popover-polyfill/pull/158)
+- 📝 DOCS: Add caveat about `:host` styles --
+  [#157](https://github.com/oddbird/popover-polyfill/pull/157)
+
 ## 0.3.5: 2023-11-29
 
 - 🐛 BUGFIX: Fix incorrect `isFocusable` result for `ShadowRoot` --
