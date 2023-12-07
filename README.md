@@ -48,7 +48,7 @@ After installing, you’ll need to use appropriate tooling to use
 For most tooling such as Vite, Webpack, and Parcel, that will look like this:
 
 ```js
-import '@oddbird/popover-polyfill;
+import '@oddbird/popover-polyfill';
 ```
 
 If you want to manually apply the polyfill, you can instead import the
