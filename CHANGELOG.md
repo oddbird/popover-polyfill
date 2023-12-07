@@ -1,5 +1,13 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.3.7: 2023-12-07
+
+- 🐛 BUGFIX: Fix crash in Firefox with shadowed popovers --
+  [#160](https://github.com/oddbird/popover-polyfill/pull/160)
+- 📝 DOCS: Add better ESM use examples --
+  [#161](https://github.com/oddbird/popover-polyfill/pull/161)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.3.6: 2023-12-01
 
 - 🐛 BUGFIX: Allow `Esc` to be preventable --
