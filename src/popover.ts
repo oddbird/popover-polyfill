@@ -316,6 +316,7 @@ export function apply() {
     const invoker = target.closest('[popovertargetaction],[popovertarget]');
     if (invoker) {
       popoverTargetAttributeActivationBehavior(invoker as HTMLButtonElement);
+      event.preventDefault();
       return;
     }
   };
