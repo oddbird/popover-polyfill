@@ -45,9 +45,21 @@ npm install @oddbird/popover-polyfill
 After installing, you’ll need to use appropriate tooling to use
 `node_modules/@oddbird/popover-polyfill/dist/popover.js`.
 
+For most tooling such as Vite, Webpack, and Parcel, that will look like this:
+
+```js
+import '@oddbird/popover-polyfill';
+```
+
 If you want to manually apply the polyfill, you can instead import the
 `isSupported` and `apply` functions directly from
 `node_modules/@oddbird/popover-polyfill/dist/popover-fn.js` file.
+
+With most tooling:
+
+```js
+import { apply, isSupported } from '@oddbird/popover-polyfill/fn';
+```
 
 ### Via CDN
 
