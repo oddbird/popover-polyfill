@@ -303,7 +303,6 @@ export function apply() {
   applyPopoverInvokerElementMixin(HTMLInputElement);
 
   const handleInvokerActivation = (event: Event) => {
-    if (!event.isTrusted) return;
     // Composed path allows us to find the target within shadowroots
     const target = event.composedPath()[0] as HTMLElement;
     if (!(target instanceof Element) || target?.shadowRoot) {
