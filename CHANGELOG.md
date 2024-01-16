@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.3.8: 2024-01-16
+
+- 🐛 BUGFIX: Allow synthetic click events to target popovers --
+  [#170](https://github.com/oddbird/popover-polyfill/pull/170)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.3.7: 2023-12-07
 
 - 🐛 BUGFIX: Fix crash in Firefox with shadowed popovers --
