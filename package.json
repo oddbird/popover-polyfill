@@ -79,7 +79,7 @@
     "test:e2e:ci": "echo No e2e tests yet",
     "test": "run-p test:unit test:e2e",
     "test:ci": "run-p test:unit test:e2e:ci",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prepack": "npm run build"
   },
   "devDependencies": {
