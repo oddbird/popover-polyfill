@@ -215,12 +215,22 @@ test("assign null to invoker's 'popoverTargetElement' property should remove its
   ).toBeNull();
 });
 
-test('clicking button#crossTreeToggle then button#crossTreeToggle twice should show and hide popover in a different tree scope', async ({
+test('clicking button#crossTreeToggle should show then hide popover in a different tree scope', async ({
   page,
 }) => {
   const popover = (await page.locator('#shadowedPopover')).nth(0);
   await page.click('button#crossTreeToggle');
   await expect(popover).toBeVisible();
   await page.click('button#crossTreeToggle');
+  await expect(popover).toBeHidden();
+});
+
+test('clicking #shadowInInvoker should show then hide popover', async ({
+  page,
+}) => {
+  const popover = (await page.locator('#popover12')).nth(0);
+  await page.click('#shadowInInvoker');
+  await expect(popover).toBeVisible();
+  await page.click('#shadowInInvoker');
   await expect(popover).toBeHidden();
 });

@@ -304,7 +304,8 @@ export function apply() {
 
   const handleInvokerActivation = (event: Event) => {
     // Composed path allows us to find the target within shadowroots
-    const target = event.composedPath()[0] as HTMLElement;
+    const composedPath = event.composedPath() as HTMLElement[];
+    const target = composedPath[0];
     if (!(target instanceof Element) || target?.shadowRoot) {
       return;
     }
@@ -312,7 +313,9 @@ export function apply() {
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
-    const invoker = target.closest('[popovertargetaction],[popovertarget]');
+    const invoker = composedPath.find(
+      (el) => el.matches && el.matches('[popovertargetaction],[popovertarget]'),
+    );
     if (invoker) {
       popoverTargetAttributeActivationBehavior(invoker as HTMLButtonElement);
       event.preventDefault();
