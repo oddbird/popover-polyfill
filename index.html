@@ -46,6 +46,7 @@
           </ul>
         </div>
       </div>
+      <div id="popover12" popover>Popover 12</div>
       <dialog popover>I'm a dialog!</dialog>
       <div id="host"></div>
 
@@ -88,6 +89,15 @@
       <button popovertarget="notExist">Click to toggle nothing</button>
       <button id="crossTreeToggle">Click to toggle shadowed Popover</button>
       <button popovertargetaction="show" popovertarget="popover11">Menu</button>
+      <button popovertarget="popover12">
+        <span id="shadowInInvoker"></span>
+      </button>
+
+      <script type="module">
+        const host = document.getElementById('shadowInInvoker');
+        const shadowRoot = host.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = `<span>Click to toggle Popover 12</span>`;
+      </script>
     </div>
   </body>
 </html>
