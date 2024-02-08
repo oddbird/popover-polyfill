@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 🚀 NEW: Add support for CSS cascade layers --
+  [#178](https://github.com/oddbird/popover-polyfill/pull/178)
 - 🐛 BUGFIX: Ensure click events correctly cross out of ShadowDOM --
   [#177](https://github.com/oddbird/popover-polyfill/pull/177)
 - 🏠 INTERNAL: Upgrade dependencies
