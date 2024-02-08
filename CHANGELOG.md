@@ -1,6 +1,6 @@
 # Popover Attribute Polyfill Changelog
 
-## Unreleased
+## 0.4.0: 2024-02-08
 
 - 🚀 NEW: Add support for CSS cascade layers --
   [#178](https://github.com/oddbird/popover-polyfill/pull/178)
