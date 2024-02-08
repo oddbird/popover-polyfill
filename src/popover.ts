@@ -316,8 +316,8 @@ export function apply() {
     if (!(root instanceof ShadowRoot || root instanceof Document)) {
       return;
     }
-    const invoker = composedPath.find(
-      (el) => el.matches && el.matches('[popovertargetaction],[popovertarget]'),
+    const invoker = composedPath.find((el) =>
+      el.matches?.('[popovertargetaction],[popovertarget]'),
     );
     if (invoker) {
       popoverTargetAttributeActivationBehavior(invoker as HTMLButtonElement);
