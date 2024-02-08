@@ -34,7 +34,7 @@ function patchSelectorFn<K extends string>(
 }
 
 const nonEscapedPopoverSelector = /(^|[^\\]):popover-open\b/g;
-const hasLayerSupport = Boolean(window.CSSLayerBlockRule);
+const hasLayerSupport = typeof window.CSSLayerBlockRule === 'function';
 
 // To emulate a UA stylesheet which is the lowest priority in the cascade,
 // all selectors must be wrapped in a :where() which has a specificity of zero.
