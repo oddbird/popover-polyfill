@@ -34,10 +34,12 @@ function patchSelectorFn<K extends string>(
 }
 
 const nonEscapedPopoverSelector = /(^|[^\\]):popover-open\b/g;
+const hasLayerSupport = typeof window.CSSLayerBlockRule === 'function';
 
 // To emulate a UA stylesheet which is the lowest priority in the cascade,
 // all selectors must be wrapped in a :where() which has a specificity of zero.
 const styles = `
+${hasLayerSupport ? '@layer popover-polyfill {' : ''}
   :where([popover]) {
     position: fixed;
     z-index: 2147483647;
@@ -93,6 +95,7 @@ const styles = `
   :where([popover]:not(.\\:popover-open)) {
     display: none;
   }
+${hasLayerSupport ? '}' : ''}
 `;
 let popoverStyleSheet: null | false | CSSStyleSheet = null;
 export function injectStyles(root: Document | ShadowRoot) {

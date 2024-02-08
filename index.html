@@ -5,6 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Popover Attribute Polyfill</title>
+    <style>
+      @layer popover-polyfill;
+
+      @layer consumer {
+        #popover13 {
+          background-color: #d00d1e;
+        }
+      }
+    </style>
     <script src="./dist/popover.js"></script>
   </head>
 
@@ -47,6 +56,9 @@
         </div>
       </div>
       <div id="popover12" popover>Popover 12</div>
+      <div id="popover13" popover>
+        Popover 13 (should be red if browser has @layer support)
+      </div>
       <dialog popover>I'm a dialog!</dialog>
       <div id="host"></div>
 
@@ -92,6 +104,7 @@
       <button popovertarget="popover12">
         <span id="shadowInInvoker"></span>
       </button>
+      <button popovertarget="popover13">Click to toggle Popover 13</button>
 
       <script type="module">
         const shadowInInvoker = document.getElementById('shadowInInvoker');
