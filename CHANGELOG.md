@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🐛 BUGFIX: Ensure click events correctly cross out of ShadowDOM --
+  [#177](https://github.com/oddbird/popover-polyfill/pull/177)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.3.8: 2024-01-16
 
 - 🐛 BUGFIX: Allow synthetic click events to target popovers --
