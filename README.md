@@ -142,6 +142,18 @@ some caveats which will need accommodations:
     now is to add `!important` to conflicting properties in your `:host` rule.
     See [#147](https://github.com/oddbird/popover-polyfill/issues/147) for more.
 
+  - Given that the CSS is injected using JavaScript, you may find that you
+    temporarily see popovers as open while the JS is loading. To work around
+    this, you can add the following CSS to your project:
+
+    ```css
+    @supports not selector(:popover-open) {
+      [popover]:not(.\:popover-open) {
+        display: none;
+      }
+    }
+    ```
+
 - When supported, the polyfill creates a cascade layer named `popover-polyfill`.
   If your styles are not in layers then this should have no impact. If your
   styles do use layers, you'll need to ensure the polyfill layer is declared
