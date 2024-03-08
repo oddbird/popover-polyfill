@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 test("removing an autoPopover from document doesn't crash page", async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover1')).nth(0);
+  const popover = (await page.locator('#default-popover')).nth(0);
   await expect(popover).toBeHidden();
   await expect(
     await popover.evaluate((node) => node.showPopover()),

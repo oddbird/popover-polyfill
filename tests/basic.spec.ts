@@ -55,7 +55,7 @@ expect.extend({
 });
 
 test('popover as a boolean attribute', async ({ page }) => {
-  const popover = (await page.locator('#popover1')).nth(0);
+  const popover = (await page.locator('#default-popover')).nth(0);
   await expect(popover).toBeFunctionalPopover();
 });
 
