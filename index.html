@@ -5,6 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Popover Attribute Polyfill</title>
+
+    <style>
+      @layer reset, popover-polyfill, base, demo;
+
+      @import url('/css/reset.css') layer(reset);
+      @import url('/css/demo.css') layer(demo);
+      @import url('/css/prism.css') layer(base);
+    </style>
     <style>
       @layer popover-polyfill;
 
@@ -15,6 +23,8 @@
       }
     </style>
     <script src="./dist/popover.js"></script>
+    <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
+    <script src="https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
   </head>
   <body>
     <nav>
@@ -120,7 +130,7 @@
           another popover on the page.
         </p>
         <pre>
-          <code>
+          <code class="language-markup">
             &lt;button popovertarget="default-popover" aria-expanded="false">
               Toggle Default Popover
             &lt;/button&gt;
@@ -138,7 +148,7 @@
           A popover with an empty state behaves as if it were set to "auto."
         </p>
         <pre> 
-          <code>
+          <code class="language-markup">
             &lt;button popovertarget="popover2">Toggle Empty State Popover&lt;/button&gt;
 
             &lt;div id="popover2" popover="">Empty State Popover&lt;/div&gt;
@@ -157,7 +167,7 @@
           <code>popovertargetaction</code> set to <code>"hide"</code>
         </p>
         <pre>
-          <code>
+          <code class="language-markup">
             &lt;button popovertargetaction="show" popovertarget="popover3">
               Show Popover Target Action Popover
             &lt;/button&gt;
@@ -178,7 +188,7 @@
           dismissed.
         </p>
         <pre>
-          <code>
+          <code class="language-markup">
             &lt;button popovertargetaction="show" popovertarget="popover5">
               Show Popover 5
             &lt;/button>
@@ -203,7 +213,7 @@
         <h2>Single button popover</h2>
         <p>Toggle a popover with a single button.</p>
         <pre>
-          <code>
+          <code class="language-markup">
             &lt;button popovertarget="popover9"> Toggle Single Button Popover &lt;/button>
 
             &lt;div id="popover9" popover="manual">
@@ -221,7 +231,7 @@
           popover will open.
         </p>
         <pre>
-          <code>
+          <code class="language-markup">
             &lt;button popovertarget="notExist">Toggle Nothing&lt;/button>
           </code>
         </pre>
@@ -232,7 +242,7 @@
         <h2>Nested Popovers</h2>
         <p>Popovers can be nested within other popovers.</p>
         <pre>
-          <code>
+          <code class="language-markup">
             &lt;button popovertargetaction="show" popovertarget="popover11">
               Show Menu
             &lt;/button>
