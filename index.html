@@ -171,18 +171,29 @@
         <script type="module">
           const host = document.getElementById('host');
           const shadowRoot = host.attachShadow({ mode: 'open' });
-          shadowRoot.innerHTML = `<button popovertarget="shadowedPopover" data-btn>
-                  Click to toggle shadowed Popover (auto)
+          shadowRoot.innerHTML = `<section class="demo-item">
+          <h2 data-header>Popovers in the Shadow Root</h2>
+          <p class="note">
+            Elements in the shadow root can be popovers.
+          </p> <button popovertarget="shadowedPopover" data-btn>
+                  Toggle Shadowed Popover
                 </button>
                 <button popovertarget="shadowedNestedPopover" data-btn>
-                  Click to toggle shadowed nested Popover (auto)
+                  Toggle Shadowed Nested Popover
                 </button>
+                </section>
                 <div id="shadowedPopover" popover="auto">Shadowed Popover (auto)</div>
                 <div>
                   <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
                 </div>
 
                 <style> 
+                   .demo-item {
+    display: grid;
+    grid-template: 'title' min-content 'note' auto 'popover-button' min-content 'code' 1fr / minmax( 20ch, 1fr );
+    max-inline-size: 45ch;
+    padding: 1em;
+  }
                   [data-btn] {
                     align-items: center;
                     background-color: var(--button-state, hsl(0deg 0% 20%));
