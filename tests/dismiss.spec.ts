@@ -23,7 +23,7 @@ test('click dismisses all auto popovers', async ({ page }) => {
   ).nth(0);
   await expect(shadowedNestedPopover).toBeHidden();
 
-  await page.click('h1');
+  await page.click('a');
   await expect(popover7).toBeHidden();
   await expect(popover8).toBeHidden();
   await expect(popover9).toBeHidden();
