@@ -5,13 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Popover Attribute Polyfill</title>
-
+    <link
+      href="https://use.typekit.net/af/442215/000000000000000000010b5a/27/l?primer=7ceb210e49ade74e23101e10f006f110a0b6588c7c57777a6e3d98a38b749696&fvd=n4&v=3"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <style>
-      @layer reset, popover-polyfill, base, demo;
+      @layer reset, base, popover-polyfill, default, demo;
 
       @import url('/css/reset.css') layer(reset);
       @import url('/css/demo.css') layer(demo);
       @import url('/css/prism.css') layer(base);
+      @import url('/css/fonts.css') layer(base);
+      @import url('/css/base.css') layer(default);
+      @import url('/css/props.css') layer(base);
     </style>
     <style>
       @layer popover-polyfill;
@@ -25,267 +33,389 @@
     <script src="./dist/popover.js"></script>
     <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
     <script src="https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!--- TypeKit Fonts --->
+    <script src="https://use.typekit.net/slx1xnq.js"></script>
+    <script>
+      try {
+        Typekit.load({ async: true });
+      } catch (e) {}
+    </script>
   </head>
   <body>
-    <nav>
-      <ul>
-        <li><a href="#">Spec</a></li>
-        <li><a href="#">API</a></li>
-        <li><a href="#">Source</a></li>
-      </ul>
-    </nav>
-    <header>
-      Polyfill Demo
-      <h1>Popover Attribute</h1>
-    </header>
-    <div>
-      <p>
-        OddBird’s Popover Attribute Polyfill – built in collaboration with Keith
-        Cirkel and used in production by GitHub – lets developers preview the
-        upcoming mechanism for displaying popover content on top of other page
-        content, drawing the user’s attention to specific important information
-        or actions that need to be taken.
-      </p>
-      <p>
-        This polyfills the HTML <code>popover</code> attribute and
-        <code>showPopover</code>, <code>hidePopover</code>, and
-        <code>togglePopover</code> methods onto <code>HTMLElement</code>, as
-        well as the <code>popovertarget</code> and
-        <code>popovertargetaction</code> attributes on
-        <code>&lt;button&gt;</code> elements.
-      </p>
-    </div>
-
-    <div id="popovers">
-      <div id="default-popover" popover>Default Popover</div>
-      <div id="popover2" popover="">Empty State Popover</div>
-      <div id="popover3" popover="auto">
-        Popover Target Action Popover. This popover has an autofocus link:
-        <a href="#" autofocus>I'm a link!</a>
-      </div>
-      <div id="popover4" popover="hint">Invalid Popover ("hint")</div>
-      <div id="popover5" popover="manual">
-        Popover 5. This popover has an autofocus link:
-        <a href="#" autofocus>I'm a link!</a>
-      </div>
-      <div id="popover6" popover="invalid">Invalid Popover ("invalid")</div>
-      <div id="popover7" popover="auto">Popover 7 (auto)</div>
-      <div id="popover8" popover="auto">Popover 8 (auto)</div>
-      <div id="popover9" popover="manual">Single Button Popover</div>
-      <div id="popover10" popover="manual">Popover 10 (manual)</div>
-      <div id="popover11" popover="auto">
-        <ul>
-          <li><button>Item 1</button></li>
-          <li><button>Item 2</button></li>
+    <header class="site-header">
+      <a href="/" rel="home" id="banner-logo">
+        <svg
+          data-logo="oddbird"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
+          width="200px"
+          height="96px"
+          viewBox="0 0 181.6 86.7"
+          id="oddbird-logo"
+        >
+          <path
+            class="wordmark"
+            d="M90.7 4.5c1.3.2 1.5.4 1.5.7v11.7c1.8.5 3.5 1.2 5.3 2.1v-3.2H99c3.8 0 6.6 1.7 6.6 5.4 0 1.1-.3 2-.8 2.8.9.8 1.8 1.6 2.7 2.5 2.6-1.1 3.8-3 3.8-5.4 0-3.5-2.9-5.8-7.7-6.3v-.2c3.7-.6 6.8-2.8 6.8-6.2s-2.8-5.6-9.9-5.6H89.3l.1 1.6 1.3.1zm6.8-.1h1.7c3.7 0 5.5 2 5.5 5 0 2.6-1.8 4.6-5 4.7h-2.2V4.4zM116 26l-1.8.2-.1 1.6h3.3c1.7-2.3 3.4-4.4 5.3-5.1V5.2c0-.4.3-.6 1.4-.8l1.9-.2.1-1.6h-12l.1 1.6 1.7.2c1.3.2 1.5.4 1.5.7v20c0 .5-.4.7-1.4.9zM15.3 2.2C7.9 2.2 1.7 7.8 1.7 15.5s5.4 12.9 13.4 12.9c7.4 0 13.6-5.6 13.6-13.3S23.3 2.2 15.3 2.2zm0 24.3c-4.3 0-7.8-4.1-7.8-11.5 0-7.2 3.4-11 7.6-11 4.3 0 7.8 4.1 7.8 11.5 0 7.3-3.4 11-7.6 11zM164.8 2.6l-10.5.2.1 1.6 1.3.2c1.3.2 1.5.4 1.5.7v20c0 .4-.4.6-1.4.8l-1.4.2-.1 1.6h10.5c9.7 0 15.1-6.2 15.1-13.1-.1-7.2-5.9-12.4-15.1-12.2zm.6 23.5l-2.9-.6V4.4h1.3c6.9 0 10.3 4.5 10.3 11.2 0 5.8-3.2 10.4-8.7 10.5zM130.3 4.5c1.3.2 1.5.4 1.5.7v17.7c1.8.5 3.6 1.1 5.3 1.7v-7.7h2.4l4.2 7.7 1.6 3.2h7.7l-.1-1.6-1.1-.2c-.8-.2-1.3-.6-2.2-1.8l-5.2-8.2c3.6-1.3 5.7-3.7 5.7-6.9 0-3.7-3.1-6.2-9.6-6.2h-11.7l.1 1.6h1.4zm6.8 0h1.9c3.4-.1 5.5 1.8 5.5 5.4 0 3.4-2 5.1-4.9 5.4l-2.4-.2V4.5h-.1zM33.4 26l-1.4.1-.1 1.6h5.4c1.2-.8 2.4-1.5 3.6-2.1l-.8-.2v-21h1.3c6.9 0 10.3 4.5 10.3 11.2 0 2.3-.5 4.3-1.4 6 .8-.2 1.7-.3 2.5-.3.9 0 1.7.1 2.5.4 1.4-2.1 2.1-4.5 2.1-7.1 0-7-5.8-12.2-15-12.1l-10.5.2.1 1.6 1.3.2c1.3.2 1.5.4 1.5.7v20c0 .4-.4.6-1.4.8zM62 4.5c1.3.2 1.5.4 1.5.7v20c0 .4-.4.6-1.4.8l-1.3.1c.5.5.9 1.1 1.3 1.6h7.6c.4-.6.7-1.2 1.1-1.8l-2-.4V4.4h1.3c6.9 0 10.3 4.5 10.3 11.2 0 .6 0 1.1-.1 1.7.6-.3 1.3-.5 1.9-.7 1.2-.3 2.5-.5 3.9-.5 0-.5.1-.9.1-1.4 0-7-5.8-12.2-15-12.1l-10.6.1.1 1.6 1.3.2z"
+          />
+          <path
+            class="logomark"
+            d="M143.1 28.7c-3.8-1.7-14.6-6.6-19.6-4.9-3.4 1.1-7.3 9.4-9.9 11.8-.3.2-.6.5-1 .8-7.1-13.4-20.8-21-29.9-18.5-6.2 1.7-11.9 8.9-14.5 18.1-4.5-2.7-6.8-7.2-10.8-11.3-3.1-3.2-7.3-1.9-10.9-.2-7.2 3.3-16.6 8.2-16.3 15.9 4.2-3 8.3-2.1 9.6 3.4.3 1 2.6-3.6 5.4-4.6 3.2-1.2 6.7 1.7 7.4 4.9.2.6 2.9-3.5 5.7-2.1 2 .9 3.2 5.1 3.9 4.7 2-1.3 3.4-2.8 4.8-4-.5 4.7-.2 9.7 1.2 14.7.1.3.2.6.2.8 1-8.9 5.9-16.2 11.4-17.7 7.7-2.2 20.1 5.8 23.8 18.9 2.7 9.7.8 19.3-4.2 24.6.6-.1 1.2-.2 1.8-.4 13.1-3.7 19.6-21.4 14.5-39.5-.1-.4-.2-.7-.3-1 3.2 1.7 4.7 4.5 4.8 4.1 1.2-5.6 7.9-5.7 12.3-1.7.4.4.6-4.3 2.3-4.9 2.7-1 5.7.5 8.5 2.2.5.3.4-2.2.3-2.5-.2-1.2-.1-2.5 1.3-2.9 2.1-.6 4.5.5 6.4.9-.5-4.5-4.6-8-8.2-9.6z"
+          />
+        </svg>
+      </a>
+      <nav>
+        <ul data-navlist>
           <li>
-            <button popovertarget="popover11-1" popovertargetaction="show">
-              Show Sub Menu
-            </button>
+            <a
+              data-nav
+              href="https://html.spec.whatwg.org/multipage/popover.html#dom-popover"
+              target="_blank"
+              rel="noreferrer"
+              >Spec</a
+            >
+          </li>
+          <li>
+            <a
+              data-nav
+              href="https://developer.mozilla.org/en-US/docs/Web/API/Popover_API"
+              target="_blank"
+              rel="noopener noreferrer"
+              >API</a
+            >
+          </li>
+          <li>
+            <a
+              data-nav
+              href="https://github.com/oddbird/popover-polyfill"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Source</a
+            >
           </li>
         </ul>
-        <div id="popover11-1" popover="auto" style="left: 200px">
-          <ul>
-            <li><button>Submenu Item 1</button></li>
-            <li><button>Submenu Item 2</button></li>
-            <li><button>Submenu Item 3</button></li>
-          </ul>
+      </nav>
+    </header>
+    <main>
+      <header class="main-header">
+        <h1 id="title">
+          <span class="subtitle">Polyfill Demo</span>
+          <span data-popover-title>Popover</span>
+          <span data-popover-title="attribute">Attribute</span>
+        </h1>
+        <div class="description">
+          <p>
+            OddBird’s Popover Attribute Polyfill – built in collaboration with
+            <a href="https://www.keithcirkel.co.uk/">Keith Cirkel</a> and used
+            in production by GitHub – lets developers preview the upcoming
+            mechanism for displaying popover content on top of other page
+            content, drawing the user’s attention to specific important
+            information or actions that need to be taken.
+          </p>
+          <p>
+            This polyfills the HTML <code>popover</code> attribute and
+            <code>showPopover</code>, <code>hidePopover</code>, and
+            <code>togglePopover</code> methods onto <code>HTMLElement</code>, as
+            well as the <code>popovertarget</code> and
+            <code>popovertargetaction</code> attributes on
+            <code>&lt;button&gt;</code> elements.
+          </p>
         </div>
-      </div>
-      <div id="popover12" popover>Popover 12</div>
-      <div id="popover13" popover>
-        Popover 13 (should be red if browser has @layer support)
-      </div>
-      <dialog popover>I'm a dialog!</dialog>
+      </header>
+      <div id="popovers">
+        <div id="default-popover" popover>Default Popover</div>
+        <div id="popover2" popover="">Empty State Popover</div>
+        <div id="popover3" popover="auto">
+          Target Action Popover. This popover has an autofocus link:
+          <a href="#" autofocus>I'm a link!</a>
+        </div>
+        <div id="popover4" popover="hint">Invalid Popover ("hint")</div>
+        <div id="popover5" popover="manual">
+          Popover 5. This popover has an autofocus link:
+          <a href="#" autofocus>I'm a link!</a>
+        </div>
+        <div id="popover6" popover="invalid">Invalid Popover ("invalid")</div>
+        <div id="popover7" popover="auto">Popover 7 (auto)</div>
+        <div id="popover8" popover="auto">Popover 8 (auto)</div>
+        <div id="popover9" popover="manual">Single Button Popover</div>
+        <div id="popover10" popover="manual">Popover 10 (manual)</div>
+        <div id="popover11" popover="auto">
+          <ul>
+            <li><button data-btn>Item 1</button></li>
+            <li><button data-btn>Item 2</button></li>
+            <li>
+              <button
+                popovertarget="popover11-1"
+                popovertargetaction="show"
+                data-btn
+              >
+                Show Sub Menu
+              </button>
+            </li>
+          </ul>
+          <div id="popover11-1" popover="auto" style="left: 200px">
+            <ul>
+              <li><button data-btn>Submenu Item 1</button></li>
+              <li><button data-btn>Submenu Item 2</button></li>
+              <li><button data-btn>Submenu Item 3</button></li>
+            </ul>
+          </div>
+        </div>
+        <div id="popover12" popover>Popover 12</div>
+        <div id="popover13" popover>
+          Popover 13 (should be red if browser has @layer support)
+        </div>
+        <dialog popover>I'm a dialog!</dialog>
 
-      <script type="module">
-        const host = document.getElementById('host');
-        const shadowRoot = host.attachShadow({ mode: 'open' });
-        shadowRoot.innerHTML = `<button popovertarget="shadowedPopover">
+        <script type="module">
+          const host = document.getElementById('host');
+          const shadowRoot = host.attachShadow({ mode: 'open' });
+          shadowRoot.innerHTML = `<button popovertarget="shadowedPopover" data-btn>
                   Click to toggle shadowed Popover (auto)
                 </button>
-                <button popovertarget="shadowedNestedPopover">
+                <button popovertarget="shadowedNestedPopover" data-btn>
                   Click to toggle shadowed nested Popover (auto)
                 </button>
                 <div id="shadowedPopover" popover="auto">Shadowed Popover (auto)</div>
                 <div>
                   <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
-                </div>`;
-        document.getElementById('crossTreeToggle').popoverTargetElement =
-          shadowRoot.getElementById('shadowedPopover');
-      </script>
-    </div>
+                </div>
 
-    <div id="buttons">
-      <section>
-        <h2>Default popover</h2>
-        <p>
-          Popovers are triggered by buttons (or <code>inputs</code> with
-          <code>type="button"</code>) with the attribute
-          <code>popovertarget</code>. This attribute should have a value that
-          matches the <code>id</code> of the <code>popover</code> it controls.
-          The popover itself takes a state of "auto" or "manual." If no state is
-          provided, the popover takes on the behavior of its default state,
-          which is "auto." Auto popovers can be "light dismissed" by selecting
-          anywhere on the page, clicking the popover control button, or opening
-          another popover on the page.
-        </p>
-        <pre>
+                <style> 
+                  [data-btn] {
+                    align-items: center;
+                    background-color: var(--button-state, hsl(0deg 0% 20%));
+                    border: 1px solid transparent;
+                    color: var(--bg);
+                    cursor: pointer;
+                    display: inline-flex;
+                    font: inherit;
+                    max-inline-size: fit-content;
+                    padding: 0.2em 0.5em;
+                    justify-self: center;
+
+                      &:hover,
+                      &:focus {
+                      --button-state: var(--action);
+                    }
+                  }
+
+                  [popover] { padding: .5em 1em; }
+
+                </style>`;
+          document.getElementById('crossTreeToggle').popoverTargetElement =
+            shadowRoot.getElementById('shadowedPopover');
+        </script>
+      </div>
+
+      <div id="buttons" class="demo-section">
+        <section class="demo-item">
+          <h2 data-header>Default popover</h2>
+          <p class="note">
+            Popovers take a state of "auto" or "manual." If no state is
+            provided, the popover takes on the behavior of its default state,
+            which is "auto." Auto popovers can be "light dismissed" by selecting
+            anywhere on the page, clicking the popover control button, or
+            opening another popover on the page.
+          </p>
+          <button
+            popovertarget="default-popover"
+            aria-expanded="false"
+            data-btn
+          >
+            <span>Toggle Default Popover</span>
+          </button>
+          <pre>
           <code class="language-markup">
-            &lt;button popovertarget="default-popover" aria-expanded="false">
-              Toggle Default Popover
-            &lt;/button&gt;
+&lt;button popovertarget="default-popover" aria-expanded="false">
+  Toggle Default Popover
+&lt;/button&gt;
 
-            &lt;div id="default-popover" popover>Popover 1&lt;/div&gt;
+&lt;div id="default-popover" popover>Popover 1&lt;/div&gt;
           </code>
         </pre>
-        <button popovertarget="default-popover" aria-expanded="false">
-          <span>Toggle Default Popover</span>
-        </button>
-      </section>
-      <section>
-        <h2>Popover with empty state</h2>
-        <p>
-          A popover with an empty state behaves as if it were set to "auto."
-        </p>
-        <pre> 
+        </section>
+        <section class="demo-item">
+          <h2 data-header>Popover with empty state</h2>
+          <p class="note">
+            A popover with an empty state behaves as if it were set to "auto."
+          </p>
+          <button popovertarget="popover2" data-btn>
+            Toggle Empty State Popover
+          </button>
+          <pre> 
           <code class="language-markup">
-            &lt;button popovertarget="popover2">Toggle Empty State Popover&lt;/button&gt;
+&lt;button popovertarget="popover2">Toggle Empty State Popover&lt;/button&gt;
 
-            &lt;div id="popover2" popover="">Empty State Popover&lt;/div&gt;
+&lt;div id="popover2" popover="">Empty State Popover&lt;/div&gt;
           </code>
         </pre>
-        <button popovertarget="popover2">Toggle Empty State Popover</button>
-      </section>
-      <section>
-        <h2>The <code>popovertargetaction</code> attribute.</h2>
-        <p>
-          This popover is controlled by a button with a
-          <code>popovertargetaction</code> attribute. If the value of the
-          attribute is "show", clicking the button will only open the popover.
-          The popover can only be closed by selecting elsewhere on the page,
-          opening another another popover, or by clicking another button with
-          <code>popovertargetaction</code> set to <code>"hide"</code>
-        </p>
-        <pre>
+        </section>
+        <section class="demo-item">
+          <h2 data-header>The <code>popovertargetaction</code> attribute.</h2>
+          <p class="note">
+            This popover is controlled by a button with a
+            <code>popovertargetaction</code> attribute. If the value of the
+            attribute is "show", clicking the button will only open the popover.
+            The popover can only be closed by selecting elsewhere on the page,
+            opening another another popover, or by clicking another button with
+            <code>popovertargetaction</code> set to <code>"hide"</code>
+          </p>
+          <button
+            popovertargetaction="show"
+            popovertarget="popover3"
+            data-btn
+            data-popover-control
+          >
+            Show Target Action Popover
+          </button>
+          <pre>
           <code class="language-markup">
-            &lt;button popovertargetaction="show" popovertarget="popover3">
-              Show Popover Target Action Popover
-            &lt;/button&gt;
+&lt;button popovertargetaction="show" popovertarget="popover3">
+  Show Popover Target Action Popover
+&lt;/button&gt;
 
-            &lt;div id="popover3" popover="auto"> 
-              Popover Target Action Popover. This popover has an autofocus link: &lt;a href="#" autofocus>I'm a link!&lt;/a&gt;
-            &lt;/div&gt;
+&lt;div id="popover3" popover="auto"> 
+  Popover Target Action Popover. This popover has an autofocus link: &lt;a href="#" autofocus>I'm a link!&lt;/a&gt;
+&lt;/div&gt;
           </code>
         </pre>
-        <button popovertargetaction="show" popovertarget="popover3">
-          Show Popover Target Action Popover
-        </button>
-      </section>
-      <section>
-        <h2>Manual popover with an autofocus link</h2>
-        <p>
-          Popover with the attribute "manual." This popover must be manually
-          dismissed.
-        </p>
-        <pre>
-          <code class="language-markup">
-            &lt;button popovertargetaction="show" popovertarget="popover5">
+        </section>
+        <section class="demo-item">
+          <h2 data-header>Manual popover with an autofocus link</h2>
+          <p class="note">
+            Popover with the attribute "manual." This popover must be manually
+            dismissed.
+          </p>
+          <div class="button-group" data-popover-control>
+            <button
+              popovertargetaction="show"
+              popovertarget="popover5"
+              data-btn
+            >
               Show Popover 5
-            &lt;/button>
-
-            &lt;button popovertargetaction="hide" popovertarget="popover5">
+            </button>
+            <button
+              popovertargetaction="hide"
+              popovertarget="popover5"
+              data-btn
+            >
               Hide Popover 5
-            &lt;/button>
-
-            &lt;div id="popover5" popover="manual"> 
-              Popover 5. This popover has an autofocus link: &lt;a href="#" autofocus>I'm a link!&lt;/a&gt;
-            &lt;/div&gt;
-          </code>
-        </pre>
-        <button popovertargetaction="show" popovertarget="popover5">
-          Show Popover 5
-        </button>
-        <button popovertargetaction="hide" popovertarget="popover5">
-          Hide Popover 5
-        </button>
-      </section>
-      <section>
-        <h2>Single button popover</h2>
-        <p>Toggle a popover with a single button.</p>
-        <pre>
+            </button>
+          </div>
+          <pre>
           <code class="language-markup">
-            &lt;button popovertarget="popover9"> Toggle Single Button Popover &lt;/button>
+&lt;button popovertargetaction="show" popovertarget="popover5">
+  Show Popover 5
+&lt;/button>
 
-            &lt;div id="popover9" popover="manual">
-              Single Button Popover
-            &lt;/div>
-          </code>
-        </pre>
-        <button popovertarget="popover9">Toggle Single Button Popover</button>
-      </section>
-      <button popovertarget="popover10">Click to toggle Popover 10</button>
-      <section>
-        <h2>Referencing an invalid target</h2>
-        <p>
-          Since no popover matches the <code>popovertarget</code> "notExist", no
-          popover will open.
-        </p>
-        <pre>
-          <code class="language-markup">
-            &lt;button popovertarget="notExist">Toggle Nothing&lt;/button>
-          </code>
-        </pre>
-        <button popovertarget="notExist">Click to toggle nothing</button>
-      </section>
-      <button id="crossTreeToggle">Click to toggle shadowed Popover</button>
-      <section>
-        <h2>Nested Popovers</h2>
-        <p>Popovers can be nested within other popovers.</p>
-        <pre>
-          <code class="language-markup">
-            &lt;button popovertargetaction="show" popovertarget="popover11">
-              Show Menu
-            &lt;/button>
+&lt;button popovertargetaction="hide" popovertarget="popover5">
+  Hide Popover 5
+&lt;/button>
 
-            &lt;div id="popover11" popover="auto">
-              &lt;ul>
-                &lt;li>&lt;button>Item 1&lt;/button>&lt;/li>
-                &lt;li>&lt;button>Item 2&lt;/button>&lt;/li>
-                &lt;li>
-                  &lt;button popovertarget="popover11-1" popovertargetaction="show">
-                    Show Sub Menu
-                  &lt;/button>
-                &lt;/li>
-              &lt;/ul>
-              &lt;div id="popover11-1" popover="auto" style="left: 200px">
-                &lt;ul>
-                  &lt;li>&lt;button>Submenu Item 1&lt;/button>&lt;/li>
-                  &lt;li>&lt;button>Submenu Item 2&lt;/button>&lt;/li>
-                  &lt;li>&lt;button>Submenu Item 3&lt;/button>&lt;/li>
-                &lt;/ul>
-              &lt;/div>
+&lt;div id="popover5" popover="manual"> 
+  Popover 5. This popover has an autofocus link: &lt;a href="#" autofocus>I'm a link!&lt;/a&gt;
+&lt;/div&gt;
           </code>
         </pre>
-        <button popovertargetaction="show" popovertarget="popover11">
-          Show Menu
+        </section>
+        <section class="demo-item">
+          <h2 data-header>Single button popover</h2>
+          <p class="note">Toggle a popover with a single button.</p>
+          <button popovertarget="popover9" data-btn data-popover-control>
+            Toggle Single Button Popover
+          </button>
+          <pre>
+          <code class="language-markup">
+&lt;button popovertarget="popover9"> Toggle Single Button Popover &lt;/button>
+
+&lt;div id="popover9" popover="manual">
+  Single Button Popover
+&lt;/div>
+          </code>
+        </pre>
+        </section>
+        <button popovertarget="popover10" data-btn>
+          Click to toggle Popover 10
         </button>
-      </section>
-      <button popovertarget="popover12">
-        <span id="shadowInInvoker"></span>
-      </button>
-      <button popovertarget="popover13">Click to toggle Popover 13</button>
+        <section class="demo-item">
+          <h2 data-header>Referencing an invalid target</h2>
+          <p class="note">
+            Since no popover matches the <code>popovertarget</code> "notExist",
+            no popover will open.
+          </p>
+          <pre>
+          <code class="language-markup">
+&lt;button popovertarget="notExist">Toggle Nothing&lt;/button>
+          </code>
+        </pre>
+          <button popovertarget="notExist" data-btn>
+            Click to toggle nothing
+          </button>
+        </section>
+        <button id="crossTreeToggle" data-btn>
+          Click to toggle shadowed Popover
+        </button>
+        <section class="demo-item">
+          <h2 data-header>Nested Popovers</h2>
+          <p>Popovers can be nested within other popovers.</p>
+          <pre>
+          <code class="language-markup">
+&lt;button popovertargetaction="show" popovertarget="popover11">
+Show Menu
+&lt;/button>
 
-      <div id="host"></div>
+&lt;div id="popover11" popover="auto">
+&lt;ul>
+  &lt;li>&lt;button>Item 1&lt;/button>&lt;/li>
+  &lt;li>&lt;button>Item 2&lt;/button>&lt;/li>
+  &lt;li>
+    &lt;button popovertarget="popover11-1" popovertargetaction="show">
+      Show Sub Menu
+    &lt;/button>
+  &lt;/li>
+&lt;/ul>
+&lt;div id="popover11-1" popover="auto" style="left: 200px">
+  &lt;ul>
+    &lt;li>&lt;button>Submenu Item 1&lt;/button>&lt;/li>
+    &lt;li>&lt;button>Submenu Item 2&lt;/button>&lt;/li>
+    &lt;li>&lt;button>Submenu Item 3&lt;/button>&lt;/li>
+  &lt;/ul>
+&lt;/div>
+          </code>
+        </pre>
+          <button
+            popovertargetaction="show"
+            popovertarget="popover11"
+            data-btn
+            data-popover-control
+          >
+            Show Menu
+          </button>
+        </section>
+        <button popovertarget="popover12" data-btn>
+          <span id="shadowInInvoker"></span>
+        </button>
+        <button popovertarget="popover13" data-btn>
+          Click to toggle Popover 13
+        </button>
 
-      <script type="module">
-        const shadowInInvoker = document.getElementById('shadowInInvoker');
-        const shadowRoot = shadowInInvoker.attachShadow({ mode: 'open' });
-        shadowRoot.innerHTML = `<span>Click to toggle Popover 12</span>`;
-      </script>
-    </div>
-    <footer>
-      Spec proposal by ?????. Polyfill by OddBird in collaboration with Keith
-      Cirkel.
+        <div id="host"></div>
+
+        <script type="module">
+          const shadowInInvoker = document.getElementById('shadowInInvoker');
+          const shadowRoot = shadowInInvoker.attachShadow({ mode: 'open' });
+          shadowRoot.innerHTML = `<span>Click to toggle Popover 12</span>`;
+        </script>
+      </div>
+    </main>
+    <footer class="site-footer">
+      Spec proposal by ?????. Polyfill by
+      <a href="https://www.oddbird.net/" rel="noreferrer">OddBird</a> in
+      collaboration with
+      <a href="https://www.keithcirkel.co.uk/" rel="noreferrer">Keith Cirkel</a
+      >.
     </footer>
   </body>
 </html>
