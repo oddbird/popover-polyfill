@@ -55,22 +55,22 @@ expect.extend({
 });
 
 test('popover as a boolean attribute', async ({ page }) => {
-  const popover = (await page.locator('#default-popover')).nth(0);
+  const popover = (await page.locator('#defaultPopover')).nth(0);
   await expect(popover).toBeFunctionalPopover();
 });
 
 test('popover as ""', async ({ page }) => {
-  const popover = (await page.locator('#popover2')).nth(0);
+  const popover = (await page.locator('#emptyStatePopover')).nth(0);
   await expect(popover).toBeFunctionalPopover();
 });
 
 test('popover as "auto"', async ({ page }) => {
-  const popover = (await page.locator('#popover3')).nth(0);
+  const popover = (await page.locator('#singleActionShowPopover')).nth(0);
   await expect(popover).toBeFunctionalPopover();
 });
 
 test('popover as "manual"', async ({ page }) => {
-  const popover = (await page.locator('#popover5')).nth(0);
+  const popover = (await page.locator('#showHidePopover')).nth(0);
   await expect(popover).toBeFunctionalPopover();
 });
 

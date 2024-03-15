@@ -4,61 +4,61 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('clicking button[popovertarget=popover10] should hide open popover', async ({
+test('clicking button[popovertarget=manualPopover] should hide open popover', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover10')).nth(0);
+  const popover = (await page.locator('#manualPopover')).nth(0);
   await expect(popover).toBeHidden();
   await expect(
     await popover.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
   await expect(popover).toBeVisible();
-  await page.click('button[popovertarget=popover10]');
+  await page.click('button[popovertarget=manualPopover]');
   await expect(popover).toBeHidden();
 });
 
-test('clicking button[popovertarget=popover10] twice should hide the open popover', async ({
+test('clicking button[popovertarget=manualPopover] twice should hide the open popover', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover10')).nth(0);
-  await page.click('button[popovertarget=popover10]');
+  const popover = (await page.locator('#manualPopover')).nth(0);
+  await page.click('button[popovertarget=manualPopover]');
   await expect(popover).toBeVisible();
-  await page.click('button[popovertarget=popover10]');
+  await page.click('button[popovertarget=manualPopover]');
   await expect(popover).toBeHidden();
 });
 
-test('clicking button[popovertarget=default-popover] should show then hide open popover', async ({
+test('clicking button[popovertarget=defaultPopover] should show then hide open popover', async ({
   page,
 }) => {
-  const popover = (await page.locator('#default-popover')).nth(0);
+  const popover = (await page.locator('#defaultPopover')).nth(0);
   await expect(popover).toBeHidden();
-  await page.click('button[popovertarget=default-popover]');
+  await page.click('button[popovertarget=defaultPopover]');
   await expect(popover).toBeVisible();
-  await page.click('button[popovertarget=default-popover]');
+  await page.click('button[popovertarget=defaultPopover]');
   await expect(popover).toBeHidden();
-  await page.click('button[popovertarget=default-popover]');
+  await page.click('button[popovertarget=defaultPopover]');
   await expect(popover).toBeVisible();
 });
 
-test('clicking element inside button[popovertarget=default-popover] should show then hide open popover', async ({
+test('clicking element inside button[popovertarget=defaultPopover] should show then hide open popover', async ({
   page,
 }) => {
-  const popover = (await page.locator('#default-popover')).nth(0);
+  const popover = (await page.locator('#defaultPopover')).nth(0);
   await expect(popover).toBeHidden();
-  await page.click('button[popovertarget=default-popover] span');
+  await page.click('button[popovertarget=defaultPopover] span');
   await expect(popover).toBeVisible();
-  await page.click('button[popovertarget=default-popover] span');
+  await page.click('button[popovertarget=defaultPopover] span');
   await expect(popover).toBeHidden();
-  await page.click('button[popovertarget=default-popover] span');
+  await page.click('button[popovertarget=defaultPopover] span');
   await expect(popover).toBeVisible();
 });
 
-test('clicking button[popovertarget=default-popover] should set button aria-expanded attribute appropriately', async ({
+test('clicking button[popovertarget=defaultPopover] should set button aria-expanded attribute appropriately', async ({
   page,
 }) => {
-  const popover = (await page.locator('#default-popover')).nth(0);
+  const popover = (await page.locator('#defaultPopover')).nth(0);
   const button = (
-    await page.locator('button[popovertarget="default-popover"]')
+    await page.locator('button[popovertarget="defaultPopover"]')
   ).nth(0);
   await expect(popover).toBeHidden();
   await expect(button).toHaveAttribute('aria-expanded', 'false');
@@ -70,58 +70,58 @@ test('clicking button[popovertarget=default-popover] should set button aria-expa
   await expect(button).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('clicking button[popovertarget=popover3] should show open popover', async ({
+test('clicking button[popovertarget=singleActionShowPopover] should show open popover', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover3')).nth(0);
+  const popover = (await page.locator('#singleActionShowPopover')).nth(0);
   await expect(popover).toBeHidden();
-  await page.click('button[popovertarget=popover3]');
+  await page.click('button[popovertarget=singleActionShowPopover]');
   await expect(popover).toBeVisible();
-  await page.click('button[popovertarget=popover3]');
+  await page.click('button[popovertarget=singleActionShowPopover]');
   await expect(popover).toBeVisible();
 });
 
-test('clicking button[popovertarget=popover5][popovertargetaction="show"] should show open popover', async ({
+test('clicking button[popovertarget=showHidePopover][popovertargetaction="show"] should show open popover', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover5')).nth(0);
+  const popover = (await page.locator('#showHidePopover')).nth(0);
   await expect(popover).toBeHidden();
   await page.click(
-    'button[popovertarget=popover5][popovertargetaction="show"]',
+    'button[popovertarget=showHidePopover][popovertargetaction="show"]',
   );
   await expect(popover).toBeVisible();
   await page.click(
-    'button[popovertarget=popover5][popovertargetaction="show"]',
+    'button[popovertarget=showHidePopover][popovertargetaction="show"]',
   );
   await expect(popover).toBeVisible();
 });
 
-test('clicking button[popovertarget=popover5][popovertargetaction="hide"] should do nothing as it is already hidden', async ({
+test('clicking button[popovertarget=showHidePopover][popovertargetaction="hide"] should do nothing as it is already hidden', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover5')).nth(0);
+  const popover = (await page.locator('#showHidePopover')).nth(0);
   await expect(popover).toBeHidden();
   await page.click(
-    'button[popovertarget=popover5][popovertargetaction="hide"]',
+    'button[popovertarget=showHidePopover][popovertargetaction="hide"]',
   );
   await expect(popover).toBeHidden();
   await page.click(
-    'button[popovertarget=popover5][popovertargetaction="hide"]',
+    'button[popovertarget=showHidePopover][popovertargetaction="hide"]',
   );
   await expect(popover).toBeHidden();
 });
 
-test('clicking button[popovertarget=popover5][popovertargetaction="show"] then button[popovertarget=popover5][popovertargetaction="hide"] should show and hide popover', async ({
+test('clicking button[popovertarget=showHidePopover][popovertargetaction="show"] then button[popovertarget=showHidePopover][popovertargetaction="hide"] should show and hide popover', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover5')).nth(0);
+  const popover = (await page.locator('#showHidePopover')).nth(0);
   await expect(popover).toBeHidden();
   await page.click(
-    'button[popovertarget=popover5][popovertargetaction="show"]',
+    'button[popovertarget=showHidePopover][popovertargetaction="show"]',
   );
   await expect(popover).toBeVisible();
   await page.click(
-    'button[popovertarget=popover5][popovertargetaction="hide"]',
+    'button[popovertarget=showHidePopover][popovertargetaction="hide"]',
   );
   await expect(popover).toBeHidden();
 });
@@ -159,12 +159,10 @@ test('clicking button[popovertarget=shadowedNestedPopover] should hide open nest
 test("button 'popovertargetElement' property should return target element", async ({
   page,
 }) => {
-  const popover = (await page.locator('#default-popover')).nth(0);
+  const popover = (await page.locator('#defaultPopover')).nth(0);
   await expect(
     await popover.evaluate((node) => {
-      const button = document.querySelector(
-        '[popovertarget="default-popover"]',
-      );
+      const button = document.querySelector('[popovertarget="defaultPopover"]');
       return button?.popoverTargetElement === node;
     }),
   ).toBe(true);
@@ -185,7 +183,9 @@ test("button's 'popoverTargetElement' property should return target element acro
 test("assign invalid value to button's 'popoverTargetElement' property should fail returning its target element", async ({
   page,
 }) => {
-  const button = (await page.locator('[popovertarget="notExist"]')).nth(0);
+  const button = (
+    await page.locator('[popovertarget="invalidTargetPopover"]')
+  ).nth(0);
   await expect(
     await button.evaluate((node) => node.popoverTargetElement),
   ).toBeNull();
@@ -195,12 +195,12 @@ test("assign an HTML element to button's 'popoverTargetElement' property should 
   page,
 }) => {
   const button = (
-    await page.locator('button[popovertarget=default-popover]')
+    await page.locator('button[popovertarget=defaultPopover]')
   ).nth(0);
 
   await expect(
     await button.evaluate((node) => {
-      const popover = document.querySelector('#default-popover');
+      const popover = document.querySelector('#defaultPopover');
       node.popoverTargetElement = popover;
       return node.getAttribute('popovertarget');
     }),
@@ -210,7 +210,7 @@ test("assign an HTML element to button's 'popoverTargetElement' property should 
 test("assign null to invoker's 'popoverTargetElement' property should remove its 'popovertoggletarget' attribute", async ({
   page,
 }) => {
-  const button = (await page.locator('[popovertarget="default-popover"]')).nth(
+  const button = (await page.locator('[popovertarget="defaultPopover"]')).nth(
     0,
   );
   await expect(
