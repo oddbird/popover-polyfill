@@ -234,7 +234,7 @@ test('clicking button#crossTreeToggle should show then hide popover in a differe
 test('clicking #shadowInInvoker should show then hide popover', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover12')).nth(0);
+  const popover = (await page.locator('#shadowInvokedPopover')).nth(0);
   await page.click('#shadowInInvoker');
   await expect(popover).toBeVisible();
   await page.click('#shadowInInvoker');

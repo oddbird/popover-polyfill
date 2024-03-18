@@ -165,7 +165,7 @@
             </ul>
           </div>
         </div>
-        <div id="popover12" popover>Popover 12</div>
+        <div id="shadowInvokedPopover" popover>Shadow Invoked Popover</div>
         <div id="popover13" popover>
           Popover 13 (should be red if browser has @layer support)
         </div>
@@ -426,9 +426,31 @@ Show Menu
             Show Menu
           </button>
         </section>
-        <button popovertarget="popover12" data-btn>
-          <span id="shadowInInvoker"></span>
-        </button>
+        <section class="demo-item">
+          <h2 data-header>
+            Opening a Popover with an Element Created in the Shadow Root
+          </h2>
+          <p class="note">
+            Elements created in the shadow dom can trigger a popover.
+          </p>
+          <pre>
+          <code class="language-markup">
+&lt;button popovertarget="shadowInvokedPopover">
+  &lt;span id="shadowInInvoker">&lt;/span>
+&lt;/button>
+          </code>
+          <code class="language-js">
+&lt;script type="module">
+  const shadowInInvoker = document.getElementById('shadowInInvoker');
+  const shadowRoot = shadowInInvoker.attachShadow({ mode: 'open' });
+  shadowRoot.innerHTML = `&lt;span>Click to toggle Popover 12&lt;/span>`;
+&lt;/script>
+          </code>
+        </pre>
+          <button popovertarget="shadowInvokedPopover" data-btn>
+            <span id="shadowInInvoker"></span>
+          </button>
+        </section>
         <button popovertarget="popover13" data-btn>
           Click to toggle Popover 13
         </button>
@@ -438,7 +460,7 @@ Show Menu
         <script type="module">
           const shadowInInvoker = document.getElementById('shadowInInvoker');
           const shadowRoot = shadowInInvoker.attachShadow({ mode: 'open' });
-          shadowRoot.innerHTML = `<span>Click to toggle Popover 12</span>`;
+          shadowRoot.innerHTML = `<span data-btn style="font-family: var(--serif); font-size: var(--normal);">Toggle Shadow Invoked Popover</span>`;
         </script>
       </div>
     </main>
