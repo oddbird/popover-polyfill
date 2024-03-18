@@ -87,7 +87,7 @@ body {
   line-height: 0.8;
   margin-block: 0;
 
-  @media (width >= 56em) {
+  @media (width >=56em) {
     align-content: center;
   }
 
@@ -178,11 +178,19 @@ body {
 .site-footer {
   grid-area: footer;
   position: relative;
+}
 
-  /* &::before {
-    border-block-start: thin solid var(--border-color);
-    content: '';
-    position: absolute;
-    inset: -30px 0 0 0;
-  } */
+[data-popover] {
+  border: 1px solid var(--border-color);
+  box-shadow: 0 3px 3px var(--shadow);
+  color: var(--popover-color, var(--text));
+
+  @media (width <=630px) {
+    margin-inline: var(--gap);
+  }
+}
+
+[data-popover~='layered-styles'] {
+  --border-color: var(--text);
+  --popover-color: var(--bg);
 }

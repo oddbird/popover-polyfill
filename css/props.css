@@ -44,7 +44,7 @@ html {
   --text-light: hsl(192.86deg 10% 27.451%);
   --accent-color: hsl(330.2deg 67.742% 42.549%);
   --border-color: hsl(195deg 10% 50%);
-  --shadow: hsl(195deg 30.769% 94.902% / 0.4);
+  --shadow: hsl(0, 0%, 53%);
   --action: hsl(195deg 53% 27%);
   --active: hsl(330deg 52.857% 27.451%);
   --highlight: hsl(330deg 52.857% 27.451%);

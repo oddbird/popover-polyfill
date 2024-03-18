@@ -24,6 +24,6 @@ test("removing an autoPopover from document doesn't crash page", async ({
 test('styles in layers are winning over polyfilled styles', async ({
   page,
 }) => {
-  const popover = (await page.locator('#popover13')).nth(0);
+  const popover = (await page.locator('#layeredStylesPopover')).nth(0);
   await expect(popover).toHaveCSS('background-color', 'rgb(208, 13, 30)');
 });

@@ -25,7 +25,7 @@
       @layer popover-polyfill;
 
       @layer consumer {
-        #popover13 {
+        [data-popover~='layered-styles'] {
           background-color: #d00d1e;
         }
       }
@@ -125,25 +125,29 @@
         </div>
       </header>
       <div id="popovers">
-        <div id="defaultPopover" popover>Default Popover</div>
-        <div id="emptyStatePopover" popover="">Empty State Popover</div>
-        <div id="singleActionShowPopover" popover="auto">
+        <div id="defaultPopover" data-popover popover>Default Popover</div>
+        <div id="emptyStatePopover" data-popover popover="">
+          Empty State Popover
+        </div>
+        <div id="singleActionShowPopover" data-popover popover="auto">
           Target Action Popover. This popover has an autofocus link:
           <a href="#" autofocus>I'm a link!</a>
         </div>
         <div id="popover4" popover="hint">Invalid Popover ("hint")</div>
-        <div id="showHidePopover" popover="manual">
+        <div id="showHidePopover" data-popover popover="manual">
           Popover with Explicit Action. This popover has an autofocus link:
           <a href="#" autofocus>I'm a link!</a>
         </div>
         <div id="popover6" popover="invalid">Invalid Popover ("invalid")</div>
         <div id="popover7" popover="auto">Popover 7 (auto)</div>
         <div id="popover8" popover="auto">Popover 8 (auto)</div>
-        <div id="singleButtonPopover" popover="manual">
+        <div id="singleButtonPopover" data-popover popover="manual">
           Single Button Popover
         </div>
-        <div id="manualPopover" popover="manual">Manual Popover</div>
-        <div id="nestedPopover" popover="auto">
+        <div id="manualPopover" data-popover popover="manual">
+          Manual Popover
+        </div>
+        <div id="nestedPopover" data-popover popover="auto">
           <ul>
             <li><button data-btn>Item 1</button></li>
             <li><button data-btn>Item 2</button></li>
@@ -157,7 +161,12 @@
               </button>
             </li>
           </ul>
-          <div id="nestedPopover-1" popover="auto" style="left: 200px">
+          <div
+            id="nestedPopover-1"
+            data-popover
+            popover="auto"
+            style="left: 200px"
+          >
             <ul>
               <li><button data-btn>Submenu Item 1</button></li>
               <li><button data-btn>Submenu Item 2</button></li>
@@ -165,9 +174,12 @@
             </ul>
           </div>
         </div>
-        <div id="shadowInvokedPopover" popover>Shadow Invoked Popover</div>
-        <div id="popover13" popover>
-          Popover 13 (should be red if browser has @layer support)
+        <div id="shadowInvokedPopover" data-popover popover>
+          Shadow Invoked Popover
+        </div>
+        <div id="layeredStylesPopover" data-popover="layered-styles" popover>
+          Toggle Popover with Layered Styles (should be red if browser has
+          @layer support)
         </div>
         <dialog popover>I'm a dialog!</dialog>
 
@@ -451,9 +463,44 @@ Show Menu
             <span id="shadowInInvoker"></span>
           </button>
         </section>
-        <button popovertarget="popover13" data-btn>
-          Click to toggle Popover 13
-        </button>
+        <section class="demo-item">
+          <h2 data-header>Layers Support</h2>
+          <p class="note">
+            When supported, the polyfill creates a cascade layer named
+            <code class="language-css">popover-polyfill</code>. If author styles
+            are not in layers then this should have no impact. If layers are
+            used, authors will need to ensure the polyfill layer is declared
+            first (e.g.
+            <code class="language-css"
+              >@layer popover-polyfill, other, layers;</code
+            >).
+          </p>
+          <pre>
+            <code class="language-markup">
+&lt;button popovertarget="layeredStylesPopover">
+  Toggle Popover with Layered Styles
+&lt;/button>
+
+&lt;div id="layeredStylesPopover" data-popover="layered-styles" popover>
+  Popover with Layered Styles (should be red if browser has @layer support)
+&lt;/div>
+            </code>
+            <code class="language-css">
+/* css */
+
+@layer popover-polyfill;
+
+@layer consumer {
+  [data-popover~='layered-styles'] {
+    background-color: #d00d1e;
+  }
+</code>
+
+        </pre>
+          <button popovertarget="layeredStylesPopover" data-btn>
+            Toggle Popover with Layered Styles
+          </button>
+        </section>
 
         <div id="host"></div>
 
