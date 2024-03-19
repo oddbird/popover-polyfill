@@ -10,6 +10,7 @@ body {
   font-size-adjust: from-font;
   line-height: 1.3;
 }
+
 h1,
 h2,
 h3,
@@ -43,7 +44,7 @@ ol {
   }
 }
 
-:focus:not(pre) {
+:focus {
   outline: medium dotted var(--accent-color);
   outline-offset: 0.25em;
 }
@@ -79,10 +80,21 @@ pre {
 pre,
 code:not(pre *) {
   font-family: var(--code);
+}
+
+code:not([class^="language"]) {
+  background: var(--callout-special);
+  border-radius: var(--quarter-shim);
+  color: var(--highlight);
+  padding-inline: var(--quarter-shim);
+}
+
+code[class^="language"] {
   font-size: var(--small);
 }
 
 a {
+
   &:link,
   &:visited {
     --underline-color--default: var(--accent-color);
@@ -91,19 +103,13 @@ a {
 
     color: var(--link, var(--action));
     text-decoration: underline;
-    text-decoration-color: var(
-      --underline-color,
-      var(--underline-color--default)
-    );
-    text-decoration-thickness: var(
-      --underline-thickness,
-      var(--underline-thickness--default)
-    );
+    text-decoration-color: var(--underline-color,
+        var(--underline-color--default));
+    text-decoration-thickness: var(--underline-thickness,
+        var(--underline-thickness--default));
     text-decoration-skip-ink: auto;
-    text-underline-offset: var(
-      --underline-offset,
-      var(--underline-offset--default)
-    );
+    text-underline-offset: var(--underline-offset,
+        var(--underline-offset--default));
     transition: text-decoration-thickness 150ms ease-out;
   }
 

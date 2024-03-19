@@ -187,28 +187,66 @@
           const host = document.getElementById('host');
           const shadowRoot = host.attachShadow({ mode: 'open' });
           shadowRoot.innerHTML = `<section class="demo-item">
-          <h2 data-header>Popovers in the Shadow Root</h2>
+          <h2 data-header>Popovers and Controls Created Fully in the Shadow Root</h2>
           <p class="note">
-            Elements in the shadow root can be popovers.
-          </p> <button popovertarget="shadowedPopover" data-btn>
+            Here, both the popover control button and the popover are both created in the Shadow DOM.
+          </p> 
+          <div class="button-group" data-popover-control>
+          <button popovertarget="shadowedPopover" data-btn>
                   Toggle Shadowed Popover
                 </button>
                 <button popovertarget="shadowedNestedPopover" data-btn>
                   Toggle Shadowed Nested Popover
                 </button>
+          </div>
+          <pre>
+          <code class="language-markup">
+&lt;button popovertargetaction="show" popovertarget="showHidePopover">
+  Show Popover with Explicit Action
+&lt;/button>
+
+&lt;button popovertargetaction="hide" popovertarget="showHidePopover">
+  Hide Popover with Explicit Action
+&lt;/button>
+
+&lt;div id="showHidePopover" popover="manual">
+  Popover with Explicit Action. This popover has an autofocus link: &lt;a href="#" autofocus>I'm a link!&lt;/a&gt;
+&lt;/div&gt;
+          </code>
+        </pre>
                 </section>
-                <div id="shadowedPopover" popover="auto">Shadowed Popover (auto)</div>
+                <div id="shadowedPopover" popover="auto" data-popover>Shadowed Popover</div>
                 <div>
-                  <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
+                  <div id="shadowedNestedPopover" popover="auto" data-popover>Shadowed Nested Popover</div>
                 </div>
 
                 <style> 
-                   .demo-item {
-    display: grid;
-    grid-template: 'title' min-content 'note' auto 'popover-button' min-content 'code' 1fr / minmax( 20ch, 1fr );
-    max-inline-size: 45ch;
-    padding: 1em;
-  }
+                  pre, code:not(pre *) {
+                    font-family: var(--code);
+                    font-size: var(--small);
+                  }
+
+                  h2 {
+                    font-family: var(--sans-serif);
+                    font-size: var(--large);
+                  }
+
+                  .demo-item {
+                    display: grid;
+                    grid-template: 'title' min-content 'note' auto 'popover-button' min-content 'code' 1fr / minmax( 20ch, 1fr );
+                    max-inline-size: 45ch;
+                    padding: 1em;
+                  }
+
+                  [data-popover-control] {
+                    grid-area: popover-button;
+                  }
+
+                  .button-group {
+                    display: grid;
+                    gap: var(--gap);
+                  }
+
                   [data-btn] {
                     align-items: center;
                     background-color: var(--button-state, hsl(0deg 0% 20%));
@@ -217,9 +255,9 @@
                     cursor: pointer;
                     display: inline-flex;
                     font: inherit;
-                    max-inline-size: fit-content;
                     padding: 0.2em 0.5em;
-                    justify-self: center;
+                    inline-size: 100%;
+                    justify-content: center;
 
                       &:hover,
                       &:focus {
@@ -229,6 +267,15 @@
 
                   [popover] { padding: .5em 1em; }
 
+                  [data-popover] {
+                    border: 1px solid var(--border-color);
+                    box-shadow: 0 3px 3px var(--shadow);
+                    color: var(--popover-color, var(--text));
+
+                    @media (width <=630px) {
+                      margin-inline: var(--gap);
+                    }
+                  }
                 </style>`;
           document.getElementById('crossTreeToggle').popoverTargetElement =
             shadowRoot.getElementById('shadowedPopover');
@@ -389,18 +436,47 @@
             <code>popovertarget</code> "invalidTargetPopover", no popover will
             open.
           </p>
+          <button popovertarget="invalidTargetPopover" data-btn>
+            Toggle nothing
+          </button>
           <pre>
           <code class="language-markup">
 &lt;button popovertarget="invalidTargetPopover">Toggle Nothing&lt;/button>
           </code>
         </pre>
-          <button popovertarget="invalidTargetPopover" data-btn>
-            Toggle nothing
-          </button>
         </section>
-        <button id="crossTreeToggle" data-btn>
-          Click to toggle shadowed Popover
-        </button>
+        <section class="demo-item">
+          <h2 data-header>Targeting Elements in a Different Tree Scope</h2>
+          <p class="note">
+            This button created in the light DOM has its
+            <code class="language-markup">popovertarget</code>, which is in the
+            Shadow DOM, set using JavaScript.
+          </p>
+          <button id="crossTreeToggle" data-btn>
+            Toggle Cross Tree Popover
+          </button>
+          <pre>
+          <code class="language-markup">
+&lt;!-- Light DOM -->
+&lt;button id="crossTreeToggle">
+  Toggle Cross Tree Popover
+&lt;/button>
+
+&lt;!-- Shadow DOM -->
+&lt;div id="shadowedPopover" popover="auto">Shadowed Popover&lt;/div>
+&lt;div>
+          </code>
+          <code class="language-js">
+&lt;script type="module">
+  const host = document.getElementById('host');
+  const shadowRoot = host.attachShadow({ mode: 'open' });
+  document.getElementById('crossTreeToggle').popoverTargetElement =
+  shadowRoot.getElementById('shadowedPopover');
+&lt;/script>
+          </code>
+          
+        </pre>
+        </section>
         <section class="demo-item">
           <h2 data-header>Nested Popovers</h2>
           <p>Popovers can be nested within other popovers.</p>
@@ -445,6 +521,9 @@ Show Menu
           <p class="note">
             Elements created in the shadow dom can trigger a popover.
           </p>
+          <button popovertarget="shadowInvokedPopover" data-btn>
+            <span id="shadowInInvoker"></span>
+          </button>
           <pre>
           <code class="language-markup">
 &lt;button popovertarget="shadowInvokedPopover">
@@ -455,13 +534,10 @@ Show Menu
 &lt;script type="module">
   const shadowInInvoker = document.getElementById('shadowInInvoker');
   const shadowRoot = shadowInInvoker.attachShadow({ mode: 'open' });
-  shadowRoot.innerHTML = `&lt;span>Click to toggle Popover 12&lt;/span>`;
+  shadowRoot.innerHTML = `&lt;span>Toggle Shadow Invoked Popover&lt;/span>`;
 &lt;/script>
           </code>
         </pre>
-          <button popovertarget="shadowInvokedPopover" data-btn>
-            <span id="shadowInInvoker"></span>
-          </button>
         </section>
         <section class="demo-item">
           <h2 data-header>Layers Support</h2>
@@ -475,6 +551,9 @@ Show Menu
               >@layer popover-polyfill, other, layers;</code
             >).
           </p>
+          <button popovertarget="layeredStylesPopover" data-btn>
+            Toggle Popover with Layered Styles
+          </button>
           <pre>
             <code class="language-markup">
 &lt;button popovertarget="layeredStylesPopover">
@@ -497,9 +576,6 @@ Show Menu
 </code>
 
         </pre>
-          <button popovertarget="layeredStylesPopover" data-btn>
-            Toggle Popover with Layered Styles
-          </button>
         </section>
 
         <div id="host"></div>
@@ -512,7 +588,7 @@ Show Menu
       </div>
     </main>
     <footer class="site-footer">
-      Spec proposal by ?????. Polyfill by
+      Polyfill by
       <a href="https://www.oddbird.net/" rel="noreferrer">OddBird</a> in
       collaboration with
       <a href="https://www.keithcirkel.co.uk/" rel="noreferrer">Keith Cirkel</a
