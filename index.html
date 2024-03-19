@@ -449,8 +449,8 @@
           <h2 data-header>Targeting Elements in a Different Tree Scope</h2>
           <p class="note">
             This button created in the light DOM has its
-            <code class="language-markup">popovertarget</code>, which is in the
-            Shadow DOM, set using JavaScript.
+            <code>popovertarget</code>, which is in the shadow DOM, set using
+            JavaScript.
           </p>
           <button id="crossTreeToggle" data-btn>
             Toggle Cross Tree Popover
@@ -519,7 +519,7 @@ Show Menu
             Opening a Popover with an Element Created in the Shadow Root
           </h2>
           <p class="note">
-            Elements created in the shadow dom can trigger a popover.
+            Elements created in the shadow DOM can trigger a popover.
           </p>
           <button popovertarget="shadowInvokedPopover" data-btn>
             <span id="shadowInInvoker"></span>
@@ -543,13 +543,10 @@ Show Menu
           <h2 data-header>Layers Support</h2>
           <p class="note">
             When supported, the polyfill creates a cascade layer named
-            <code class="language-css">popover-polyfill</code>. If author styles
-            are not in layers then this should have no impact. If layers are
-            used, authors will need to ensure the polyfill layer is declared
-            first (e.g.
-            <code class="language-css"
-              >@layer popover-polyfill, other, layers;</code
-            >).
+            <code>popover-polyfill</code>. If author styles are not in layers
+            then this should have no impact. If layers are used, authors will
+            need to ensure the polyfill layer is declared first (e.g.
+            <code>@layer popover-polyfill, other, layers;</code>).
           </p>
           <button popovertarget="layeredStylesPopover" data-btn>
             Toggle Popover with Layered Styles
