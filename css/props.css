@@ -53,7 +53,9 @@ html {
   --feature: hsl(195.65deg 45.098% 20%);
   --feature-to: hsl(194.78deg 75.281% 34.902%);
   --feature-from: var(--accent-color);
-  --feature-gradient: linear-gradient(to bottom right,
-      var(--feature-from),
-      var(--feature-to));
+  --feature-gradient: linear-gradient(
+    to bottom right,
+    var(--feature-from),
+    var(--feature-to)
+  );
 }
