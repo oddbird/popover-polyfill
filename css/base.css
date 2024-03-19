@@ -51,15 +51,15 @@ ol {
 
 [data-btn] {
   align-items: center;
-  background-color: var(--button-state, hsl(0deg 0% 20%));
+  background-color: var(--button-state, var(--button-bg, hsl(0deg 0% 20%)));
   border: 1px solid transparent;
-  color: var(--bg);
+  color: var(--button-color, var(--bg));
   cursor: pointer;
   display: inline-flex;
   font: inherit;
   padding: 0.2em 0.5em;
   inline-size: 100%;
-  justify-content: center;
+  justify-content: var(--btn-content-align, center);
 
   &:hover,
   &:focus {

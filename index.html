@@ -147,15 +147,15 @@
         <div id="manualPopover" data-popover popover="manual">
           Manual Popover
         </div>
-        <div id="nestedPopover" data-popover popover="auto">
-          <ul>
-            <li><button data-btn>Item 1</button></li>
-            <li><button data-btn>Item 2</button></li>
+        <div id="nestedPopover" data-popover="nested" popover="auto">
+          <ul class="menu-list">
+            <li><button data-btn="menu-item">Item 1</button></li>
+            <li><button data-btn="menu-item">Item 2</button></li>
             <li>
               <button
                 popovertarget="nestedPopover-1"
                 popovertargetaction="show"
-                data-btn
+                data-btn="menu-item"
               >
                 Show Sub Menu
               </button>
@@ -163,14 +163,14 @@
           </ul>
           <div
             id="nestedPopover-1"
-            data-popover
+            data-popover="nested"
             popover="auto"
             style="left: 200px"
           >
-            <ul>
-              <li><button data-btn>Submenu Item 1</button></li>
-              <li><button data-btn>Submenu Item 2</button></li>
-              <li><button data-btn>Submenu Item 3</button></li>
+            <ul class="menu-list">
+              <li><button data-btn="menu-item">Submenu Item 1</button></li>
+              <li><button data-btn="menu-item">Submenu Item 2</button></li>
+              <li><button data-btn="menu-item">Submenu Item 3</button></li>
             </ul>
           </div>
         </div>

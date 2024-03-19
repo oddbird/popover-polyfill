@@ -175,11 +175,6 @@ body {
   margin-block-end: var(--double-gap);
 }
 
-.site-footer {
-  grid-area: footer;
-  position: relative;
-}
-
 [data-popover] {
   border: 1px solid var(--border-color);
   box-shadow: 0 3px 3px var(--shadow);
@@ -195,8 +190,26 @@ body {
   --popover-color: var(--bg);
 }
 
+[data-popover~='nested'] {
+  padding: 0;
+}
+
+[data-btn~='menu-item'] {
+  --button-bg: var(--bg);
+  --button-color: var(--text);
+  --btn-content-align: start;
+
+  &:hover,
+  &:focus {
+    --button-color: var(--bg);
+    outline-color: transparent;
+  }
+}
+
 .site-footer {
+  grid-area: footer;
   margin-block-start: var(--spacer);
+  position: relative;
   padding-block-end: var(--double-gap);
 
   &::before {
@@ -205,4 +218,10 @@ body {
     position: absolute;
     inset: calc(var(--spacer) * -1) 0 0 0;
   }
+}
+
+.menu-list {
+  list-style: none;
+  margin: 0;
+  text-align: start;
 }
