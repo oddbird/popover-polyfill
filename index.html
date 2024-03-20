@@ -186,7 +186,7 @@
         <script type="module">
           const host = document.getElementById('host');
           const shadowRoot = host.attachShadow({ mode: 'open' });
-          shadowRoot.innerHTML = `<section class="demo-item">
+          shadowRoot.innerHTML = `<link rel="stylesheet" href="/css/prism.css" /> <section class="demo-item">
           <h2 data-header>Popovers and Controls Created Fully in the Shadow Root</h2>
           <p class="note">
             Here, both the popover control button and the popover are both created in the Shadow DOM.
@@ -201,17 +201,11 @@
           </div>
           <pre>
           <code class="language-markup">
-&lt;button popovertargetaction="show" popovertarget="showHidePopover">
-  Show Popover with Explicit Action
-&lt;/button>
-
-&lt;button popovertargetaction="hide" popovertarget="showHidePopover">
-  Hide Popover with Explicit Action
-&lt;/button>
-
-&lt;div id="showHidePopover" popover="manual">
-  Popover with Explicit Action. This popover has an autofocus link: &lt;a href="#" autofocus>I'm a link!&lt;/a&gt;
-&lt;/div&gt;
+&lt;div id="shadowedPopover" popover="auto">Shadowed Popover&lt;/div>
+  
+&lt;div>
+  &lt;div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover&lt;/div>
+&lt;/div>
           </code>
         </pre>
                 </section>
@@ -575,7 +569,9 @@ Show Menu
         </pre>
         </section>
 
-        <div id="host"></div>
+        <div id="host">
+          <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
+        </div>
 
         <script type="module">
           const shadowInInvoker = document.getElementById('shadowInInvoker');
