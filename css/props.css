@@ -20,9 +20,9 @@ html {
   --step-3: clamp(1.9438rem, 1.0218rem + 4.6098cqi, 4.5944rem);
   --step-6: clamp(3.3592rem, 2.8691rem + 2.4507cqi, 4.7684rem);
   --step-7: clamp(4.0311rem, 3.36rem + 3.3555cqi, 5.9605rem);
-  --step-8: clamp(4.8373rem, 3.9283rem + 4.5448cqi, 7.4506rem);
-  --step-9: clamp(5.8048rem, 4.5844rem + 6.1017cqi, 9.3132rem);
-  --step-10: clamp(6.9657rem, 5.3393rem + 8.1319cqi, 11.6415rem);
+  --step-8: clamp(4.8373rem, 3.9283rem + 4.5448cqi, 17.4506rem);
+  --step-9: clamp(5.8048rem, 4.5844rem + 6.1017cqi, 19.3132rem);
+  --step-10: clamp(6.9657rem, 5.3393rem + 8.1319cqi, 19.6415rem);
 
   --small: var(--step-n1);
   --normal: var(--step-0);

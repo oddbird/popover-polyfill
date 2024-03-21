@@ -65,24 +65,16 @@ body {
 .main-header {
   container: main-header / inline-size;
   position: relative;
+  justify-content: center;
 
   @media (width >=60em) {
-    display: grid;
+    display: flex;
     gap: var(--double-gap);
-    grid-template-columns: minmax(30ch, 1fr) minmax(20ch, 1fr);
-  }
-
-  &::after {
-    border-block-end: thin solid var(--border-color);
-    content: '';
-    position: absolute;
-    inset: 0 0 -1em 0;
   }
 }
 
 #title {
   display: grid;
-  container: title / inline-size;
   grid-auto-rows: min-content;
   line-height: 0.8;
   margin-block: 0;
@@ -136,7 +128,7 @@ body {
 }
 
 .description {
-  container: description / inline-size;
+  max-inline-size: 65ch;
 }
 
 .demo-section {
@@ -145,6 +137,18 @@ body {
   gap: var(--gap);
   justify-items: center;
   margin-block-start: var(--double-gap);
+  position: relative;
+
+  &::before {
+    border-block-end: thin solid var(--border-color);
+    content: '';
+    inset: 0;
+    position: absolute;
+  }
+
+  &::before {
+    inset-block-end: auto;
+  }
 }
 
 .demo-item {
@@ -216,7 +220,11 @@ body {
     border-block-start: thin solid var(--border-color);
     content: '';
     position: absolute;
-    inset: calc(var(--spacer) * -1) 0 0 0;
+    inset: 0 0 calc(var(--spacer) * 2) 0;
+  }
+
+  &::before {
+    inset-block-start: auto;
   }
 }
 
