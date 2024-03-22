@@ -68,8 +68,13 @@ body {
   justify-content: center;
 
   @media (width >=60em) {
+    align-items: var(--header-items-align, center);
     display: flex;
     gap: var(--double-gap);
+  }
+
+  @media (width >=1400px) {
+    --header-items-align: last baseline;
   }
 }
 
@@ -108,7 +113,7 @@ body {
     --title-size: var(--step-8);
   }
 
-  @container main-header (width >=1000px) {
+  @container main-header (width >=1200px) {
     --title-size: var(--step-9);
   }
 
@@ -129,6 +134,10 @@ body {
 
 .description {
   max-inline-size: 65ch;
+
+  @container main-header (width >=830px) {
+    min-inline-size: 35ch;
+  }
 }
 
 .demo-section {
