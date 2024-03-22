@@ -12,14 +12,15 @@
       crossorigin
     />
     <style>
-      @layer reset, base, popover-polyfill, default, demo;
+      @layer reset, initial, popover-polyfill, default, demo;
 
       @import url('/css/reset.css') layer(reset);
       @import url('/css/demo.css') layer(demo);
-      @import url('/css/prism.css') layer(base);
-      @import url('/css/fonts.css') layer(base);
+      @import url('/css/prism.css') layer(initial);
+      @import url('/css/fonts.css') layer(initial);
       @import url('/css/base.css') layer(default);
-      @import url('/css/props.css') layer(base);
+      @import url('/css/props.css') layer(initial);
+      @import url('/css/code.css') layer(default);
     </style>
     <style>
       @layer popover-polyfill;
@@ -34,7 +35,7 @@
     <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
     <script src="https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
 
-    <!--- TypeKit Fonts --->
+    <!-- TypeKit Fonts -->
     <script src="https://use.typekit.net/slx1xnq.js"></script>
     <script>
       try {
@@ -152,8 +153,12 @@
         </div>
         <div id="nestedPopover" data-popover="nested" popover="auto">
           <ul class="menu-list">
-            <li><button data-btn="menu-item">Item 1</button></li>
-            <li><button data-btn="menu-item">Item 2</button></li>
+            <li>
+              <button data-btn="menu-item">Item 1</button>
+            </li>
+            <li>
+              <button data-btn="menu-item">Item 2</button>
+            </li>
             <li>
               <button
                 popovertarget="nestedPopover-1"
@@ -171,9 +176,15 @@
             style="left: 200px"
           >
             <ul class="menu-list">
-              <li><button data-btn="menu-item">Submenu Item 1</button></li>
-              <li><button data-btn="menu-item">Submenu Item 2</button></li>
-              <li><button data-btn="menu-item">Submenu Item 3</button></li>
+              <li>
+                <button data-btn="menu-item">Submenu Item 1</button>
+              </li>
+              <li>
+                <button data-btn="menu-item">Submenu Item 2</button>
+              </li>
+              <li>
+                <button data-btn="menu-item">Submenu Item 3</button>
+              </li>
             </ul>
           </div>
         </div>
@@ -189,7 +200,14 @@
         <script type="module">
           const host = document.getElementById('host');
           const shadowRoot = host.attachShadow({ mode: 'open' });
-          shadowRoot.innerHTML = `<link rel="stylesheet" href="/css/prism.css" /> <section class="demo-item">
+          shadowRoot.innerHTML = `<style>
+      @import url('/css/reset.css') layer(reset);
+      @import url('/css/demo.css') layer(demo);
+      @import url('/css/prism.css') layer(initial);
+      @import url('/css/base.css') layer(default);
+      @import url('/css/props.css') layer(initial);
+      @import url('/css/code.css') layer(default);
+    </style><section class="demo-item">
           <h2 data-header>Popovers and Controls Created Fully in the Shadow Root</h2>
           <p class="note">
             Here, both the popover control button and the popover are both created in the Shadow DOM.
@@ -215,65 +233,7 @@
                 <div id="shadowedPopover" popover="auto" data-popover>Shadowed Popover</div>
                 <div>
                   <div id="shadowedNestedPopover" popover="auto" data-popover>Shadowed Nested Popover</div>
-                </div>
-
-                <style> 
-                  pre, code:not(pre *) {
-                    font-family: var(--code);
-                    font-size: var(--small);
-                  }
-
-                  h2 {
-                    font-family: var(--sans-serif);
-                    font-size: var(--large);
-                  }
-
-                  .demo-item {
-                    display: grid;
-                    grid-template: 'title' min-content 'note' auto 'popover-button' min-content 'code' 1fr / minmax( 20ch, 1fr );
-                    max-inline-size: 45ch;
-                    padding: 1em;
-                  }
-
-                  [data-popover-control] {
-                    grid-area: popover-button;
-                  }
-
-                  .button-group {
-                    display: grid;
-                    gap: var(--gap);
-                  }
-
-                  [data-btn] {
-                    align-items: center;
-                    background-color: var(--button-state, hsl(0deg 0% 20%));
-                    border: 1px solid transparent;
-                    color: var(--bg);
-                    cursor: pointer;
-                    display: inline-flex;
-                    font: inherit;
-                    padding: 0.2em 0.5em;
-                    inline-size: 100%;
-                    justify-content: center;
-
-                      &:hover,
-                      &:focus {
-                      --button-state: var(--action);
-                    }
-                  }
-
-                  [popover] { padding: .5em 1em; }
-
-                  [data-popover] {
-                    border: 1px solid var(--border-color);
-                    box-shadow: 0 3px 3px var(--shadow);
-                    color: var(--popover-color, var(--text));
-
-                    @media (width <=630px) {
-                      margin-inline: var(--gap);
-                    }
-                  }
-                </style>`;
+                </div>`;
           document.getElementById('crossTreeToggle').popoverTargetElement =
             shadowRoot.getElementById('shadowedPopover');
         </script>
@@ -574,6 +534,7 @@ Show Menu
 
         <div id="host">
           <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
+          <script src="https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
         </div>
 
         <script type="module">

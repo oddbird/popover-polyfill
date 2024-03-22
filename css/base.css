@@ -57,9 +57,10 @@ ol {
   cursor: pointer;
   display: inline-flex;
   font: inherit;
+  inline-size: var(--btn-inline-size, fit-content);
   padding: 0.2em 0.5em;
-  inline-size: 100%;
   justify-content: var(--btn-content-align, center);
+  justify-self: center;
 
   &:hover,
   &:focus {
@@ -69,28 +70,6 @@ ol {
 
 [popover] {
   padding: 0.5em 1em;
-}
-
-pre {
-  white-space: pre-wrap;
-  word-break: break-all;
-  word-wrap: break-word;
-}
-
-pre,
-code:not(pre *) {
-  font-family: var(--code);
-}
-
-code:not([class^='language']) {
-  background: var(--callout-special);
-  border-radius: var(--quarter-shim);
-  color: var(--highlight);
-  padding-inline: var(--quarter-shim);
-}
-
-code[class^='language'] {
-  font-size: var(--small);
 }
 
 a {

@@ -8,6 +8,7 @@ body {
 .site-header {
   display: grid;
   font-family: var(--sans-serif);
+  font-size: var(--small);
   grid-area: site-header;
   grid-template-columns: minmax(8ch, 15ch) auto;
 }
@@ -38,6 +39,7 @@ body {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
+  font-size: var(--normal);
   justify-content: var(--nav-placement, flex-end);
   list-style: none;
   margin-block: 0 var(--gap);
@@ -166,7 +168,7 @@ body {
       20ch,
       1fr
     );
-  max-inline-size: 45ch;
+  max-inline-size: 57ch;
   padding: 1em;
 }
 
@@ -208,9 +210,10 @@ body {
 }
 
 [data-btn~='menu-item'] {
-  --button-bg: var(--bg);
+  --button-bg: var(--bg-full);
   --button-color: var(--text);
   --btn-content-align: start;
+  --btn-inline-size: 100%;
 
   &:hover,
   &:focus {

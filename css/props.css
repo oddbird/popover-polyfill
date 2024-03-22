@@ -45,10 +45,10 @@ html {
   --text-light: hsl(192.86deg 10% 27.451%);
   --accent-color: hsl(330.2deg 67.742% 42.549%);
   --border-color: hsl(195deg 10% 50%);
-  --shadow: hsl(0, 0%, 53%);
+  --shadow: hsl(0deg 0% 53%);
   --action: hsl(195deg 53% 27%);
   --active: hsl(330deg 52.857% 27.451%);
-  --callout-special: #e3dedbbf;
+  --callout-special: hsla(23deg 13% 87% / 0.749);
   --highlight: hsl(330deg 52.857% 27.451%);
   --feature: hsl(195.65deg 45.098% 20%);
   --feature-to: hsl(194.78deg 75.281% 34.902%);
@@ -58,4 +58,9 @@ html {
     var(--feature-from),
     var(--feature-to)
   );
+  --bg-full: hsl(0deg 0% 100%);
+  --ccs-prime--fg3-fade: hsla(195deg 53% 27% / 0.749);
+  --ccs-prime--fg3: hsl(195deg 53% 27%);
+  --ccs-special--fg3: hsl(24deg 53% 27%);
+  --ccs-accent--fg2: hsl(330deg 60% 35%);
 }
