@@ -56,9 +56,10 @@ ol {
   color: var(--button-color, var(--bg));
   cursor: pointer;
   display: inline-flex;
-  font: inherit;
+  font-family: var(--sans-serif);
+  font-size: inherit;
   inline-size: var(--btn-inline-size, fit-content);
-  padding: 0.2em 0.5em;
+  padding: var(--half-shim) var(--double-gap);
   justify-content: var(--btn-content-align, center);
   justify-self: center;
 

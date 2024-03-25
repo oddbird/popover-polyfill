@@ -34,6 +34,7 @@ html {
   --gap: clamp(12px, 2cqmin, 24px);
   --double-gap: calc(var(--gap) * 2);
   --shim: calc(var(--gap) / 2);
+  --half-shim: calc(var(--shim) / 2);
   --quarter-shim: calc(var(--shim) / 4);
   --spacer: clamp(1.5rlh, 10vw, 5rlh);
 
@@ -53,11 +54,9 @@ html {
   --feature: hsl(195.65deg 45.098% 20%);
   --feature-to: hsl(194.78deg 75.281% 34.902%);
   --feature-from: var(--accent-color);
-  --feature-gradient: linear-gradient(
-    to bottom right,
-    var(--feature-from),
-    var(--feature-to)
-  );
+  --feature-gradient: linear-gradient(to bottom right,
+      var(--feature-from),
+      var(--feature-to));
   --bg-full: hsl(0deg 0% 100%);
   --ccs-prime--fg3-fade: hsla(195deg 53% 27% / 0.749);
   --ccs-prime--fg3: hsl(195deg 53% 27%);

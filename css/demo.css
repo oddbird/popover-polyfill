@@ -52,7 +52,7 @@ body {
 
 [data-nav] {
   display: inline-block;
-  padding: 0 var(--shim);
+  padding: 0 var(--gap);
 
   &:not(:hover, :active, :focus, [aria-current]) {
     --underline-color: transparent;
