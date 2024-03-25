@@ -169,7 +169,6 @@ body {
       1fr
     );
   max-inline-size: 57ch;
-  padding: 1em;
 }
 
 [data-header] {
@@ -190,12 +189,15 @@ body {
   margin-block-end: var(--double-gap);
 }
 
-[data-popover] {
+[data-popover]:popover-open {
   border: 1px solid var(--border-color);
   box-shadow: 0 3px 3px var(--shadow);
   color: var(--popover-color, var(--text));
+  display: flex;
 
-  @media (width <=630px) {
+  @media (width <=780px) {
+    inline-size: auto;
+    justify-content: center;
     margin-inline: var(--gap);
   }
 }
@@ -241,6 +243,7 @@ body {
 }
 
 .menu-list {
+  inline-size: 100%;
   list-style: none;
   margin: 0;
   text-align: start;
