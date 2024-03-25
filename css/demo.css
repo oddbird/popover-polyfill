@@ -154,11 +154,16 @@ body {
     border-block-end: thin solid var(--border-color);
     content: '';
     inset: 0;
+    inset-block-end: auto;
     position: absolute;
   }
 
-  &::before {
-    inset-block-end: auto;
+  &::after {
+    border-block-start: thin solid var(--border-color);
+    content: '';
+    position: absolute;
+    inset: 0 0 calc(var(--gap) * -2);
+    inset-block-start: auto;
   }
 }
 
@@ -248,17 +253,6 @@ body {
   margin-block-start: var(--spacer);
   position: relative;
   padding-block-end: var(--double-gap);
-
-  &::before {
-    border-block-start: thin solid var(--border-color);
-    content: '';
-    position: absolute;
-    inset: 0 0 var(--spacer) 0;
-  }
-
-  &::before {
-    inset-block-start: auto;
-  }
 }
 
 .menu-list {
