@@ -207,8 +207,28 @@
       @import url('/css/base.css') layer(default);
       @import url('/css/props.css') layer(initial);
       @import url('/css/code.css') layer(default);
-    </style><section class="demo-item">
-          <h2 data-header>Popovers and Controls Created Fully in the Shadow Root</h2>
+
+      [data-header] {
+        [aria-hidden]:any-link {
+          display: inline-block;
+          filter: grayscale(var(--grayscale, 100%));
+          left: -1.25em;
+          position: absolute;
+          text-decoration: none;
+          transform: scale(var(--scale, 0.75));
+          transition: all 200ms ease-in-out;
+        }
+
+        [aria-hidden]:hover,
+        [aria-hidden]:focus,
+        [aria-hidden]:active {
+          --grayscale: 0;
+          --scale: 1;
+          --outline-offset: 0.025em;
+        }
+      }
+    </style><section id="popover-shadow-root" class="demo-item">
+          <h2 data-header> <a href="#popover-shadow-root" aria-hidden="true">🔗</a>Popovers and Controls Created Fully in the Shadow Root</h2>
           <p class="note">
             Here, both the popover control button and the popover are both created in the Shadow DOM.
           </p> 
@@ -248,8 +268,10 @@
       </div>
 
       <div id="buttons" class="demo-section">
-        <section class="demo-item">
-          <h2 data-header>Default Popover</h2>
+        <section id="popover-default" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-default" aria-hidden="true">🔗</a>Default Popover
+          </h2>
           <p class="note">
             Popovers take a state of "auto" or "manual." If no state is
             provided, the popover takes on the behavior of its default state,
@@ -270,8 +292,10 @@
           </code>
         </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Manual Popover</h2>
+        <section id="popover-manual" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-manual" aria-hidden="true">🔗</a>Manual Popover
+          </h2>
           <button popovertarget="manualPopover" data-btn>
             Toggle Manual Popover
           </button>
@@ -289,8 +313,11 @@
           </code>
         </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Popover with Empty State</h2>
+        <section id="popover-empty-state" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-empty-state" aria-hidden="true">🔗</a>Popover with
+            Empty State
+          </h2>
           <p class="note">
             A popover with an empty state behaves as if it were set to "auto."
           </p>
@@ -305,8 +332,11 @@
           </code>
         </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Popover Controls with Explicit Actions</h2>
+        <section id="popover-explicit-actions" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-explicit-actions" aria-hidden="true">🔗</a>Popover
+            Controls with Explicit Actions
+          </h2>
           <p class="note">
             Popover button controls can be set to "show" or "hide" with the
             <code>popovertargetaction</code> attribute. This
@@ -346,8 +376,11 @@
           </code>
         </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Popover Control with Only the "Show" Action</h2>
+        <section id="popover-show-action" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-show-action" aria-hidden="true">🔗</a>Popover
+            Control with Only the "Show" Action
+          </h2>
           <p class="note">
             Since the value of the <code>popovertargetaction</code> attribute is
             set to "show", clicking the button will only open the popover. The
@@ -374,8 +407,11 @@
                 </code>
               </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Single Button Popover</h2>
+        <section id="popover-single-button" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-single-button" aria-hidden="true">🔗</a>Single
+            Button Popover
+          </h2>
           <p class="note">Toggle a popover with a single button.</p>
           <button
             popovertarget="singleButtonPopover"
@@ -394,8 +430,11 @@
           </code>
         </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Popover Control with Invalid Target</h2>
+        <section id="popover-invalid-target" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-invalid-target" aria-hidden="true">🔗</a>Popover
+            Control with Invalid Target
+          </h2>
           <p class="note">
             Since no popover matches the
             <code>popovertarget</code> "invalidTargetPopover", no popover will
@@ -410,8 +449,11 @@
           </code>
         </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Targeting Elements in a Different Tree Scope</h2>
+        <section id="popover-cross-tree" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-cross-tree" aria-hidden="true">🔗</a>Targeting
+            Elements in a Different Tree Scope
+          </h2>
           <p class="note">
             This button created in the light DOM has its
             <code>popovertarget</code>, which is in the shadow DOM, set using
@@ -442,8 +484,10 @@
           
         </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Nested Popovers</h2>
+        <section id="popover-nested" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-nested" aria-hidden="true">🔗</a>Nested Popovers
+          </h2>
           <p>Popovers can be nested within other popovers.</p>
           <pre>
           <code class="language-markup">
@@ -479,8 +523,9 @@ Show Menu
             Show Menu
           </button>
         </section>
-        <section class="demo-item">
+        <section id="popover-shadow-invoked" class="demo-item">
           <h2 data-header>
+            <a href="#popover-shadow-invoked" aria-hidden="true">🔗</a>
             Opening a Popover with an Element Created in the Shadow Root
           </h2>
           <p class="note">
@@ -504,8 +549,11 @@ Show Menu
           </code>
         </pre>
         </section>
-        <section class="demo-item">
-          <h2 data-header>Layers Support</h2>
+        <section id="popover-layered-styles" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-layered-styles" aria-hidden="true">🔗</a> Layers
+            Support
+          </h2>
           <p class="note">
             When supported, the polyfill creates a cascade layer named
             <code>popover-polyfill</code>. If author styles are not in layers

@@ -173,6 +173,25 @@ body {
 
 [data-header] {
   grid-area: title;
+  position: relative;
+
+  [aria-hidden]:any-link {
+    display: inline-block;
+    filter: grayscale(var(--grayscale, 100%));
+    left: -1.25em;
+    position: absolute;
+    text-decoration: none;
+    transform: scale(var(--scale, 0.75));
+    transition: all 200ms ease-in-out;
+  }
+
+  [aria-hidden]:hover,
+  [aria-hidden]:focus,
+  [aria-hidden]:active {
+    --grayscale: 0;
+    --scale: 1;
+    --outline-offset: 0.025em;
+  }
 }
 
 [data-popover-control] {
@@ -234,7 +253,7 @@ body {
     border-block-start: thin solid var(--border-color);
     content: '';
     position: absolute;
-    inset: 0 0 calc(var(--spacer) * 2) 0;
+    inset: 0 0 var(--spacer) 0;
   }
 
   &::before {

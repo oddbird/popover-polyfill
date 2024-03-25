@@ -46,7 +46,7 @@ ol {
 
 :focus {
   outline: medium dotted var(--accent-color);
-  outline-offset: 0.25em;
+  outline-offset: var(--outline-offset, 0.25em);
 }
 
 [data-btn] {
