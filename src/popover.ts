@@ -20,6 +20,15 @@ export function isSupported() {
   );
 }
 
+export function isPolyfilled() {
+  // if the `showPopover` method is defined but is not "native code"
+  // then we can infer it's been polyfilled
+  return Boolean(
+    document.body?.showPopover &&
+    !/native code/i.test(document.body.showPopover.toString())
+  );
+}
+
 function patchSelectorFn<K extends string>(
   object: Record<PropertyKey & K, unknown>,
   name: K,

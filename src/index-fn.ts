@@ -35,4 +35,4 @@ declare global {
   }
 }
 
-export { apply, isSupported } from './popover.js';
+export { apply, isSupported, isPolyfilled } from './popover.js';
