@@ -34,12 +34,17 @@ function patchSelectorFn<K extends string>(
 }
 
 const nonEscapedPopoverSelector = /(^|[^\\]):popover-open\b/g;
-const hasLayerSupport = typeof window.CSSLayerBlockRule === 'function';
+
+function hasLayerSupport() {
+  return typeof globalThis.CSSLayerBlockRule === 'function';
+}
 
 // To emulate a UA stylesheet which is the lowest priority in the cascade,
 // all selectors must be wrapped in a :where() which has a specificity of zero.
-const styles = `
-${hasLayerSupport ? '@layer popover-polyfill {' : ''}
+function getStyles() {
+  const useLayer = hasLayerSupport();
+  return `
+${useLayer ? '@layer popover-polyfill {' : ''}
   :where([popover]) {
     position: fixed;
     z-index: 2147483647;
@@ -95,10 +100,13 @@ ${hasLayerSupport ? '@layer popover-polyfill {' : ''}
   :where([popover]:not(.\\:popover-open)) {
     display: none;
   }
-${hasLayerSupport ? '}' : ''}
+${useLayer ? '}' : ''}
 `;
+}
+
 let popoverStyleSheet: null | false | CSSStyleSheet = null;
 export function injectStyles(root: Document | ShadowRoot) {
+  const styles = getStyles();
   if (popoverStyleSheet === null) {
     try {
       popoverStyleSheet = new CSSStyleSheet();
@@ -121,7 +129,7 @@ export function injectStyles(root: Document | ShadowRoot) {
 }
 
 export function apply() {
-  window.ToggleEvent = window.ToggleEvent || ToggleEvent;
+  globalThis.ToggleEvent = globalThis.ToggleEvent || ToggleEvent;
 
   function rewriteSelector(selector: string) {
     if (selector?.includes(':popover-open')) {
