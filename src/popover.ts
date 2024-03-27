@@ -25,7 +25,7 @@ export function isPolyfilled() {
   // then we can infer it's been polyfilled
   return Boolean(
     document.body?.showPopover &&
-    !/native code/i.test(document.body.showPopover.toString())
+      !/native code/i.test(document.body.showPopover.toString()),
   );
 }
 
