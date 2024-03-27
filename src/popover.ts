@@ -23,10 +23,9 @@ export function isSupported() {
 export function isPolyfilled() {
   // if the `showPopover` method is defined but is not "native code"
   // then we can infer it's been polyfilled
-  return (
-    document.body &&
-    document.body.showPopover &&
-    !document.body.showPopover.toString().match(/native code/i)
+  return Boolean(
+    document.body?.showPopover &&
+    !/native code/i.test(document.body.showPopover.toString())
   );
 }
 
