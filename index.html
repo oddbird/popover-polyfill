@@ -14,7 +14,16 @@
         }
       }
     </style>
-    <script src="./dist/popover.js"></script>
+    <script type="module">
+      import { apply, isSupported } from './dist/popover-fn.js';
+
+      if (isSupported()) {
+        console.log('native `popover` support detected, no polyfill used');
+      } else {
+        apply();
+        console.log('polyfill applied');
+      }
+    </script>
   </head>
 
   <body>
@@ -59,22 +68,40 @@
       <div id="popover13" popover>
         Popover 13 (should be red if browser has @layer support)
       </div>
+      <div id="menu-with-shadowed-popover" popover="auto">
+        Menu with shadowed popover
+        <div id="menu-host"></div>
+      </div>
       <dialog popover>I'm a dialog!</dialog>
       <div id="host"></div>
 
       <script type="module">
         const host = document.getElementById('host');
         const shadowRoot = host.attachShadow({ mode: 'open' });
-        shadowRoot.innerHTML = `<button popovertarget="shadowedPopover">
-                  Click to toggle shadowed Popover (auto)
-                </button>
-                <button popovertarget="shadowedNestedPopover">
-                  Click to toggle shadowed nested Popover (auto)
-                </button>
-                <div id="shadowedPopover" popover="auto">Shadowed Popover (auto)</div>
-                <div>
-                  <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
-                </div>`;
+        shadowRoot.innerHTML = `
+          <button popovertarget="shadowedPopover">
+            Click to toggle shadowed Popover (auto)
+          </button>
+          <button popovertarget="shadowedNestedPopover">
+            Click to toggle shadowed nested Popover (auto)
+          </button>
+          <div id="shadowedPopover" popover="auto">Shadowed Popover (auto)</div>
+          <div>
+            <div id="shadowedNestedPopover" popover="auto">Shadowed Nested Popover (auto)</div>
+          </div>
+          `;
+
+        const menuHost = document.getElementById('menu-host');
+        const menuShadowRoot = menuHost.attachShadow({ mode: 'open' });
+        menuShadowRoot.innerHTML = `
+          <button popovertarget="shadowedMenuInner">
+            Toggle inner shadowed popover
+          </button>
+          <div id="shadowedMenuInner" popover="auto" style="top: 100px">
+            Inner shadowed popover
+          </div>
+          `;
+
         document.getElementById('crossTreeToggle').popoverTargetElement =
           shadowRoot.getElementById('shadowedPopover');
       </script>
@@ -99,12 +126,17 @@
       </button>
       <button popovertarget="popover10">Click to toggle Popover 10</button>
       <button popovertarget="notExist">Click to toggle nothing</button>
-      <button id="crossTreeToggle">Click to toggle shadowed Popover</button>
+      <button id="crossTreeToggle">
+        Click to toggle shadowed Popover (cross-tree)
+      </button>
       <button popovertargetaction="show" popovertarget="popover11">Menu</button>
       <button popovertarget="popover12">
         <span id="shadowInInvoker"></span>
       </button>
       <button popovertarget="popover13">Click to toggle Popover 13</button>
+      <button popovertarget="menu-with-shadowed-popover">
+        Toggle menu with shadowed nested popover
+      </button>
 
       <script type="module">
         const shadowInInvoker = document.getElementById('shadowInInvoker');
