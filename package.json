@@ -103,10 +103,10 @@
   "lint-staged": {
     "*.{js,ts}": [
       "eslint --cache --fix",
-      "prettier --write"
+      "prettier --write --ignore-unknown"
     ],
     "*.{json,yml,md,html}": [
-      "prettier --write"
+      "prettier --write --ignore-unknown"
     ]
   }
 }
