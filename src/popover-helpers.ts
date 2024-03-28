@@ -136,15 +136,14 @@ function nearestInclusiveTargetPopoverForInvoker(
 function topMostPopoverAncestor(newPopover: HTMLElement): HTMLElement | null {
   const popoverPositions = new Map();
   let i = 0;
-  const document = newPopover.ownerDocument;
-  for (const popover of autoPopoverList.get(document) || []) {
+  for (const popover of autoPopoverList.get(newPopover.ownerDocument) || []) {
     popoverPositions.set(popover, i);
     i += 1;
   }
   popoverPositions.set(newPopover, i);
   i += 1;
   let topMostPopoverAncestor: HTMLElement | null = null;
-  function checkAncestor(candidate: HTMLElement | null) {
+  function checkAncestor(candidate: Node | null) {
     const candidateAncestor = nearestInclusiveOpenPopover(candidate);
     if (candidateAncestor === null) return null;
     const candidatePosition = popoverPositions.get(candidateAncestor);
@@ -155,7 +154,7 @@ function topMostPopoverAncestor(newPopover: HTMLElement): HTMLElement | null {
       topMostPopoverAncestor = candidateAncestor!;
     }
   }
-  checkAncestor(newPopover?.parentElement);
+  checkAncestor(newPopover.parentElement || getRootNode(newPopover));
   return topMostPopoverAncestor;
 }
 

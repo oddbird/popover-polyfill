@@ -61,6 +61,12 @@ With most tooling:
 import { apply, isSupported } from '@oddbird/popover-polyfill/fn';
 ```
 
+A special `isPolyfilled` function is also available, to detect if the Popover methods have been polyfilled:
+
+```js
+import { isPolyfilled } from '@oddbird/popover-polyfill/fn';
+```
+
 ### Via CDN
 
 For prototyping or testing, you can use the npm package via a Content Delivery

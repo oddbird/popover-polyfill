@@ -1,6 +1,6 @@
 {
   "name": "@oddbird/popover-polyfill",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Popover Attribute Polyfill",
   "license": "BSD-3-Clause",
   "publishConfig": {
@@ -74,9 +74,9 @@
     "format": "run-p format:*",
     "lint:js": "run-s prettier:check eslint:check tsc",
     "lint": "run-p lint:*",
-    "test:unit": "playwright test",
-    "test:e2e": "echo No e2e tests yet",
-    "test:e2e:ci": "echo No e2e tests yet",
+    "test:unit": "echo No unit tests yet",
+    "test:e2e": "playwright test",
+    "test:e2e:ci": "run-s test:e2e \"test:e2e -- --browser=firefox\"",
     "test": "run-p test:unit test:e2e",
     "test:ci": "run-p test:unit test:e2e:ci",
     "prepare": "husky",
@@ -85,8 +85,8 @@
   "devDependencies": {
     "@playwright/test": "1.33.0",
     "@types/node": "*",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
     "esbuild": "^0.20.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -98,15 +98,15 @@
     "npm-run-all": "^4.1.5",
     "prettier": "3.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.3"
   },
   "lint-staged": {
     "*.{js,ts}": [
       "eslint --cache --fix",
-      "prettier --write"
+      "prettier --write --ignore-unknown"
     ],
     "*.{json,yml,md,html}": [
-      "prettier --write"
+      "prettier --write --ignore-unknown"
     ]
   }
 }
