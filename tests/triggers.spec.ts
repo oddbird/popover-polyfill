@@ -159,9 +159,7 @@ test('clicking button[popovertarget=shadowedNestedPopover] should hide open nest
 test('clicking button[popovertarget=shadowedMenuInner] should not hide open parent popover in a parent (shadow) tree scope', async ({
   page,
 }) => {
-  const outerPopover = (await page.locator('#menu-with-shadowed-popover')).nth(
-    0,
-  );
+  const outerPopover = (await page.locator('#shadowNestedPopover')).nth(0);
   await expect(outerPopover).toBeHidden();
   await expect(
     await outerPopover.evaluate((node) => node.showPopover()),
@@ -172,7 +170,7 @@ test('clicking button[popovertarget=shadowedMenuInner] should not hide open pare
   await page.click('button[popovertarget=shadowedMenuInner]');
   await expect(innerPopover).toBeVisible();
   await expect(outerPopover).toBeVisible();
-  await page.click('button[popovertarget=menu-with-shadowed-popover]');
+  await page.click('button[popovertarget=shadowNestedPopover]');
   await expect(innerPopover).toBeHidden();
   await expect(outerPopover).toBeHidden();
 });
