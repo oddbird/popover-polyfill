@@ -204,7 +204,7 @@
           Popover with Layered Styles (should be red if browser has @layer
           support)
         </div>
-        <div id="shadowNestedPopover" data-popover popover>
+        <div id="shadowNestedPopover" data-popover="inner-shadowed" popover>
           Menu with Shadowed Popover
           <div id="menuHost"></div>
         </div>
@@ -274,12 +274,16 @@
 
           const menuHost = document.getElementById('menuHost');
           const menuShadowRoot = menuHost.attachShadow({ mode: 'open' });
-          menuShadowRoot.innerHTML = `
-                  <button popovertarget="shadowedMenuInner" data-btn>
-                    Toggle inner shadowed popover
+          menuShadowRoot.innerHTML = `<style>
+      @import url('/css/reset.css') layer(reset);
+      @import url('/css/demo.css') layer(demo);
+      @import url('/css/base.css') layer(default);
+      @import url('/css/props.css') layer(initial);</style>
+                  <button popovertarget="shadowedMenuInner" data-btn data-popover-control>
+                    Toggle Inner Shadowed Popover
                   </button>
-                  <div id="shadowedMenuInner" data-popover popover style="top: 100px">
-                    Inner shadowed popover
+                  <div id="shadowedMenuInner" data-popover popover style="top: 150px">
+                    Inner Shadowed Popover
                   </div>
                   `;
 
@@ -532,8 +536,15 @@ Show Menu
             <a href="#popover-shadow-nested" aria-hidden="true">🔗</a>Nested
             Popovers in Shadow DOM
           </h2>
-          <p>Popovers can be nested within other popovers in the shadow DOM.</p>
-          <pre><code class="language-markup">...</code></pre>
+          <p class="note">
+            Popovers can be nested within other popovers in the shadow DOM.
+          </p>
+          <pre><code class="language-markup">&lt;button popovertarget="shadowNestedPopover">
+            
+&lt;div id="shadowNestedPopover" popover>
+  Menu with Shadowed Popover
+&lt;div id="menuHost">&lt;/div>
+&lt;/div></code></pre>
           <button
             popovertarget="shadowNestedPopover"
             data-btn

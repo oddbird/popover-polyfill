@@ -214,16 +214,19 @@ body {
 }
 
 [data-popover]:popover-open {
+  align-items: center;
   border: 1px solid var(--border-color);
   box-shadow: 0 3px 3px var(--shadow);
   color: var(--popover-color, var(--text));
   display: flex;
   font-family: var(--sans-serif);
+  flex-wrap: wrap;
+  gap: var(--shim);
 
   @media (width <=780px) {
     inline-size: auto;
     justify-content: center;
-    margin-inline: var(--gap);
+    margin-inline: var(--shim);
   }
 }
 
