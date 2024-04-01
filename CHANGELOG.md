@@ -1,10 +1,23 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.4.1: 2024-03-27
+
+- 🚀 NEW: Add `isPolyfilled` method to check if polyfill is applied --
+  [#193](https://github.com/oddbird/popover-polyfill/pull/193)
+- 🐛 BUGFIX: Support environments (e.g. SSR) that don't have `window` --
+  [#194](https://github.com/oddbird/popover-polyfill/pull/194)
+- 🐛 BUGFIX: Support nested popovers inside shadow DOM --
+  [#190](https://github.com/oddbird/popover-polyfill/pull/190)
+- 📝 DOCS: Add note about FOUC workarounds --
+  [#182](https://github.com/oddbird/popover-polyfill/pull/182)
+- 🏠 INTERNAL: Switch to Dependabot for dependency updates
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.4.0: 2024-02-08
 
 - 🚀 NEW: Add support for CSS cascade layers --
   [#178](https://github.com/oddbird/popover-polyfill/pull/178)
-- 🐛 BUGFIX: Ensure click events correctly cross out of ShadowDOM --
+- 🐛 BUGFIX: Ensure click events correctly cross out of shadow DOM --
   [#177](https://github.com/oddbird/popover-polyfill/pull/177)
 - 🏠 INTERNAL: Upgrade dependencies
 
