@@ -190,7 +190,7 @@ test("button 'popovertargetElement' property should return target element", asyn
 test("button's 'popoverTargetElement' property should return target element across different tree scope", async ({
   page,
 }) => {
-  const popover = (await page.locator('#shadowedPopover')).nth(0);
+  const popover = (await page.locator('#crossTreePopover')).nth(0);
   await expect(
     await popover.evaluate((node) => {
       const button = document.getElementById('crossTreeToggle');
@@ -243,7 +243,7 @@ test("assign null to invoker's 'popoverTargetElement' property should remove its
 test('clicking button#crossTreeToggle should show then hide popover in a different tree scope', async ({
   page,
 }) => {
-  const popover = (await page.locator('#shadowedPopover')).nth(0);
+  const popover = (await page.locator('#crossTreePopover')).nth(0);
   await page.click('button#crossTreeToggle');
   await expect(popover).toBeVisible();
   await page.click('button#crossTreeToggle');
@@ -254,8 +254,8 @@ test('clicking #shadowInInvoker should show then hide popover', async ({
   page,
 }) => {
   const popover = (await page.locator('#shadowInvokedPopover')).nth(0);
-  await page.click('#shadowInInvoker');
+  await page.click('#shadowInvokedHost');
   await expect(popover).toBeVisible();
-  await page.click('#shadowInInvoker');
+  await page.click('#shadowInvokedHost');
   await expect(popover).toBeHidden();
 });

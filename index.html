@@ -139,22 +139,29 @@
       </header>
       <div id="popovers">
         <div id="defaultPopover" data-popover popover>Default Popover</div>
-        <div id="manualPopover" data-popover popover="manual">
+        <div
+          id="manualPopover"
+          data-popover
+          popover="manual"
+          style="bottom: 150px"
+        >
           Manual Popover
         </div>
         <div id="emptyStatePopover" data-popover popover="">
           Empty State Popover
         </div>
-        <div id="showHidePopover" data-popover popover="manual">
+        <div
+          id="showHidePopover"
+          data-popover
+          popover="manual"
+          style="top: 150px"
+        >
           Popover with Explicit Action. This popover has an
           <a href="#" autofocus>autofocus link.</a>
         </div>
         <div id="singleActionShowPopover" data-popover popover>
           Single Action Popover. This popover has an
           <a href="#" autofocus>autofocus link.</a>
-        </div>
-        <div id="singleButtonPopover" data-popover popover="manual">
-          Single Button Popover
         </div>
         <div id="crossTreeHost"></div>
         <div id="menuPopover" data-popover="nested" popover>
@@ -231,7 +238,7 @@
             data-btn
             data-popover-control
           >
-            Toggle Default Popover
+            <span>Toggle Default Popover</span>
           </button>
           <pre><code class="language-html"
 >&lt;button popovertarget="defaultPopover" aria-expanded="false"&gt;
@@ -349,28 +356,6 @@
   Single Action Popover. This popover has an &lt;a href="#" autofocus&gt;autofocus link.&lt;/a&gt;
 &lt;/div&gt;</code></pre>
         </section>
-        <section id="popover-single-button" class="demo-item">
-          <h2 data-header>
-            <a href="#popover-single-button" aria-hidden="true">🔗</a>
-            Single Button Popover
-          </h2>
-          <p class="note">Toggle a popover with a single button.</p>
-          <button
-            popovertarget="singleButtonPopover"
-            data-btn
-            data-popover-control
-          >
-            Toggle Single Button Popover
-          </button>
-          <pre><code class="language-html"
->&lt;button popovertarget="singleButtonPopover"&gt;
-  Toggle Single Button Popover
-&lt;/button&gt;
-
-&lt;div id="singleButtonPopover" popover="manual"&gt;
-  Single Button Popover
-&lt;/div&gt;</code></pre>
-        </section>
         <section id="popover-invalid-target" class="demo-item">
           <h2 data-header>
             <a href="#popover-invalid-target" aria-hidden="true">🔗</a>
@@ -421,7 +406,11 @@
 &lt;button id="crossTreeToggle"&gt;
   Toggle Cross Tree Popover
 &lt;/button&gt;
-&lt;div id="crossTreeHost"&gt;&lt;/div&gt;</code>
+
+&lt;div id="crossTreeHost"&gt;
+  &lt;!-- Shadow DOM --&gt;
+  &lt;div id="crossTreePopover" popover&gt;Shadowed Popover&lt;/div&gt;
+&lt;/div&gt;</code>
 
 <code class="language-js"
 >// JavaScript
@@ -492,7 +481,10 @@ document.getElementById('crossTreeToggle').popoverTargetElement = crossTreeShado
           <pre><code class="language-html"
 >&lt;!-- Light DOM --&gt;
 &lt;button popovertarget="shadowInvokedPopover"&gt;
-  &lt;span id="shadowInvokedHost"&gt;&lt;/span&gt;
+  &lt;span id="shadowInvokedHost"&gt;
+    &lt;!-- Shadow DOM --&gt;
+    &lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;
+  &lt;/span&gt;
 &lt;/button&gt;
 
 &lt;div id="shadowInvokedPopover" popover&gt;
@@ -551,7 +543,15 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
 
 &lt;div id="shadowNestedPopover" popover&gt;
   Menu with Shadowed Popover:
-  &lt;div id="menuHost"&gt;&lt;/div&gt;
+  &lt;div id="menuHost"&gt;
+    &lt;!-- Shadow DOM --&gt;
+    &lt;button popovertarget="shadowedMenuInner"&gt;
+      Toggle Inner Shadowed Popover
+    &lt;/button&gt;
+    &lt;div id="shadowedMenuInner" popover style="top: 150px"&gt;
+      Inner Shadowed Popover
+    &lt;/div&gt;
+  &lt;/div&gt;
 &lt;/div&gt;</code>
 
 <code class="language-js"
@@ -605,7 +605,30 @@ menuShadowRoot.innerHTML = `
   }
 }</code></pre>
         </section>
-        <div id="fullShadowHost"></div>
+        <section id="popover-shadow-root" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-shadow-root" aria-hidden="true">🔗</a>
+            Popovers and Controls Created Fully in the Shadow Root
+          </h2>
+          <p class="note">
+            Here, both the popover control button and the popover are created in
+            the Shadow DOM.
+          </p>
+          <div id="fullShadowHost"></div>
+          <pre><code class="language-html"
+>&lt;!-- Shadow DOM --&gt;
+&lt;button popovertarget="shadowedPopover"&gt;
+  Toggle Shadowed Popover
+&lt;/button&gt;
+&lt;button popovertarget="shadowedNestedPopover"&gt;
+  Toggle Shadowed Nested Popover
+&lt;/button&gt;
+
+&lt;div id="shadowedPopover" popover&gt;Shadowed Popover&lt;/div&gt;
+&lt;div&gt;
+  &lt;div id="shadowedNestedPopover" popover&gt;Shadowed Nested Popover&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </section>
         <script type="module">
           const fullShadowHost = document.getElementById('fullShadowHost');
           const fullShadowRoot = fullShadowHost.attachShadow({ mode: 'open' });
@@ -621,43 +644,18 @@ menuShadowRoot.innerHTML = `
               @import url('/css/props.css') layer(initial);
               @import url('/css/code.css') layer(default);
             </style>
-            <section id="popover-shadow-root" class="demo-item">
-              <h2 data-header>
-                <a href="#popover-shadow-root" aria-hidden="true">🔗</a>
-                Popovers and Controls Created Fully in the Shadow Root
-              </h2>
-              <p class="note">
-                Here, both the popover control button and the popover are created in the Shadow DOM.
-              </p>
-              <div class="button-group" data-popover-control>
-                <button popovertarget="shadowedPopover" data-btn>
-                  Toggle Shadowed Popover
-                </button>
-                <button popovertarget="shadowedNestedPopover" data-btn>
-                  Toggle Shadowed Nested Popover
-                </button>
-              </div>
-              <div id="shadowedPopover" popover data-popover>Shadowed Popover</div>
-              <div>
-                <div id="shadowedNestedPopover" popover data-popover>Shadowed Nested Popover</div>
-              </div>
-              <pre><code class="language-html"
->&lt;button popovertarget="shadowedPopover"&gt;
-  Toggle Shadowed Popover
-&lt;/button&gt;
-
-&lt;button popovertarget="shadowedNestedPopover"&gt;
-  Toggle Shadowed Nested Popover
-&lt;/button&gt;
-
-&lt;div id="shadowedPopover" popover&gt;Shadowed Popover&lt;/div&gt;
-
-&lt;div&gt;
-  &lt;div id="shadowedNestedPopover" popover&gt;Shadowed Nested Popover&lt;/div&gt;
-&lt;/div&gt;</code></pre>
-            </section>`;
-
-          Prism.highlightAllUnder(fullShadowRoot);
+            <div class="button-group" data-popover-control>
+              <button popovertarget="shadowedPopover" data-btn>
+                Toggle Shadowed Popover
+              </button>
+              <button popovertarget="shadowedNestedPopover" data-btn>
+                Toggle Shadowed Nested Popover
+              </button>
+            </div>
+            <div id="shadowedPopover" popover data-popover>Shadowed Popover</div>
+            <div>
+              <div id="shadowedNestedPopover" popover data-popover>Shadowed Nested Popover</div>
+            </div>`;
         </script>
       </div>
     </main>

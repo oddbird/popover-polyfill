@@ -12,10 +12,8 @@ test('click dismisses all auto popovers', async ({ page }) => {
   await expect(testPopover).toBeVisible();
   const testPopover2 = (await page.locator('#test-popover-2')).nth(0);
   await expect(testPopover2).toBeHidden();
-  const singleButtonPopover = (await page.locator('#singleButtonPopover')).nth(
-    0,
-  );
-  await expect(singleButtonPopover).toBeHidden();
+  const showHidePopover = (await page.locator('#showHidePopover')).nth(0);
+  await expect(showHidePopover).toBeHidden();
   const manualPopover = (await page.locator('#manualPopover')).nth(0);
   await expect(manualPopover).toBeHidden();
   const shadowedPopover = (await page.locator('#shadowedPopover')).nth(0);
@@ -28,7 +26,7 @@ test('click dismisses all auto popovers', async ({ page }) => {
   await page.click('h1');
   await expect(testPopover).toBeHidden();
   await expect(testPopover2).toBeHidden();
-  await expect(singleButtonPopover).toBeHidden();
+  await expect(showHidePopover).toBeHidden();
   await expect(manualPopover).toBeHidden();
 });
 
@@ -39,13 +37,11 @@ test('click inside manual popover dismisses other auto popovers', async ({
   await expect(testPopover).toBeHidden();
   const testPopover2 = (await page.locator('#test-popover-2')).nth(0);
   await expect(testPopover2).toBeHidden();
-  const singleButtonPopover = (await page.locator('#singleButtonPopover')).nth(
-    0,
-  );
+  const showHidePopover = (await page.locator('#showHidePopover')).nth(0);
   await expect(
-    await singleButtonPopover.evaluate((node) => node.showPopover()),
+    await showHidePopover.evaluate((node) => node.showPopover()),
   ).toBeUndefined();
-  await expect(singleButtonPopover).toBeVisible();
+  await expect(showHidePopover).toBeVisible();
   const manualPopover = (await page.locator('#manualPopover')).nth(0);
   await expect(
     await manualPopover.evaluate((node) => node.showPopover()),
@@ -54,7 +50,8 @@ test('click inside manual popover dismisses other auto popovers', async ({
 
   await page.click('#manualPopover');
   await expect(testPopover).toBeHidden();
-  await expect(singleButtonPopover).toBeVisible();
+  await expect(testPopover2).toBeHidden();
+  await expect(showHidePopover).toBeVisible();
   await expect(manualPopover).toBeVisible();
 });
 
