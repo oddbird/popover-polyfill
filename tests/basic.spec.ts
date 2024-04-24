@@ -74,7 +74,12 @@ test('popover as "manual"', async ({ page }) => {
   await expect(popover).toBeFunctionalPopover();
 });
 
+test('popover as "hint"', async ({ page }) => {
+  const popover = (await page.locator('#test-popover-invalid-hint')).nth(0);
+  await expect(popover).toBeFunctionalPopover();
+});
+
 test('popover as "invalid"', async ({ page }) => {
-  const popover = (await page.locator('#popover6')).nth(0);
+  const popover = (await page.locator('#test-popover-invalid')).nth(0);
   await expect(popover).toBeFunctionalPopover();
 });
