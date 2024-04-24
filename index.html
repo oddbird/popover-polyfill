@@ -72,7 +72,7 @@
         Menu with shadowed popover
         <div id="menu-host"></div>
       </div>
-      <dialog popover>I'm a dialog!</dialog>
+      <dialog id="dialog" popover>This is a dialog</dialog>
       <div id="host"></div>
 
       <script type="module">
@@ -137,6 +137,7 @@
       <button popovertarget="menu-with-shadowed-popover">
         Toggle menu with shadowed nested popover
       </button>
+      <button popovertarget="dialog">Click to toggle dialog</button>
 
       <script type="module">
         const shadowInInvoker = document.getElementById('shadowInInvoker');
