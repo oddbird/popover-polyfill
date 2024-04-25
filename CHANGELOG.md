@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.4.2: 2024-04-25
+
+- 🐛 BUGFIX: Fix support for `dialog` popovers --
+  [#199](https://github.com/oddbird/popover-polyfill/pull/199)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.4.1: 2024-03-27
 
 - 🚀 NEW: Add `isPolyfilled` method to check if polyfill is applied --
