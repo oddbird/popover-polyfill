@@ -71,6 +71,14 @@ ${useLayer ? '@layer popover-polyfill {' : ''}
     margin: auto;
   }
 
+  :where([popover]:not(.\\:popover-open)) {
+    display: none;
+  }
+
+  :where(dialog[popover].\\:popover-open) {
+    display: block;
+  }
+
   :where(dialog[popover][open]) {
     display: revert;
   }
@@ -104,10 +112,6 @@ ${useLayer ? '@layer popover-polyfill {' : ''}
       right: 0;
       bottom: 0;
     }
-  }
-
-  :where([popover]:not(.\\:popover-open)) {
-    display: none;
   }
 ${useLayer ? '}' : ''}
 `;

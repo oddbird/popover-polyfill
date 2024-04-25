@@ -83,3 +83,8 @@ test('popover as "invalid"', async ({ page }) => {
   const popover = (await page.locator('#test-popover-invalid')).nth(0);
   await expect(popover).toBeFunctionalPopover();
 });
+
+test('dialog popover', async ({ page }) => {
+  const popover = (await page.locator('#dialogPopover')).nth(0);
+  await expect(popover).toBeFunctionalPopover();
+});

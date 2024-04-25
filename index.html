@@ -150,6 +150,7 @@
         <div id="emptyStatePopover" data-popover popover="">
           Empty State Popover
         </div>
+        <dialog id="dialogPopover" popover>Dialog Popover</dialog>
         <div
           id="showHidePopover"
           data-popover
@@ -265,6 +266,24 @@
 &lt;/button&gt;
 
 &lt;div id="manualPopover" popover="manual"&gt;Manual Popover&lt;/div&gt;</code></pre>
+        </section>
+        <section id="popover-dialog" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-dialog" aria-hidden="true">🔗</a>
+            Dialog Popover
+          </h2>
+          <button popovertarget="dialogPopover" data-btn data-popover-control>
+            Toggle Dialog Popover
+          </button>
+          <p class="note">
+            <code>&lt;dialog&gt;</code> elements can also be used as popovers.
+          </p>
+          <pre><code class="language-html"
+>&lt;button popovertarget="dialogPopover"&gt;
+  Toggle Dialog Popover
+&lt;/button&gt;
+
+&lt;dialog id="dialogPopover" popover&gt;Dialog Popover&lt;/dialog&gt;</code></pre>
         </section>
         <section id="popover-empty-state" class="demo-item">
           <h2 data-header>
