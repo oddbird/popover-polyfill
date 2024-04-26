@@ -142,7 +142,9 @@ export function injectStyles(root: Document | ShadowRoot) {
 }
 
 export function apply() {
-  globalThis.ToggleEvent = globalThis.ToggleEvent || ToggleEvent;
+  if (typeof window === 'undefined') return;
+
+  window.ToggleEvent = window.ToggleEvent || ToggleEvent;
 
   function rewriteSelector(selector: string) {
     if (selector?.includes(':popover-open')) {
