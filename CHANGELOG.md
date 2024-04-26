@@ -1,5 +1,12 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.4.3: 2024-04-26
+
+- 🐛 BUGFIX: Check for `window` before applying polyfill --
+  [#201](https://github.com/oddbird/popover-polyfill/pull/201)
+- 🐛 BUGFIX: Expose `injectStyles` function --
+  [#200](https://github.com/oddbird/popover-polyfill/issues/200)
+
 ## 0.4.2: 2024-04-25
 
 - 🐛 BUGFIX: Fix support for `dialog` popovers --
