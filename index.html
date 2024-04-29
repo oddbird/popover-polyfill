@@ -223,12 +223,7 @@
             anywhere on the page, clicking the popover control button, or
             opening another popover on the page.
           </p>
-          <button
-            popovertarget="defaultPopover"
-            aria-expanded="false"
-            data-btn
-            data-popover-control
-          >
+          <button popovertarget="defaultPopover" aria-expanded="false" data-btn>
             <span>Toggle Default Popover</span>
           </button>
           <pre><code class="language-html"
@@ -243,7 +238,7 @@
             <a href="#popover-manual" aria-hidden="true">🔗</a>
             Manual Popover
           </h2>
-          <button popovertarget="manualPopover" data-btn data-popover-control>
+          <button popovertarget="manualPopover" data-btn>
             Toggle Manual Popover
           </button>
           <p class="note">
@@ -262,7 +257,7 @@
             <a href="#popover-dialog" aria-hidden="true">🔗</a>
             Dialog Popover
           </h2>
-          <button popovertarget="dialogPopover" data-btn data-popover-control>
+          <button popovertarget="dialogPopover" data-btn>
             Toggle Dialog Popover
           </button>
           <p class="note">
@@ -283,11 +278,7 @@
           <p class="note">
             A popover with an empty state behaves as if it were set to “auto”.
           </p>
-          <button
-            popovertarget="emptyStatePopover"
-            data-btn
-            data-popover-control
-          >
+          <button popovertarget="emptyStatePopover" data-btn>
             Toggle Empty State Popover
           </button>
           <pre><code class="language-html"
@@ -307,7 +298,7 @@
             <code>autofocus</code> attribute, which receives focus when the
             popover is opened.
           </p>
-          <div class="button-group" data-popover-control>
+          <div class="button-group">
             <button
               popovertargetaction="show"
               popovertarget="showHidePopover"
@@ -352,7 +343,6 @@
             popovertargetaction="show"
             popovertarget="singleActionShowPopover"
             data-btn
-            data-popover-control
           >
             Show Single Action Popover
           </button>
@@ -375,11 +365,7 @@
             <code>popovertarget</code> of “invalidTargetPopover”, no popover
             will open.
           </p>
-          <button
-            popovertarget="invalidTargetPopover"
-            data-btn
-            data-popover-control
-          >
+          <button popovertarget="invalidTargetPopover" data-btn>
             Toggle nothing
           </button>
           <pre><code class="language-html"
@@ -397,7 +383,7 @@
             <code>popovertarget</code>, which is in the shadow DOM, set using
             JavaScript.
           </p>
-          <button id="crossTreeToggle" data-btn data-popover-control>
+          <button id="crossTreeToggle" data-btn>
             Toggle Cross Tree Popover
           </button>
           <script type="module">
@@ -438,7 +424,6 @@ document.getElementById('crossTreeToggle').popoverTargetElement = crossTreeShado
             popovertargetaction="show"
             popovertarget="menuPopover"
             data-btn
-            data-popover-control
           >
             Show Menu
           </button>
@@ -474,11 +459,7 @@ document.getElementById('crossTreeToggle').popoverTargetElement = crossTreeShado
           <p class="note">
             Elements created in the shadow DOM can trigger a popover.
           </p>
-          <button
-            popovertarget="shadowInvokedPopover"
-            data-btn
-            data-popover-control
-          >
+          <button popovertarget="shadowInvokedPopover" data-btn>
             <span id="shadowInvokedHost"></span>
           </button>
           <script type="module">
@@ -514,11 +495,7 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
           <p class="note">
             Popovers can be nested within other popovers in the shadow DOM.
           </p>
-          <button
-            popovertarget="shadowNestedPopover"
-            data-btn
-            data-popover-control
-          >
+          <button popovertarget="shadowNestedPopover" data-btn>
             Toggle Menu with Shadowed Popover
           </button>
           <script type="module">
@@ -526,15 +503,9 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
             const menuShadowRoot = menuHost.attachShadow({ mode: 'open' });
             menuShadowRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
-                @import url('/css/reset.css') layer(reset);
                 @import url('/css/demo.css') layer(demo);
-                @import url('/css/prism.css') layer(initial);
                 @import url('/css/fonts.css') layer(initial);
                 @import url('/css/base.css') layer(default);
-                @import url('/css/props.css') layer(initial);
-                @import url('/css/code.css') layer(default);
               </style>
 
               <button popovertarget="shadowedMenuInner" data-btn>
@@ -587,11 +558,7 @@ menuShadowRoot.innerHTML = `
             need to ensure the polyfill layer is declared first (e.g.
             <code>@layer popover-polyfill, other, layers;</code>).
           </p>
-          <button
-            popovertarget="layeredStylesPopover"
-            data-btn
-            data-popover-control
-          >
+          <button popovertarget="layeredStylesPopover" data-btn>
             Toggle Popover with Layered Styles
           </button>
           <pre><code class="language-html"
@@ -643,17 +610,11 @@ menuShadowRoot.innerHTML = `
           const fullShadowRoot = fullShadowHost.attachShadow({ mode: 'open' });
           fullShadowRoot.innerHTML = `
             <style>
-              @layer reset, initial, popover-polyfill, default, demo;
-
-              @import url('/css/reset.css') layer(reset);
-              @import url('/css/demo.css') layer(demo);
-              @import url('/css/prism.css') layer(initial);
-              @import url('/css/fonts.css') layer(initial);
-              @import url('/css/base.css') layer(default);
-              @import url('/css/props.css') layer(initial);
-              @import url('/css/code.css') layer(default);
-            </style>
-            <div class="button-group" data-popover-control>
+                @import url('/css/demo.css') layer(demo);
+                @import url('/css/fonts.css') layer(initial);
+                @import url('/css/base.css') layer(default);
+              </style>
+            <div class="button-group">
               <button popovertarget="shadowedPopover" data-btn>
                 Toggle Shadowed Popover
               </button>

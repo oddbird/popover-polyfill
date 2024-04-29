@@ -146,6 +146,7 @@ body {
   container: demo-section / inline-size;
   display: grid;
   gap: var(--gap);
+  grid-template-columns: minmax(auto, 1fr) minmax(0, 57ch) minmax(auto, 1fr);
   justify-items: center;
   margin-block-start: var(--double-gap);
   position: relative;
@@ -169,11 +170,12 @@ body {
 
 .demo-item {
   display: grid;
+  grid-column: 2;
   grid-template: 'title' min-content 'note' auto 'popover-button' min-content 'code' 1fr / minmax(
       20ch,
       1fr
     );
-  max-inline-size: 57ch;
+  inline-size: 100%;
 }
 
 [data-header] {
@@ -245,10 +247,6 @@ body {
 
 [data-popover~='manual'] {
   inset-block-end: var(--popover-offset);
-
-  &:nth-child(2) {
-    inset-block-end: calc(var(--popover-offset) * 2);
-  }
 }
 
 [data-popover~='inner-shadowed'] {
@@ -280,4 +278,10 @@ body {
   list-style: none;
   margin: 0;
   text-align: start;
+}
+
+#fullShadowHost {
+  &:focus {
+    outline: none;
+  }
 }
