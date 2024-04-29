@@ -33,10 +33,12 @@ test('click dismisses all auto popovers', async ({ page }) => {
 test('click inside manual popover dismisses other auto popovers', async ({
   page,
 }) => {
-  const testPopover = (await page.locator('#test-popover')).nth(0);
-  await expect(testPopover).toBeHidden();
-  const testPopover2 = (await page.locator('#test-popover-2')).nth(0);
-  await expect(testPopover2).toBeHidden();
+  const defaultPopover = (await page.locator('#defaultPopover')).nth(0);
+  await expect(defaultPopover).toBeHidden();
+  await expect(
+    await defaultPopover.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(defaultPopover).toBeVisible();
   const showHidePopover = (await page.locator('#showHidePopover')).nth(0);
   await expect(
     await showHidePopover.evaluate((node) => node.showPopover()),
@@ -48,9 +50,8 @@ test('click inside manual popover dismisses other auto popovers', async ({
   ).toBeUndefined();
   await expect(manualPopover).toBeVisible();
 
-  await page.click('#manualPopover');
-  await expect(testPopover).toBeHidden();
-  await expect(testPopover2).toBeHidden();
+  await page.click('#showHidePopover');
+  await expect(defaultPopover).toBeHidden();
   await expect(showHidePopover).toBeVisible();
   await expect(manualPopover).toBeVisible();
 });
