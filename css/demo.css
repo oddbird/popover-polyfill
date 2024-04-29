@@ -247,6 +247,10 @@ body {
 
 [data-popover~='manual'] {
   inset-block-end: var(--popover-offset);
+
+  &:nth-of-type(2) {
+    inset-block-end: calc(var(--popover-offset) * 2);
+  }
 }
 
 [data-popover~='inner-shadowed'] {
