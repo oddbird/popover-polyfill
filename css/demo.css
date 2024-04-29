@@ -143,7 +143,7 @@ body {
 }
 
 .demo-section {
-  container: demo-section / inline-size;
+  /* container: demo-section / inline-size; */
   display: grid;
   gap: var(--gap);
   grid-template-columns: minmax(auto, 1fr) minmax(0, 57ch) minmax(auto, 1fr);
