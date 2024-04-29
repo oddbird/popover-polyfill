@@ -139,24 +139,14 @@
       </header>
       <div id="popovers">
         <div id="defaultPopover" data-popover popover>Default Popover</div>
-        <div
-          id="manualPopover"
-          data-popover
-          popover="manual"
-          style="bottom: 150px"
-        >
+        <div id="manualPopover" data-popover="manual" popover="manual">
           Manual Popover
         </div>
         <div id="emptyStatePopover" data-popover popover="">
           Empty State Popover
         </div>
         <dialog id="dialogPopover" popover>Dialog Popover</dialog>
-        <div
-          id="showHidePopover"
-          data-popover
-          popover="manual"
-          style="top: 150px"
-        >
+        <div id="showHidePopover" data-popover="manual" popover="manual">
           Popover with Explicit Action. This popover has an
           <a href="#" autofocus>autofocus link.</a>
         </div>
@@ -550,7 +540,7 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
               <button popovertarget="shadowedMenuInner" data-btn>
                 Toggle Inner Shadowed Popover
               </button>
-              <div id="shadowedMenuInner" data-popover popover style="top: 150px">
+              <div id="shadowedMenuInner" data-popover="inner-shadowed" popover>
                 Inner Shadowed Popover
               </div>`;
           </script>
@@ -567,7 +557,7 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
     &lt;button popovertarget="shadowedMenuInner"&gt;
       Toggle Inner Shadowed Popover
     &lt;/button&gt;
-    &lt;div id="shadowedMenuInner" popover style="top: 150px"&gt;
+    &lt;div id="shadowedMenuInner" popover&gt;
       Inner Shadowed Popover
     &lt;/div&gt;
   &lt;/div&gt;
@@ -581,7 +571,7 @@ menuShadowRoot.innerHTML = `
   &lt;button popovertarget="shadowedMenuInner"&gt;
     Toggle Inner Shadowed Popover
   &lt;/button&gt;
-  &lt;div id="shadowedMenuInner" popover style="top: 150px"&gt;
+  &lt;div id="shadowedMenuInner" popover&gt;
     Inner Shadowed Popover
   &lt;/div&gt;`;</code></pre>
         </section>

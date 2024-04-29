@@ -213,6 +213,10 @@ body {
   margin-block-end: var(--double-gap);
 }
 
+[data-popover] {
+  --popover-offset: 150px;
+}
+
 [data-popover]:popover-open {
   align-items: center;
   border: 1px solid var(--border-color);
@@ -237,6 +241,18 @@ body {
 
 [data-popover~='nested'] {
   padding: 0;
+}
+
+[data-popover~='manual'] {
+  inset-block-end: var(--popover-offset);
+
+  &:nth-child(2) {
+    inset-block-end: calc(var(--popover-offset) * 2);
+  }
+}
+
+[data-popover~='inner-shadowed'] {
+  inset-block-start: var(--popover-offset);
 }
 
 [data-btn~='menu-item'] {
