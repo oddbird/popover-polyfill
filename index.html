@@ -591,6 +591,30 @@ menuShadowRoot.innerHTML = `
             the Shadow DOM.
           </p>
           <div id="fullShadowHost"></div>
+          <script type="module">
+            const fullShadowHost = document.getElementById('fullShadowHost');
+            const fullShadowRoot = fullShadowHost.attachShadow({
+              mode: 'open',
+            });
+            fullShadowRoot.innerHTML = `
+              <style>
+                @import url('/css/demo.css') layer(demo);
+                @import url('/css/fonts.css') layer(initial);
+                @import url('/css/base.css') layer(default);
+              </style>
+              <div id="shadowedPopover" popover data-popover>Shadowed Popover</div>
+              <div>
+                <div id="shadowedNestedPopover" popover data-popover>Shadowed Nested Popover</div>
+              </div>
+              <div class="button-group">
+                <button popovertarget="shadowedPopover" data-btn>
+                  Toggle Shadowed Popover
+                </button>
+                <button popovertarget="shadowedNestedPopover" data-btn>
+                  Toggle Shadowed Nested Popover
+                </button>
+              </div>`;
+          </script>
           <pre><code class="language-html"
 >&lt;!-- Shadow DOM --&gt;
 &lt;button popovertarget="shadowedPopover"&gt;
@@ -605,28 +629,6 @@ menuShadowRoot.innerHTML = `
   &lt;div id="shadowedNestedPopover" popover&gt;Shadowed Nested Popover&lt;/div&gt;
 &lt;/div&gt;</code></pre>
         </section>
-        <script type="module">
-          const fullShadowHost = document.getElementById('fullShadowHost');
-          const fullShadowRoot = fullShadowHost.attachShadow({ mode: 'open' });
-          fullShadowRoot.innerHTML = `
-            <style>
-                @import url('/css/demo.css') layer(demo);
-                @import url('/css/fonts.css') layer(initial);
-                @import url('/css/base.css') layer(default);
-              </style>
-            <div class="button-group">
-              <button popovertarget="shadowedPopover" data-btn>
-                Toggle Shadowed Popover
-              </button>
-              <button popovertarget="shadowedNestedPopover" data-btn>
-                Toggle Shadowed Nested Popover
-              </button>
-            </div>
-            <div id="shadowedPopover" popover data-popover>Shadowed Popover</div>
-            <div>
-              <div id="shadowedNestedPopover" popover data-popover>Shadowed Nested Popover</div>
-            </div>`;
-        </script>
       </div>
     </main>
     <footer class="site-footer">
