@@ -2,7 +2,7 @@ body {
   display: grid;
   grid-template: 'site-header' auto 'main' 1fr 'footer' auto / 100%;
   margin: 0 var(--double-gap);
-  padding: var(--gap);
+  padding: var(--double-gap);
 }
 
 .site-header {
@@ -69,7 +69,7 @@ body {
   position: relative;
   justify-content: center;
 
-  @media (width >=60em) {
+  @media (width >=70em) {
     align-items: var(--header-items-align, center);
     display: flex;
     gap: var(--double-gap);
