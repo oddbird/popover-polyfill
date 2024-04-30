@@ -145,7 +145,7 @@
         <div id="emptyStatePopover" data-popover popover="">
           Empty State Popover
         </div>
-        <dialog id="dialogPopover" popover>Dialog Popover</dialog>
+        <dialog id="dialogPopover" data-popover popover>Dialog Popover</dialog>
         <div id="showHidePopover" data-popover="manual" popover="manual">
           Popover with Explicit Action. This popover has an
           <a href="#" autofocus>autofocus link.</a>
@@ -503,6 +503,8 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
             const menuShadowRoot = menuHost.attachShadow({ mode: 'open' });
             menuShadowRoot.innerHTML = `
               <style>
+                @layer reset, initial, popover-polyfill, default, demo;
+
                 @import url('/css/demo.css') layer(demo);
                 @import url('/css/fonts.css') layer(initial);
                 @import url('/css/base.css') layer(default);
@@ -598,6 +600,8 @@ menuShadowRoot.innerHTML = `
             });
             fullShadowRoot.innerHTML = `
               <style>
+                @layer reset, initial, popover-polyfill, default, demo;
+                
                 @import url('/css/demo.css') layer(demo);
                 @import url('/css/fonts.css') layer(initial);
                 @import url('/css/base.css') layer(default);
