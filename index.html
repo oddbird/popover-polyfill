@@ -391,8 +391,15 @@
             const crossTreeShadowRoot = crossTreeHost.attachShadow({
               mode: 'open',
             });
-            crossTreeShadowRoot.innerHTML =
-              '<div id="crossTreePopover" popover data-popover>Shadowed Popover</div>';
+            crossTreeShadowRoot.innerHTML = `
+              <style>
+                @layer reset, initial, popover-polyfill, default, demo;
+
+                @import url('/css/demo.css') layer(demo);
+                @import url('/css/fonts.css') layer(initial);
+                @import url('/css/base.css') layer(default);
+              </style>
+              <div id="crossTreePopover" popover data-popover>Shadowed Popover</div>`;
             document.getElementById('crossTreeToggle').popoverTargetElement =
               crossTreeShadowRoot.getElementById('crossTreePopover');
           </script>
@@ -601,7 +608,7 @@ menuShadowRoot.innerHTML = `
             fullShadowRoot.innerHTML = `
               <style>
                 @layer reset, initial, popover-polyfill, default, demo;
-                
+
                 @import url('/css/demo.css') layer(demo);
                 @import url('/css/fonts.css') layer(initial);
                 @import url('/css/base.css') layer(default);
