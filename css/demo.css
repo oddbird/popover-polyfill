@@ -200,6 +200,10 @@ body {
   }
 }
 
+a[target='_blank']::after {
+  content: ' ↗';
+}
+
 .button-group {
   display: grid;
   gap: var(--gap);

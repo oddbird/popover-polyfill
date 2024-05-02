@@ -34,11 +34,17 @@
     <script type="module">
       import { apply, isSupported } from './dist/popover-fn.js';
 
+      const note = document.getElementById('browser-support');
+
       if (isSupported()) {
         console.log('native `popover` support detected, no polyfill used');
+        note.innerText =
+          'This browser supports the Popover API natively, so the polyfill has not been applied.';
       } else {
         apply();
         console.log('polyfill applied');
+        note.innerText =
+          'This browser does not support the Popover API natively, so the polyfill has been applied.';
       }
     </script>
     <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
@@ -55,7 +61,7 @@
 
   <body>
     <header class="site-header">
-      <a href="/" rel="home" id="banner-logo">
+      <a href="https://www.oddbird.net/" rel="home" id="banner-logo">
         <svg
           data-logo="oddbird"
           xmlns="http://www.w3.org/2000/svg"
@@ -137,6 +143,16 @@
           </p>
         </div>
       </header>
+      <div>
+        <span id="browser-support"></span>
+        See which browsers have
+        <a
+          href="https://caniuse.com/?search=popover"
+          target="_blank"
+          rel="noopener noreferrer"
+          >native Popover API support</a
+        >.
+      </div>
       <div id="popovers">
         <div id="defaultPopover" data-popover popover>Default Popover</div>
         <div id="manualPopover" data-popover="manual" popover="manual">
