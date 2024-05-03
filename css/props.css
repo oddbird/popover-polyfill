@@ -49,6 +49,7 @@ html {
   --shadow: hsl(0deg 0% 53%);
   --action: hsl(195deg 53% 27%);
   --active: hsl(330deg 52.857% 27.451%);
+  --callout: hsl(193deg 28% 87%);
   --callout-special: hsla(23deg 13% 87% / 0.749);
   --highlight: hsl(330deg 52.857% 27.451%);
   --feature: hsl(195.65deg 45.098% 20%);

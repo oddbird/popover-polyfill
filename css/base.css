@@ -49,6 +49,12 @@ ol {
   outline-offset: var(--outline-offset, 0.25em);
 }
 
+[data-alert] {
+  background: var(--callout);
+  margin: var(--gap) 0 0;
+  padding: var(--gap) var(--spacer);
+}
+
 [data-btn] {
   align-items: center;
   background-color: var(--button-state, var(--button-bg, hsl(0deg 0% 20%)));
