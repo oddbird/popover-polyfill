@@ -209,6 +209,7 @@ body {
 
 a[target='_blank']::after {
   content: ' ↗';
+  font-size: var(--small);
 }
 
 .button-group {
