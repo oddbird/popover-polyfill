@@ -44,7 +44,7 @@ ol {
   }
 }
 
-:focus {
+:focus-visible {
   outline: medium dotted var(--accent-color);
   outline-offset: var(--outline-offset, 0.25em);
 }
