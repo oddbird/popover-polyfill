@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  block-size: 100%;
+}
+
+body {
+  margin: unset;
+  min-block-size: 100%;
+}
+
+picture {
+  display: contents;
+}
+
+img {
+  display: block;
+}
+
+img,
+svg {
+  max-inline-size: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}

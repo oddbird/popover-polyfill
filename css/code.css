@@ -1,0 +1,152 @@
+/**
+ * ccs theme
+ * Based on the a11y-dark theme: https://github.com/PrismJS/prism-themes/blob/master/themes/prism-a11y-dark.css
+ * @author oddbird
+ */
+
+pre,
+code {
+  font-family: var(--code);
+  hyphens: none;
+  line-height: 1.3;
+  tab-size: 2;
+  text-align: left;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+}
+
+pre {
+  background: var(--bg-full);
+  border: thin solid var(--border-color);
+  color: var(--text);
+  padding: var(--gap);
+  margin: var(--gap) calc(var(--gap) * -1);
+  overflow: auto;
+  white-space: pre;
+}
+
+pre[class*='language-'] {
+  background: #fff;
+  border: thin solid var(--border-color);
+}
+
+code[class^='language'] {
+  font-size: var(--small);
+}
+
+code:not([class^='language']) {
+  background: var(--callout-special);
+  border-radius: var(--quarter-shim);
+  color: var(--highlight);
+  padding-left: var(--quarter-shim);
+  padding-right: var(--quarter-shim);
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--text-light);
+}
+
+.token.punctuation {
+  color: var(--ccs-prime--fg3-fade);
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--ccs-prime--fg3);
+}
+
+.token.boolean,
+.token.number {
+  color: var(--highlight);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: var(--ccs-special--fg3);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+  color: var(--ccs-accent--fg2);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function {
+  color: var(--ccs-prime--fg2);
+}
+
+.token.keyword {
+  color: var(--ccs-accent--fg2);
+}
+
+.token.regex,
+.token.important {
+  color: var(--ccs-prime--fg3);
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+@media screen and (-ms-high-contrast: active) {
+  pre[class*='language-'] {
+    color: windowText;
+    background: window;
+  }
+
+  .token.important {
+    background: highlight;
+    color: window;
+    font-weight: normal;
+  }
+
+  .token.atrule,
+  .token.attr-value,
+  .token.function,
+  .token.keyword,
+  .token.operator,
+  .token.selector {
+    font-weight: bold;
+  }
+
+  .token.attr-value,
+  .token.comment,
+  .token.doctype,
+  .token.function,
+  .token.keyword,
+  .token.operator,
+  .token.property,
+  .token.string {
+    color: highlight;
+  }
+
+  .token.attr-value,
+  .token.url {
+    font-weight: normal;
+  }
+}

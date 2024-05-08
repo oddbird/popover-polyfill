@@ -79,6 +79,7 @@
     "test:e2e:ci": "run-s test:e2e \"test:e2e -- --browser=firefox\"",
     "test": "run-p test:unit test:e2e",
     "test:ci": "run-p test:unit test:e2e:ci",
+    "test:ui": "npm run test:e2e -- --ui",
     "prepare": "husky",
     "prepack": "npm run build"
   },

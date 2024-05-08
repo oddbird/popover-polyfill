@@ -1,0 +1,119 @@
+html {
+  background: var(--bg);
+  color: var(--text);
+  color-scheme: light;
+}
+
+body {
+  font-family: var(--serif);
+  font-size: var(--normal);
+  font-size-adjust: from-font;
+  line-height: 1.3;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--sans-serif);
+}
+
+h1 {
+  font-size: var(--h1);
+}
+
+h2 {
+  font-size: var(--h2, var(--large));
+}
+
+ul,
+ol,
+p {
+  margin-block: 0.5lh;
+}
+
+ul,
+ol {
+  margin-inline: 2ch;
+  padding-inline: unset;
+
+  li & {
+    margin-block: 0;
+  }
+}
+
+:focus-visible {
+  outline: medium dotted var(--accent-color);
+  outline-offset: var(--outline-offset, 0.25em);
+}
+
+[data-alert] {
+  background: var(--callout);
+  margin: var(--gap) 0 0;
+  padding: var(--gap) var(--spacer);
+}
+
+[data-btn] {
+  align-items: center;
+  background-color: var(--button-state, var(--button-bg, hsl(0deg 0% 20%)));
+  border: 1px solid transparent;
+  color: var(--button-color, var(--bg));
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--sans-serif);
+  font-size: inherit;
+  inline-size: var(--btn-inline-size, fit-content);
+  padding: var(--half-shim) var(--double-gap);
+  justify-content: var(--btn-content-align, center);
+  justify-self: center;
+
+  &:hover,
+  &:focus {
+    --button-state: var(--action);
+  }
+}
+
+[popover] {
+  padding: 0.5em 1em;
+}
+
+a {
+  &:link,
+  &:visited {
+    --underline-color--default: var(--accent-color);
+    --underline-thickness--default: 0.1em;
+    --underline-offset--default: 0.15em;
+
+    color: var(--link, var(--action));
+    text-decoration: underline;
+    text-decoration-color: var(
+      --underline-color,
+      var(--underline-color--default)
+    );
+    text-decoration-thickness: var(
+      --underline-thickness,
+      var(--underline-thickness--default)
+    );
+    text-decoration-skip-ink: auto;
+    text-underline-offset: var(
+      --underline-offset,
+      var(--underline-offset--default)
+    );
+    transition: text-decoration-thickness 150ms ease-out;
+  }
+
+  &:hover,
+  &:focus {
+    --underline-color: var(--active);
+    --underline-thickness: 0.2em;
+
+    color: var(--link-focus, var(--active));
+  }
+}
+
+svg {
+  fill: currentColor;
+  padding: 1px;
+}

@@ -1,0 +1,68 @@
+html {
+  /* fonts */
+  --wf-serif: freight-text-pro;
+  --wf-sans: freight-sans-pro;
+  --wf-code: source-code-pro;
+  --os-serif: palatino, 'palatino linotype', 'palatino lt std', 'book antiqua',
+    georgia;
+  --os-sans: 'helvetica neue', helvetica, arial;
+  --os-code: sfmono-regular, consolas, monaco;
+
+  --serif: var(--wf-serif, var(--os-serif, ui-serif)), serif;
+  --sans-serif: var(--wf-sans, var(--os-sans, ui-sans-serif)), sans-serif;
+  --code: var(--wf-code, var(--os-code, ui-monospace)), monospace, serif;
+
+  /* scale */
+  --step-n1: clamp(0.9375rem, 0.8638rem + 0.3685cqi, 1.1494rem);
+  --step-0: clamp(1.125rem, 0.9511rem + 0.8696cqi, 1.625rem);
+  --step-1: clamp(1.35rem, 1.0204rem + 1.6478cqi, 2.2975rem);
+  --step-2: clamp(1.62rem, 1.0535rem + 2.8326cqi, 3.2488rem);
+  --step-3: clamp(1.9438rem, 1.0218rem + 4.6098cqi, 4.5944rem);
+  --step-6: clamp(3.3592rem, 2.8691rem + 2.4507cqi, 4.7684rem);
+  --step-7: clamp(4.0311rem, 3.36rem + 3.3555cqi, 5.9605rem);
+  --step-8: clamp(4.8373rem, 3.9283rem + 4.5448cqi, 17.4506rem);
+  --step-9: clamp(5.8048rem, 4.5844rem + 6.1017cqi, 19.3132rem);
+  --step-10: clamp(6.9657rem, 5.3393rem + 8.1319cqi, 19.6415rem);
+
+  --small: var(--step-n1);
+  --normal: var(--step-0);
+  --large: var(--step-1);
+  --xlarge: var(--step-2);
+  --h1: var(--xlarge);
+  --title-size: var(--step-6);
+
+  --gap: clamp(12px, 2cqmin, 24px);
+  --double-gap: calc(var(--gap) * 2);
+  --shim: calc(var(--gap) / 2);
+  --half-shim: calc(var(--shim) / 2);
+  --quarter-shim: calc(var(--shim) / 4);
+  --spacer: clamp(1.5rlh, 10vw, 5rlh);
+
+  /* background colors */
+  --bg: hsl(200 12% 95.098%);
+
+  /* content colors */
+  --text: hsl(200deg 12% 4.902%);
+  --text-light: hsl(192.86deg 10% 27.451%);
+  --accent-color: hsl(330.2deg 67.742% 42.549%);
+  --border-color: hsl(195deg 10% 50%);
+  --shadow: hsl(0deg 0% 53%);
+  --action: hsl(195deg 53% 27%);
+  --active: hsl(330deg 52.857% 27.451%);
+  --callout: hsl(193deg 28% 87%);
+  --callout-special: hsla(23deg 13% 87% / 0.749);
+  --highlight: hsl(330deg 52.857% 27.451%);
+  --feature: hsl(195.65deg 45.098% 20%);
+  --feature-to: hsl(194.78deg 75.281% 34.902%);
+  --feature-from: var(--accent-color);
+  --feature-gradient: linear-gradient(
+    to bottom right,
+    var(--feature-from),
+    var(--feature-to)
+  );
+  --bg-full: hsl(0deg 0% 100%);
+  --ccs-prime--fg3-fade: hsla(195deg 53% 27% / 0.749);
+  --ccs-prime--fg3: hsl(195deg 53% 27%);
+  --ccs-special--fg3: hsl(24deg 53% 27%);
+  --ccs-accent--fg2: hsl(330deg 60% 35%);
+}
