@@ -18,15 +18,12 @@ harassed, or have any other concerns, please contact the owners:
 - Jonny Gerig Meyer: <jonny@oddbird.net>
 - Miriam Suzanne: <miriam@oddbird.net>
 
-## We strive to:
+## Contributors strive to:
 
 - **Be welcoming, kind, and helpful**
 - **Be collaborative, open, and transparent**
 - **Take responsibility for our words and actions**
 - **Look out for each other**
-
-When we are in public, our actions determine the public perception of
-our company.
 
 ## Scope
 
