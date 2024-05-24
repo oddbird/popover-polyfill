@@ -124,7 +124,7 @@ OddBird contributors asked to stop any harassing behavior are expected
 to comply immediately. If a participant engages in harassing behavior,
 the owners may take any action they deem appropriate, up to and
 including expulsion from all OddBird spaces and activities, as well as
-identification of the participant as a harasser to other OddBird members
+identification of the participant as a harasser to other OddBird contributors
 or the general public.
 
 The OddBird owners will be happy to help participants contact any
@@ -140,6 +140,6 @@ the [Sass Community Guidelines], [Slack Developer Community Code of
 Conduct], and [FreeBSD Code of Conduct].
 
 [Geek Feminism wiki]: https://geekfeminism.fandom.com/wiki/Community_anti-harassment
-[Sass Community Guidelines]: https://sass-lang.com/community-guidelines
+[Sass Community Guidelines]: https://sass-lang.com/community-guidelines/
 [Slack Developer Community Code of Conduct]: https://api.slack.com/community/code-of-conduct
 [FreeBSD Code of Conduct]: https://www.freebsd.org/internal/code-of-conduct/
