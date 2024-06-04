@@ -165,8 +165,8 @@ some caveats which will need accommodations:
   styles do use layers, you'll need to ensure the polyfill layer is declared
   first. (e.g. `@layer popover-polyfill, other, layers;`)
 
-- The polyfill will not work in browsers with partial popover support enabled or
-  attempt to make experimental support match the final spec.
+- The polyfill will not work in browsers with partial popover support enabled,
+  and will also not attempt to make experimental support match the final spec.
 
 ## Contributing
 
