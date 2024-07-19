@@ -114,3 +114,17 @@ test('pressing Escape focused in popover dismisses auto popovers', async ({
 
   await expect(singleActionShowPopover).toBeHidden();
 });
+
+test('click inside auto popover with a slotted element does not dismiss itself', async ({
+  page,
+}) => {
+  const testPopover = (await page.locator('#shadowedPopoverWithSlot')).nth(0);
+  await expect(
+    await testPopover.evaluate((node) => node.showPopover()),
+  ).toBeUndefined();
+  await expect(testPopover).toBeVisible();
+
+  const slottedText = (await page.locator('#shadowHostWithSlot span')).nth(0);
+  await slottedText.evaluate((node) => node.click());
+  await expect(testPopover).toBeVisible();
+});
