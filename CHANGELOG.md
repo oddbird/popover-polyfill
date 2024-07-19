@@ -1,5 +1,10 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🐛 BUGFIX: Add support for slotting elements into popovers --
+  [#215](https://github.com/oddbird/popover-polyfill/pull/215)
+
 ## 0.4.3: 2024-04-26
 
 - 🐛 BUGFIX: Check for `window` before applying polyfill --
