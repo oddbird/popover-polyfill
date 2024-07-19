@@ -167,11 +167,6 @@ export function apply() {
     'querySelectorAll',
     rewriteSelector,
   );
-  patchSelectorFn(
-    DocumentFragment.prototype,
-    'querySelectorAll',
-    rewriteSelector,
-  );
 
   Object.defineProperties(HTMLElement.prototype, {
     popover: {
