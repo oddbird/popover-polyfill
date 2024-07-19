@@ -113,7 +113,10 @@ function nearestInclusiveOpenPopover(
     ) {
       return node;
     }
-    node = node.parentElement || getRootNode(node);
+    node =
+      (node instanceof Element && node.assignedSlot) ||
+      node.parentElement ||
+      getRootNode(node);
     if (node instanceof ShadowRoot) node = node.host;
     if (node instanceof Document) return;
   }

@@ -678,6 +678,50 @@ menuShadowRoot.innerHTML = `
   &lt;div id="shadowedNestedPopover" popover&gt;Shadowed Nested Popover&lt;/div&gt;
 &lt;/div&gt;</code></pre>
         </section>
+
+        <section id="popover-shadow-root-with-slot" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-shadow-root-with-slot" aria-hidden="true">🔗</a>
+            Element slotted in an Shadow Root Popover
+          </h2>
+          <p class="note">
+            Here, both the popover control button and the popover are created in
+            the Shadow DOM, but an element is slotted in the popover
+          </p>
+          <div id="shadowHostWithSlot">
+            <div><span>I'm a slotted element</span></div>
+          </div>
+          <script type="module">
+            const shadowHostWithSlot =
+                document.getElementById('shadowHostWithSlot'),
+              shadowHostWithSlotRoot = shadowHostWithSlot.attachShadow({
+                mode: 'open',
+              });
+            shadowHostWithSlotRoot.innerHTML = `
+              <style>
+                @layer reset, initial, popover-polyfill, default, demo;
+
+                @import url('/css/demo.css') layer(demo);
+                @import url('/css/fonts.css') layer(initial);
+                @import url('/css/base.css') layer(default);
+              </style>
+              <div id="shadowedPopoverWithSlot" popover data-popover><slot><slot></div>
+              <div class="button-group">
+                <button popovertarget="shadowedPopoverWithSlot" data-btn>
+                  Toggle Shadowed Popover
+                </button>
+              </div>`;
+          </script>
+          <pre><code class="language-html"
+>&lt;!-- Shadow DOM --&gt;
+&lt;button popovertarget="shadowedPopoverWithSlot"&gt;
+  Toggle Shadowed Popover
+&lt;/button&gt;
+
+&lt;div id="shadowedPopoverWithSlot" popover&gt;
+  &lt;/slot&gt;&lt;/slot&gt;
+&lt;/div&gt;</code></pre>
+        </section>
       </div>
     </main>
     <footer class="site-footer">
