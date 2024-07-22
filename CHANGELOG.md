@@ -1,9 +1,15 @@
 # Popover Attribute Polyfill Changelog
 
-## Unreleased
+## 0.4.4: 2024-07-22
 
 - 🐛 BUGFIX: Add support for slotting elements into popovers --
   [#215](https://github.com/oddbird/popover-polyfill/pull/215)
+- 📝 DOCS: Expand and style the demo page --
+  [#187](https://github.com/oddbird/popover-polyfill/pull/187)
+- 🏠 INTERNAL: Add issue templates, Code of Conduct, and Security policies --
+  [#206](https://github.com/oddbird/popover-polyfill/pull/206) and
+  [#207](https://github.com/oddbird/popover-polyfill/pull/207)
+- 🏠 INTERNAL: Upgrade dependencies
 
 ## 0.4.3: 2024-04-26
 
