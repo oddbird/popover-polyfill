@@ -25,10 +25,10 @@ declare global {
     togglePopover(force?: boolean): void;
   }
 
-  /* eslint-disable @typescript-eslint/no-empty-interface */
+  /* eslint-disable @typescript-eslint/no-empty-object-type */
   interface HTMLButtonElement extends PopoverToggleTargetElementInvoker {}
   interface HTMLInputElement extends PopoverToggleTargetElementInvoker {}
-  /* eslint-enable @typescript-eslint/no-empty-interface */
+  /* eslint-enable @typescript-eslint/no-empty-object-type */
 
   interface Window {
     ToggleEvent: ToggleEvent;
