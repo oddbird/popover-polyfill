@@ -60,7 +60,7 @@
     "build:esm": "esbuild --bundle src/index.ts --outfile=dist/popover.js --format=esm --sourcemap",
     "build:esm-min": "esbuild --bundle src/index.ts --outfile=dist/popover.min.js --format=esm --minify --sourcemap",
     "build:esm-fn": "esbuild --bundle src/index-fn.ts --outfile=dist/popover-fn.js --format=esm --sourcemap",
-    "build:cjs": "esbuild --bundle src/index.ts --outfile=dist/popover.cjs.js --format=cjs --sourcemap",
+    "build:cjs-fn": "esbuild --bundle src/index-fn.ts --outfile=dist/popover-fn.cjs.js --format=cjs --sourcemap",
     "clean": "rm -rf dist",
     "build": "run-s clean build:* types",
     "server:start": "esbuild --bundle src/index.ts --format=esm --servedir=. --outdir=dist --sourcemap --serve=\"${PORT:-3000}\" --log-level=\"${LEVEL:-info}\"",
