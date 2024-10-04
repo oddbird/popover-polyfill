@@ -29,7 +29,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/popover.js",
       "browser": "./dist/popover.iife.min.js",
-      "require": "./dist/popover.js"
+      "require": "./dist/popover.cjs.js"
     },
     "./fn": {
       "types": "./dist/index-fn.d.ts",
