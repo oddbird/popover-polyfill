@@ -33,7 +33,8 @@
     },
     "./fn": {
       "types": "./dist/index-fn.d.ts",
-      "import": "./dist/popover-fn.js"
+      "import": "./dist/popover-fn.js",
+      "require": "./dist/popover-fn.cjs.js"
     }
   },
   "typesVersions": {
