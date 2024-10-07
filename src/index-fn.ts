@@ -38,7 +38,3 @@ declare global {
     ToggleEvent: ToggleEvent;
   }
 }
-
-if (!isSupported()) {
-  apply();
-}
