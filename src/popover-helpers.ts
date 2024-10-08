@@ -84,7 +84,6 @@ function topMostAutoPopover(document: Document): HTMLElement | null {
   const documentPopovers = autoPopoverList.get(document);
   for (const popover of documentPopovers || []) {
     if (!popover.isConnected) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       documentPopovers!.delete(popover);
     } else {
       return popover;
@@ -285,14 +284,12 @@ export function showPopover(element: HTMLElement) {
   if (!topLayerElements.has(document)) {
     topLayerElements.set(document, new Set());
   }
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   topLayerElements.get(document)!.add(element);
   popoverFocusingSteps(element);
   if (element.popover === 'auto') {
     if (!autoPopoverList.has(document)) {
       autoPopoverList.set(document, new Set());
     }
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     autoPopoverList.get(document)!.add(element);
     setInvokerAriaExpanded(popoverInvoker.get(element), true);
   }
