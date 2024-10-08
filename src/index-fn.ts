@@ -38,3 +38,5 @@ declare global {
     ToggleEvent: ToggleEvent;
   }
 }
+
+export * from './popover.js';
