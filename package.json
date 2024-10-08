@@ -19,7 +19,7 @@
     "popover"
   ],
   "type": "module",
-  "main": "./dist/popover-fn.js",
+  "main": "./dist/popover.js",
   "module": "./dist/popover.js",
   "browser": "./dist/popover.iife.min.js",
   "unpkg": "./dist/popover.min.js",
