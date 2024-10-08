@@ -1,5 +1,15 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.5.0: 2024-10-08
+
+- 💥 BREAKING: `main` entry point (used by
+  `require("@oddbird/popover-polyfill")`) now points to the default build, which
+  automatically applies the polyfill --
+  [#223](https://github.com/oddbird/popover-polyfill/pull/223)
+- 🚀 NEW: Add CommonJS build --
+  [#223](https://github.com/oddbird/popover-polyfill/pull/223)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.4.4: 2024-07-22
 
 - 🐛 BUGFIX: Add support for slotting elements into popovers --

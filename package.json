@@ -1,6 +1,6 @@
 {
   "name": "@oddbird/popover-polyfill",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "description": "Popover Attribute Polyfill",
   "license": "BSD-3-Clause",
   "publishConfig": {
