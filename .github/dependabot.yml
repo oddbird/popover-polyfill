@@ -25,6 +25,3 @@ updates:
           - 'patch'
     ignore:
       - dependency-name: '@playwright/test'
-      - dependency-name: 'eslint'
-        update-types:
-          - 'version-update:semver-major'
