@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.5.1: 2024-11-11
+
+- 🐛 BUGFIX: Fix setting `el.popover = null` --
+  [#229](https://github.com/oddbird/popover-polyfill/pull/229)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.5.0: 2024-10-08
 
 - 💥 BREAKING: `main` entry point (used by
