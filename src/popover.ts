@@ -179,7 +179,11 @@ export function apply() {
         return 'manual';
       },
       set(value) {
-        this.setAttribute('popover', value);
+        if (value === null) {
+          this.removeAttribute('popover');
+        } else {
+          this.setAttribute('popover', value);
+        }
       },
     },
 
