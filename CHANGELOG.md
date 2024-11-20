@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.5.2: 2024-11-20
+
+- 📝 DOCS: Add favicon, sponsor text, and new demo page URL --
+  [#230](https://github.com/oddbird/popover-polyfill/pull/230)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.5.1: 2024-11-11
 
 - 🐛 BUGFIX: Fix setting `el.popover = null` --
