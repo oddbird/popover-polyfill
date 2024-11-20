@@ -156,7 +156,7 @@
 
 - 🐛 BUGFIX: Fix regression when targets have nested elements --
   [#88](https://github.com/oddbird/popover-polyfill/pull/88)
-- 📝 DOCS: Add demo site: https://popover-polyfill.netlify.app/
+- 📝 DOCS: Add demo site: https://popover.oddbird.net/
 
 ## 0.1.0: 2023-03-24
 

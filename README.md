@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/oddbird/popover-polyfill/actions/workflows/test.yml/badge.svg)](https://github.com/oddbird/popover-polyfill/actions/workflows/test.yml) [![npm version](https://badge.fury.io/js/@oddbird%2Fpopover-polyfill.svg)](https://badge.fury.io/js/@oddbird%2Fpopover-polyfill) [![Netlify Status](https://api.netlify.com/api/v1/badges/35bc7ba7-97a2-4e41-93ed-5141988adb1e/deploy-status)](https://app.netlify.com/sites/popover-polyfill/deploys)
 
-- [Demo](https://popover-polyfill.netlify.app/)
+- [Demo](https://popover.oddbird.net/)
 - [Explainer](https://open-ui.org/components/popover.research.explainer/)
 
 This polyfills the HTML `popover` attribute and
