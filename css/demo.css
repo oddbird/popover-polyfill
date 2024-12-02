@@ -9,9 +9,9 @@ body {
   font-family: var(--sans-serif);
   font-size: var(--small);
   grid-area: site-header;
-  grid-template: '. logo nav .' auto / var(--page-margin) minmax(8ch, 15ch) auto var(
-      --page-margin
-    );
+  grid-template:
+    '. logo nav .' auto / var(--page-margin) minmax(8ch, 15ch)
+    auto var(--page-margin);
   margin-block-start: var(--page-margin);
 }
 
