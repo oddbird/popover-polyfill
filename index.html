@@ -12,15 +12,13 @@
       crossorigin
     />
     <style>
-      @layer reset, initial, popover-polyfill, default, demo;
-
-      @import url('/css/reset.css') layer(reset);
-      @import url('/css/demo.css') layer(demo);
-      @import url('/css/prism.css') layer(initial);
-      @import url('/css/fonts.css') layer(initial);
-      @import url('/css/base.css') layer(default);
-      @import url('/css/props.css') layer(initial);
-      @import url('/css/code.css') layer(default);
+      @import url('/css/reset.css');
+      @import url('/css/demo.css');
+      @import url('/css/prism.css');
+      @import url('/css/fonts.css');
+      @import url('/css/base.css');
+      @import url('/css/props.css');
+      @import url('/css/code.css');
     </style>
     <style>
       @layer popover-polyfill;
@@ -432,11 +430,9 @@
             });
             crossTreeShadowRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
-                @import url('/css/demo.css') layer(demo);
-                @import url('/css/fonts.css') layer(initial);
-                @import url('/css/base.css') layer(default);
+                @import url('/css/demo.css');
+                @import url('/css/fonts.css');
+                @import url('/css/base.css');
               </style>
               <div id="crossTreePopover" popover data-popover>Shadowed Popover</div>`;
             document.getElementById('crossTreeToggle').popoverTargetElement =
@@ -549,11 +545,9 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
             const menuShadowRoot = menuHost.attachShadow({ mode: 'open' });
             menuShadowRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
-                @import url('/css/demo.css') layer(demo);
-                @import url('/css/fonts.css') layer(initial);
-                @import url('/css/base.css') layer(default);
+                @import url('/css/demo.css');
+                @import url('/css/fonts.css');
+                @import url('/css/base.css');
               </style>
 
               <button popovertarget="shadowedMenuInner" data-btn>
@@ -646,11 +640,9 @@ menuShadowRoot.innerHTML = `
             });
             fullShadowRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
-                @import url('/css/demo.css') layer(demo);
-                @import url('/css/fonts.css') layer(initial);
-                @import url('/css/base.css') layer(default);
+                @import url('/css/demo.css');
+                @import url('/css/fonts.css');
+                @import url('/css/base.css');
               </style>
               <div id="shadowedPopover" popover data-popover>Shadowed Popover</div>
               <div>
@@ -699,8 +691,6 @@ menuShadowRoot.innerHTML = `
             });
             shadowHostWithSlotRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
                 @import url('/css/demo.css') layer(demo);
                 @import url('/css/fonts.css') layer(initial);
                 @import url('/css/base.css') layer(default);
