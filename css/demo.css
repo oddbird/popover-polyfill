@@ -15,27 +15,27 @@ body {
   margin-block-start: var(--page-margin);
 }
 
-#banner-logo {
-  &:link,
-  &:visited {
-    align-self: start;
-    display: block;
-    grid-area: logo;
-    transition: transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transform-origin: top center;
-    z-index: 1;
-  }
+#banner-logo:hover,
+#banner-logo:focus,
+#banner-logo:active {
+  transform: scale(1.05);
+}
 
-  &:hover,
-  &:focus,
-  &:active {
-    transform: scale(1.05);
-  }
+#banner-logo [data-logo] {
+  height: auto;
+  block-size: auto;
+  width: 100%;
+  inline-size: 100%;
+}
 
-  [data-logo] {
-    block-size: auto;
-    inline-size: 100%;
-  }
+#banner-logo:link,
+#banner-logo:visited {
+  align-self: start;
+  display: block;
+  grid-area: logo;
+  transition: transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: top center;
+  z-index: 1;
 }
 
 [data-nav] {
@@ -51,8 +51,10 @@ body {
   list-style: none;
   margin-block: 0 var(--gap);
   padding: 0;
+}
 
-  @media (width >=40em) {
+@media (width >=40em) {
+  [data-navlist] {
     --nav-placement: start;
   }
 }
@@ -60,11 +62,11 @@ body {
 [data-nav] {
   display: inline-block;
   padding: 0 var(--gap);
+}
 
-  &:not(:hover, :active, :focus, [aria-current]) {
-    --underline-color: transparent;
-    --underline-thickness: 0;
-  }
+[data-nav]:not(:hover, :active, :focus, [aria-current]) {
+  --underline-color: transparent;
+  --underline-thickness: 0;
 }
 
 [data-layout='main'] {
@@ -76,14 +78,18 @@ body {
   position: relative;
   justify-content: center;
   margin-inline: var(--page-margin);
+}
 
-  @media (width >=70em) {
+@media (width >=70em) {
+  .main-header {
     align-items: var(--header-items-align, center);
     display: flex;
     gap: var(--double-gap);
   }
+}
 
-  @media (width >=1400px) {
+@media (width >=1400px) {
+  .main-header {
     --header-items-align: last baseline;
   }
 }
@@ -93,26 +99,28 @@ body {
   grid-auto-rows: min-content;
   line-height: 0.8;
   margin-block: 0;
+}
 
-  @media (width >=56em) {
-    align-content: center;
+#title :not(.subtitle) {
+  color: var(--feature-to);
+  text-transform: uppercase;
+}
+
+@supports (background-clip: text) {
+  #title :not(.subtitle) {
+    background: var(--brand-pink);
+    background: var(--feature-gradient);
+    background-clip: text;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    color: transparent;
+    text-shadow: none;
   }
+}
 
-  & :not(.subtitle) {
-    color: var(--feature-to);
-    text-transform: uppercase;
-
-    @supports (background-clip: text) {
-      & {
-        background: var(--brand-pink);
-        background: var(--feature-gradient);
-        background-clip: text;
-        -webkit-box-decoration-break: clone;
-        box-decoration-break: clone;
-        color: transparent;
-        text-shadow: none;
-      }
-    }
+@media (width >=56em) {
+  #title {
+    align-content: center;
   }
 }
 
@@ -156,22 +164,22 @@ body {
   grid-template-columns: minmax(auto, 1fr) minmax(0, 57ch) minmax(auto, 1fr);
   justify-items: center;
   position: relative;
+}
 
-  &::before {
-    border-block-end: thin solid var(--border-color);
-    content: '';
-    inset: 0;
-    inset-block-end: auto;
-    position: absolute;
-  }
+.demo-section::before {
+  border-block-end: thin solid var(--border-color);
+  content: '';
+  inset: 0;
+  inset-block-end: auto;
+  position: absolute;
+}
 
-  &::after {
-    border-block-start: thin solid var(--border-color);
-    content: '';
-    position: absolute;
-    inset: 0 0 calc(var(--gap) * -2);
-    inset-block-start: auto;
-  }
+.demo-section::after {
+  border-block-start: thin solid var(--border-color);
+  content: '';
+  position: absolute;
+  inset: 0 0 calc(var(--gap) * -2);
+  inset-block-start: auto;
 }
 
 .demo-item {
@@ -187,24 +195,24 @@ body {
 [data-header] {
   grid-area: title;
   position: relative;
+}
 
-  [aria-hidden]:any-link {
-    display: inline-block;
-    filter: grayscale(var(--grayscale, 100%));
-    left: -1.25em;
-    position: absolute;
-    text-decoration: none;
-    transform: scale(var(--scale, 0.75));
-    transition: all 200ms ease-in-out;
-  }
+[data-header] [aria-hidden]:any-link {
+  display: inline-block;
+  filter: grayscale(var(--grayscale, 100%));
+  left: -1.25em;
+  position: absolute;
+  text-decoration: none;
+  transform: scale(var(--scale, 0.75));
+  transition: all 200ms ease-in-out;
+}
 
-  [aria-hidden]:hover,
-  [aria-hidden]:focus,
-  [aria-hidden]:active {
-    --grayscale: 0;
-    --scale: 1;
-    --outline-offset: 0.025em;
-  }
+[data-header] [aria-hidden]:hover,
+[data-header] [aria-hidden]:focus,
+[data-header] [aria-hidden]:active {
+  --grayscale: 0;
+  --scale: 1;
+  --outline-offset: 0.025em;
 }
 
 a[target='_blank']::after {
@@ -235,8 +243,10 @@ a[target='_blank']::after {
   font-family: var(--sans-serif);
   flex-wrap: wrap;
   gap: var(--shim);
+}
 
-  @media (width <=780px) {
+@media (width <=780px) {
+  [data-popover]:popover-open {
     inline-size: auto;
     justify-content: center;
     margin-inline: var(--shim);
@@ -253,8 +263,10 @@ a[target='_blank']::after {
   font-family: var(--sans-serif);
   flex-wrap: wrap;
   gap: var(--shim);
+}
 
-  @media (width <=780px) {
+@media (width <=780px) {
+  [data-popover].\:popover-open {
     inline-size: auto;
     justify-content: center;
     margin-inline: var(--shim);
@@ -272,10 +284,10 @@ a[target='_blank']::after {
 
 [data-popover~='manual'] {
   inset-block-end: var(--popover-offset);
+}
 
-  &:nth-of-type(2) {
-    inset-block-end: calc(var(--popover-offset) * 2);
-  }
+[data-popover~='manual']:nth-of-type(2) {
+  inset-block-end: calc(var(--popover-offset) * 2);
 }
 
 [data-popover~='inner-shadowed'] {
@@ -287,12 +299,12 @@ a[target='_blank']::after {
   --button-color: var(--text);
   --btn-content-align: start;
   --btn-inline-size: 100%;
+}
 
-  &:hover,
-  &:focus {
-    --button-color: var(--bg);
-    outline-color: transparent;
-  }
+[data-btn~='menu-item']:hover,
+[data-btn~='menu-item']:focus {
+  --button-color: var(--bg);
+  outline-color: transparent;
 }
 
 .site-footer {
