@@ -255,10 +255,9 @@ a[target='_blank']::after {
   }
 }
 
-/* [data-popover~='layered-styles'] {
-  --border-color: var(--text);
-  --popover-color: var(--bg);
-} */
+[data-popover~='layered-styles'] {
+  --border-size: 2px;
+} 
 
 [data-popover~='nested'] {
   padding: 0;
