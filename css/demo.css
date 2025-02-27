@@ -255,26 +255,6 @@ a[target='_blank']::after {
   }
 }
 
-/* for browsers that don't support popovers */
-[data-popover].\:popover-open {
-  align-items: center;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 3px 3px var(--shadow);
-  color: var(--popover-color, var(--text));
-  display: flex;
-  font-family: var(--sans-serif);
-  flex-wrap: wrap;
-  gap: var(--shim);
-}
-
-@media (width <=780px) {
-  [data-popover].\:popover-open {
-    inline-size: auto;
-    justify-content: center;
-    margin-inline: var(--shim);
-  }
-}
-
 [data-popover~='layered-styles'] {
   --border-color: var(--text);
   --popover-color: var(--bg);
@@ -327,5 +307,31 @@ a[target='_blank']::after {
 #fullShadowHost {
   &:focus {
     outline: none;
+  }
+}
+
+/* for browsers that don't support popovers */
+@supports not selector(:popover-open) {
+  [popover]:not(.\:popover-open) {
+    display: none;
+  }
+
+  [data-popover].\:popover-open {
+    align-items: center;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 3px 3px var(--shadow);
+    color: var(--popover-color, var(--text));
+    display: flex;
+    font-family: var(--sans-serif);
+    flex-wrap: wrap;
+    gap: var(--shim);
+  }
+
+  @media (width <=780px) {
+    [data-popover].\:popover-open {
+      inline-size: auto;
+      justify-content: center;
+      margin-inline: var(--shim);
+    }
   }
 }
