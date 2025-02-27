@@ -80,17 +80,19 @@ body {
   margin-inline: var(--page-margin);
 }
 
-@media (width >=70em) {
-  .main-header {
-    align-items: var(--header-items-align, center);
-    display: flex;
-    gap: var(--double-gap);
+@supports (container: inline-size) {
+  @media (width >=70em) {
+    .main-header {
+      align-items: var(--header-items-align, center);
+      display: flex;
+      gap: var(--double-gap);
+    }
   }
-}
 
-@media (width >=1400px) {
-  .main-header {
-    --header-items-align: last baseline;
+  @media (width >=1400px) {
+    .main-header {
+      --header-items-align: last baseline;
+    }
   }
 }
 
