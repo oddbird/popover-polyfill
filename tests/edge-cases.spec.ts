@@ -25,5 +25,5 @@ test('styles in layers are winning over polyfilled styles', async ({
   page,
 }) => {
   const popover = (await page.locator('#layeredStylesPopover')).nth(0);
-  await expect(popover).toHaveCSS('--border-color', 'rgb(208, 13, 30)');
+  await expect(popover).toHaveCSS('--border-color', '#d00d1e');
 });
