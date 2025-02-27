@@ -25,7 +25,8 @@
 
       @layer consumer {
         [data-popover~='layered-styles'] {
-          background-color: #d00d1e;
+          --border-color: #d00d1e;
+          --border-size: 2px;
         }
       }
     </style>
@@ -221,7 +222,7 @@
           <div id="menuHost"></div>
         </div>
         <div id="layeredStylesPopover" data-popover="layered-styles" popover>
-          Popover with Layered Styles (should be red if browser has
+          Popover with Layered Styles (border should be red if browser has
           <code>@layer</code> support)
         </div>
 
@@ -619,7 +620,7 @@ menuShadowRoot.innerHTML = `
 
 @layer consumer {
   [data-popover~='layered-styles'] {
-    background-color: #d00d1e;
+    --border-color: #d00d1e;
   }
 }</code></pre>
         </section>

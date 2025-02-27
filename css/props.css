@@ -32,6 +32,7 @@ html {
   --xlarge: var(--step-2);
   --h1: var(--xlarge);
   --title-size: var(--step-6);
+  --border-size: 1px;
 
   --gap: 0.75rem;
   --double-gap: calc(var(--gap) * 2);

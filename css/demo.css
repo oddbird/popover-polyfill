@@ -238,7 +238,7 @@ a[target='_blank']::after {
 
 [data-popover]:popover-open {
   align-items: center;
-  border: 1px solid var(--border-color);
+  border: var(--border-size) solid var(--border-color);
   box-shadow: 0 3px 3px var(--shadow);
   color: var(--popover-color, var(--text));
   display: flex;
@@ -255,10 +255,10 @@ a[target='_blank']::after {
   }
 }
 
-[data-popover~='layered-styles'] {
+/* [data-popover~='layered-styles'] {
   --border-color: var(--text);
   --popover-color: var(--bg);
-}
+} */
 
 [data-popover~='nested'] {
   padding: 0;
