@@ -13,16 +13,18 @@ html {
   --code: var(--wf-code, var(--os-code, ui-monospace)), monospace, serif;
 
   /* scale */
-  --step-n1: clamp(0.9375rem, 0.8638rem + 0.3685cqi, 1.1494rem);
-  --step-0: clamp(1.125rem, 0.9511rem + 0.8696cqi, 1.625rem);
-  --step-1: clamp(1.35rem, 1.0204rem + 1.6478cqi, 2.2975rem);
-  --step-2: clamp(1.62rem, 1.0535rem + 2.8326cqi, 3.2488rem);
-  --step-3: clamp(1.9438rem, 1.0218rem + 4.6098cqi, 4.5944rem);
-  --step-6: clamp(3.3592rem, 2.8691rem + 2.4507cqi, 4.7684rem);
-  --step-7: clamp(4.0311rem, 3.36rem + 3.3555cqi, 5.9605rem);
-  --step-8: clamp(4.8373rem, 3.9283rem + 4.5448cqi, 17.4506rem);
-  --step-9: clamp(5.8048rem, 4.5844rem + 6.1017cqi, 19.3132rem);
-  --step-10: clamp(6.9657rem, 5.3393rem + 8.1319cqi, 19.6415rem);
+  --step-n1: clamp(0.9375rem, 0.814rem + 0.6173vw, 1.3542rem);
+  --step-0: clamp(1.125rem, 0.9769rem + 0.7407vw, 1.625rem);
+  --step-1: clamp(1.35rem, 1.1722rem + 0.8889vw, 1.95rem);
+  --step-2: clamp(1.62rem, 1.4067rem + 1.0667vw, 2.34rem);
+  --step-3: clamp(1.944rem, 1.688rem + 1.28vw, 2.808rem);
+  --step-4: clamp(2.3328rem, 2.0256rem + 1.536vw, 3.3696rem);
+  --step-5: clamp(2.7994rem, 2.4307rem + 1.8432vw, 4.0435rem);
+  --step-6: clamp(3.3592rem, 2.9169rem + 2.2118vw, 4.8522rem);
+  --step-7: clamp(4.0311rem, 3.5002rem + 2.6542vw, 5.8227rem);
+  --step-8: clamp(4.8373rem, 4.2003rem + 3.185vw, 6.9872rem);
+  --step-9: clamp(5.8048rem, 5.0403rem + 3.8221vw, 8.3846rem);
+  --step-10: clamp(6.9657rem, 6.0484rem + 4.5865vw, 10.0616rem);
 
   --small: var(--step-n1);
   --normal: var(--step-0);
@@ -31,12 +33,12 @@ html {
   --h1: var(--xlarge);
   --title-size: var(--step-6);
 
-  --gap: clamp(12px, 2cqmin, 24px);
+  --gap: 0.75rem;
   --double-gap: calc(var(--gap) * 2);
   --shim: calc(var(--gap) / 2);
   --half-shim: calc(var(--shim) / 2);
   --quarter-shim: calc(var(--shim) / 4);
-  --spacer: clamp(1.5rlh, 10vw, 5rlh);
+  --spacer: calc(var(--double-gap) + 3vw);
 
   /* background colors */
   --bg: hsl(200 12% 95.098%);
@@ -65,4 +67,21 @@ html {
   --ccs-prime--fg3: hsl(195deg 53% 27%);
   --ccs-special--fg3: hsl(24deg 53% 27%);
   --ccs-accent--fg2: hsl(330deg 60% 35%);
+}
+
+@supports (font-size: 2cqi) {
+  html {
+    --step-n1: clamp(0.9375rem, 0.8638rem + 0.3685cqi, 1.1494rem);
+    --step-0: clamp(1.125rem, 0.9511rem + 0.8696cqi, 1.625rem);
+    --step-1: clamp(1.35rem, 1.0204rem + 1.6478cqi, 2.2975rem);
+    --step-2: clamp(1.62rem, 1.0535rem + 2.8326cqi, 3.2488rem);
+    --step-3: clamp(1.9438rem, 1.0218rem + 4.6098cqi, 4.5944rem);
+    --step-6: clamp(3.3592rem, 2.8691rem + 2.4507cqi, 4.7684rem);
+    --step-7: clamp(4.0311rem, 3.36rem + 3.3555cqi, 5.9605rem);
+    --step-8: clamp(4.8373rem, 3.9283rem + 4.5448cqi, 17.4506rem);
+    --step-9: clamp(5.8048rem, 4.5844rem + 6.1017cqi, 19.3132rem);
+    --step-10: clamp(6.9657rem, 5.3393rem + 8.1319cqi, 19.6415rem);
+    --gap: clamp(12px, 2cqmin, 24px);
+    --spacer: clamp(1.5rlh, 10vw, 5rlh);
+  }
 }
