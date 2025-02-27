@@ -260,7 +260,7 @@ a[target='_blank']::after {
 }
 
 [data-popover~='nested'] {
-  padding: 0;
+  --popover-padding: 0;
 }
 
 [data-popover~='manual'] {

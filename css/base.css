@@ -77,7 +77,7 @@ li ol {
 }
 
 [popover] {
-  padding: 0.5em 1em;
+  padding: var(--popover-padding, 0.5em 1em);
 }
 
 a:link,
