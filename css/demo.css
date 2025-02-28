@@ -1,5 +1,6 @@
 body {
   --page-margin: var(--double-gap);
+  --page-columns: minmax(auto, 1fr) minmax(0, 57ch) minmax(auto, 1fr);
   display: grid;
   grid-template: 'site-header' auto 'main' 1fr 'footer' auto / 100%;
 }
@@ -75,9 +76,14 @@ body {
 
 .main-header {
   container: main-header / inline-size;
+  display: grid;
+  grid-template-columns: var(--page-columns);
   position: relative;
-  justify-content: center;
   margin-inline: var(--page-margin);
+}
+
+.main-header > * {
+  grid-column: 2;
 }
 
 @supports (container: inline-size) {
@@ -165,6 +171,7 @@ body {
   gap: var(--gap);
   grid-template-columns: minmax(auto, 1fr) minmax(0, 57ch) minmax(auto, 1fr);
   justify-items: center;
+  padding-inline: var(--page-margin);
   position: relative;
 }
 
