@@ -38,10 +38,11 @@ ul,
 ol {
   margin-inline: 2ch;
   padding-inline: unset;
+}
 
-  li & {
-    margin-block: 0;
-  }
+li ul,
+li ol {
+  margin-block: 0;
 }
 
 :focus-visible {
@@ -68,49 +69,47 @@ ol {
   padding: var(--half-shim) var(--double-gap);
   justify-content: var(--btn-content-align, center);
   justify-self: center;
+}
 
-  &:hover,
-  &:focus {
-    --button-state: var(--action);
-  }
+[data-btn]:hover,
+[data-btn]:focus {
+  --button-state: var(--action);
 }
 
 [popover] {
-  padding: 0.5em 1em;
+  padding: var(--popover-padding, 0.5em 1em);
 }
 
-a {
-  &:link,
-  &:visited {
-    --underline-color--default: var(--accent-color);
-    --underline-thickness--default: 0.1em;
-    --underline-offset--default: 0.15em;
+a:link,
+a:visited {
+  --underline-color--default: var(--accent-color);
+  --underline-thickness--default: 0.1em;
+  --underline-offset--default: 0.15em;
 
-    color: var(--link, var(--action));
-    text-decoration: underline;
-    text-decoration-color: var(
-      --underline-color,
-      var(--underline-color--default)
-    );
-    text-decoration-thickness: var(
-      --underline-thickness,
-      var(--underline-thickness--default)
-    );
-    text-decoration-skip-ink: auto;
-    text-underline-offset: var(
-      --underline-offset,
-      var(--underline-offset--default)
-    );
-    transition: text-decoration-thickness 150ms ease-out;
-  }
+  color: var(--link, var(--action));
+  text-decoration: underline;
+  text-decoration-color: var(
+    --underline-color,
+    var(--underline-color--default)
+  );
+  text-decoration-thickness: var(
+    --underline-thickness,
+    var(--underline-thickness--default)
+  );
+  text-decoration-skip-ink: auto;
+  text-underline-offset: var(
+    --underline-offset,
+    var(--underline-offset--default)
+  );
+  transition: text-decoration-thickness 150ms ease-out;
+}
 
-  &:hover,
-  &:focus {
-    --underline-color: var(--active);
-    --underline-thickness: 0.2em;
+a:hover,
+a:focus {
+  --underline-color: var(--active);
+  --underline-thickness: 0.2em;
 
-    color: var(--link-focus, var(--active));
-  }
+  color: var(--link-focus, var(--active));
 }
 
 svg {

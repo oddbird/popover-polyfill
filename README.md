@@ -132,15 +132,27 @@ some caveats which will need accommodations:
   observers or frameworks which do DOM diffing, or it may interfere with other
   code which sets `aria-expanded` on elements.
 
-- The polyfill uses `adoptedStyleSheets` to inject CSS onto the page (and each
-  Shadow DOM). If it can't use that it'll generate a `<style>` tag instead. This
-  means you may see a `<style>` tag you didn't put there, and this _may_ impact
-  mutation observers or frameworks.
+- The polyfill uses `adoptedStyleSheets` and `new CSSStyleSheet()` to inject CSS
+  onto the page (and each Shadow DOM). If it can't use that it'll generate a
+  `<style>` tag instead. This means you may see a `<style>` tag you didn't put
+  there, and this _may_ impact mutation observers or frameworks.
 
-  - For browsers which don't support `adoptedStyleSheets` on Shadow Roots, if
-    you are building a ShadowRoot by setting `.innerHTML`, you'll remove the
-    StyleSheet. Either polyfill `adoptedStyleSheets` or call
-    `injectStyles(myShadow)` to add the styles back in.
+  - For browsers which don't support `new CSSStyleSheet()`, if you are building
+    a ShadowRoot by setting `.innerHTML`, you'll remove the StyleSheet. Call
+    `injectStyles(myShadow)` to add the styles back in:
+
+    ```js
+    let supportsCSSStyleSheet = false;
+    try {
+      new CSSStyleSheet();
+      supportsCSSStyleSheet = true;
+    } catch {}
+    const myShadow = myHost.attachShadow({ mode: 'open' });
+    myShadow.innerHTML = `...`;
+    if (!supportsCSSStyleSheet) {
+      injectStyles(myShadow);
+    }
+    ```
 
   - Similarly, if you're using Declarative ShadowDOM or otherwise creating a
     shadow root without calling `attachShadow`/`attachInternals`, then the
