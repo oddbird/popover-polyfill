@@ -3,8 +3,8 @@ html {
   --wf-serif: freight-text-pro;
   --wf-sans: freight-sans-pro;
   --wf-code: source-code-pro;
-  --os-serif: palatino, 'palatino linotype', 'palatino lt std', 'book antiqua',
-    georgia;
+  --os-serif:
+    palatino, 'palatino linotype', 'palatino lt std', 'book antiqua', georgia;
   --os-sans: 'helvetica neue', helvetica, arial;
   --os-code: sfmono-regular, consolas, monaco;
 
