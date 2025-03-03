@@ -44,6 +44,17 @@
         note.innerText =
           'This browser does not support the Popover API natively, so the polyfill has been applied.';
       }
+
+      // If `new CSSStyleSheet()` isn't supported, then shadow roots that have
+      // content set using `.innerHTML(...)` will override the default injected
+      // stylesheets, and they'll need to be manually re-injected
+      window.supportsCSSStyleSheet = false;
+      try {
+        new CSSStyleSheet();
+        window.supportsCSSStyleSheet = true;
+      } catch {
+        // no support
+      }
     </script>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
@@ -179,7 +190,6 @@
           Single Action Popover. This popover has an
           <a href="#" autofocus>autofocus link.</a>
         </div>
-        <div id="crossTreeHost"></div>
         <div id="menuPopover" data-popover="nested" popover>
           <ul class="menu-list">
             <li><button data-btn="menu-item">Item 1</button></li>
@@ -420,10 +430,13 @@
               >.</em
             >
           </p>
+          <div id="crossTreeHost"></div>
           <button id="crossTreeToggle" data-btn>
             Toggle Cross Tree Popover
           </button>
           <script type="module">
+            import { injectStyles } from './dist/popover-fn.js';
+
             const crossTreeHost = document.getElementById('crossTreeHost');
             const crossTreeShadowRoot = crossTreeHost.attachShadow({
               mode: 'open',
@@ -435,6 +448,9 @@
                 @import url('/css/base.css');
               </style>
               <div id="crossTreePopover" popover data-popover>Shadowed Popover</div>`;
+            if (!window.supportsCSSStyleSheet) {
+              injectStyles(crossTreeShadowRoot);
+            }
             document.getElementById('crossTreeToggle').popoverTargetElement =
               crossTreeShadowRoot.getElementById('crossTreePopover');
           </script>
@@ -541,6 +557,8 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
             Toggle Menu with Shadowed Popover
           </button>
           <script type="module">
+            import { injectStyles } from './dist/popover-fn.js';
+
             const menuHost = document.getElementById('menuHost');
             const menuShadowRoot = menuHost.attachShadow({ mode: 'open' });
             menuShadowRoot.innerHTML = `
@@ -556,6 +574,9 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
               <div id="shadowedMenuInner" data-popover="inner-shadowed" popover>
                 Inner Shadowed Popover
               </div>`;
+            if (!window.supportsCSSStyleSheet) {
+              injectStyles(menuShadowRoot);
+            }
           </script>
           <pre><code class="language-html"
 >&lt;!-- Light DOM --&gt;
@@ -634,6 +655,8 @@ menuShadowRoot.innerHTML = `
           </p>
           <div id="fullShadowHost"></div>
           <script type="module">
+            import { injectStyles } from './dist/popover-fn.js';
+
             const fullShadowHost = document.getElementById('fullShadowHost');
             const fullShadowRoot = fullShadowHost.attachShadow({
               mode: 'open',
@@ -656,6 +679,9 @@ menuShadowRoot.innerHTML = `
                   Toggle Shadowed Nested Popover
                 </button>
               </div>`;
+            if (!window.supportsCSSStyleSheet) {
+              injectStyles(fullShadowRoot);
+            }
           </script>
           <pre><code class="language-html"
 >&lt;!-- Shadow DOM --&gt;
@@ -684,6 +710,8 @@ menuShadowRoot.innerHTML = `
             <div><span>I’m a slotted element</span></div>
           </div>
           <script type="module">
+            import { injectStyles } from './dist/popover-fn.js';
+
             const shadowHostWithSlot =
               document.getElementById('shadowHostWithSlot');
             const shadowHostWithSlotRoot = shadowHostWithSlot.attachShadow({
@@ -701,6 +729,9 @@ menuShadowRoot.innerHTML = `
                   Toggle Shadowed Popover
                 </button>
               </div>`;
+            if (!window.supportsCSSStyleSheet) {
+              injectStyles(shadowHostWithSlotRoot);
+            }
           </script>
           <pre><code class="language-html"
 >&lt;!-- Light DOM --&gt;
