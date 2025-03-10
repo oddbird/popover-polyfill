@@ -83,6 +83,5 @@ html {
     --step-9: clamp(5.8048rem, 4.5844rem + 6.1017cqi, 19.3132rem);
     --step-10: clamp(6.9657rem, 5.3393rem + 8.1319cqi, 19.6415rem);
     --gap: clamp(12px, 2cqmin, 24px);
-    --spacer: clamp(1.5rlh, 10vw, 5rlh);
   }
 }
