@@ -23,10 +23,10 @@ body {
 }
 
 #banner-logo [data-logo] {
-  block-size: auto;
   height: auto;
-  inline-size: 100%;
+  block-size: auto;
   width: 100%;
+  inline-size: 100%;
 }
 
 #banner-logo:link,
