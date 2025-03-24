@@ -12,22 +12,20 @@
       crossorigin
     />
     <style>
-      @layer reset, initial, popover-polyfill, default, demo;
-
-      @import url('/css/reset.css') layer(reset);
-      @import url('/css/demo.css') layer(demo);
-      @import url('/css/prism.css') layer(initial);
-      @import url('/css/fonts.css') layer(initial);
-      @import url('/css/base.css') layer(default);
-      @import url('/css/props.css') layer(initial);
-      @import url('/css/code.css') layer(default);
+      @import url('/css/reset.css');
+      @import url('/css/demo.css');
+      @import url('/css/prism.css');
+      @import url('/css/fonts.css');
+      @import url('/css/base.css');
+      @import url('/css/props.css');
+      @import url('/css/code.css');
     </style>
     <style>
       @layer popover-polyfill;
 
       @layer consumer {
         [data-popover~='layered-styles'] {
-          background-color: #d00d1e;
+          --border-color: #d00d1e;
         }
       }
     </style>
@@ -45,6 +43,17 @@
         console.log('polyfill applied');
         note.innerText =
           'This browser does not support the Popover API natively, so the polyfill has been applied.';
+      }
+
+      // If `new CSSStyleSheet()` isn't supported, then shadow roots that have
+      // content set using `.innerHTML(...)` will override the default injected
+      // stylesheets, and they'll need to be manually re-injected
+      window.supportsCSSStyleSheet = false;
+      try {
+        new CSSStyleSheet();
+        window.supportsCSSStyleSheet = true;
+      } catch {
+        // no support
       }
     </script>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -181,7 +190,6 @@
           Single Action Popover. This popover has an
           <a href="#" autofocus>autofocus link.</a>
         </div>
-        <div id="crossTreeHost"></div>
         <div id="menuPopover" data-popover="nested" popover>
           <ul class="menu-list">
             <li><button data-btn="menu-item">Item 1</button></li>
@@ -223,7 +231,7 @@
           <div id="menuHost"></div>
         </div>
         <div id="layeredStylesPopover" data-popover="layered-styles" popover>
-          Popover with Layered Styles (should be red if browser has
+          Popover with Layered Styles (border should be red if browser has
           <code>@layer</code> support)
         </div>
 
@@ -422,23 +430,27 @@
               >.</em
             >
           </p>
+          <div id="crossTreeHost"></div>
           <button id="crossTreeToggle" data-btn>
             Toggle Cross Tree Popover
           </button>
           <script type="module">
+            import { injectStyles } from './dist/popover-fn.js';
+
             const crossTreeHost = document.getElementById('crossTreeHost');
             const crossTreeShadowRoot = crossTreeHost.attachShadow({
               mode: 'open',
             });
             crossTreeShadowRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
-                @import url('/css/demo.css') layer(demo);
-                @import url('/css/fonts.css') layer(initial);
-                @import url('/css/base.css') layer(default);
+                @import url('/css/demo.css');
+                @import url('/css/fonts.css');
+                @import url('/css/base.css');
               </style>
               <div id="crossTreePopover" popover data-popover>Shadowed Popover</div>`;
+            if (!window.supportsCSSStyleSheet) {
+              injectStyles(crossTreeShadowRoot);
+            }
             document.getElementById('crossTreeToggle').popoverTargetElement =
               crossTreeShadowRoot.getElementById('crossTreePopover');
           </script>
@@ -545,15 +557,15 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
             Toggle Menu with Shadowed Popover
           </button>
           <script type="module">
+            import { injectStyles } from './dist/popover-fn.js';
+
             const menuHost = document.getElementById('menuHost');
             const menuShadowRoot = menuHost.attachShadow({ mode: 'open' });
             menuShadowRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
-                @import url('/css/demo.css') layer(demo);
-                @import url('/css/fonts.css') layer(initial);
-                @import url('/css/base.css') layer(default);
+                @import url('/css/demo.css');
+                @import url('/css/fonts.css');
+                @import url('/css/base.css');
               </style>
 
               <button popovertarget="shadowedMenuInner" data-btn>
@@ -562,6 +574,9 @@ shadowRoot.innerHTML = `&lt;span&gt;Toggle Shadow Invoked Popover&lt;/span&gt;`;
               <div id="shadowedMenuInner" data-popover="inner-shadowed" popover>
                 Inner Shadowed Popover
               </div>`;
+            if (!window.supportsCSSStyleSheet) {
+              injectStyles(menuShadowRoot);
+            }
           </script>
           <pre><code class="language-html"
 >&lt;!-- Light DOM --&gt;
@@ -616,7 +631,7 @@ menuShadowRoot.innerHTML = `
 
 &lt;div id="layeredStylesPopover" data-popover="layered-styles" popover&gt;
   Popover with Layered Styles
-  (should be red if browser has &lt;code&gt;@layer&lt;/code&gt; support)
+  (border should be red if browser has &lt;code&gt;@layer&lt;/code&gt; support)
 &lt;/div&gt;</code>
 
 <code class="language-css"
@@ -625,7 +640,7 @@ menuShadowRoot.innerHTML = `
 
 @layer consumer {
   [data-popover~='layered-styles'] {
-    background-color: #d00d1e;
+    --border-color: #d00d1e;
   }
 }</code></pre>
         </section>
@@ -640,17 +655,17 @@ menuShadowRoot.innerHTML = `
           </p>
           <div id="fullShadowHost"></div>
           <script type="module">
+            import { injectStyles } from './dist/popover-fn.js';
+
             const fullShadowHost = document.getElementById('fullShadowHost');
             const fullShadowRoot = fullShadowHost.attachShadow({
               mode: 'open',
             });
             fullShadowRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
-                @import url('/css/demo.css') layer(demo);
-                @import url('/css/fonts.css') layer(initial);
-                @import url('/css/base.css') layer(default);
+                @import url('/css/demo.css');
+                @import url('/css/fonts.css');
+                @import url('/css/base.css');
               </style>
               <div id="shadowedPopover" popover data-popover>Shadowed Popover</div>
               <div>
@@ -664,6 +679,9 @@ menuShadowRoot.innerHTML = `
                   Toggle Shadowed Nested Popover
                 </button>
               </div>`;
+            if (!window.supportsCSSStyleSheet) {
+              injectStyles(fullShadowRoot);
+            }
           </script>
           <pre><code class="language-html"
 >&lt;!-- Shadow DOM --&gt;
@@ -692,6 +710,8 @@ menuShadowRoot.innerHTML = `
             <div><span>I’m a slotted element</span></div>
           </div>
           <script type="module">
+            import { injectStyles } from './dist/popover-fn.js';
+
             const shadowHostWithSlot =
               document.getElementById('shadowHostWithSlot');
             const shadowHostWithSlotRoot = shadowHostWithSlot.attachShadow({
@@ -699,11 +719,9 @@ menuShadowRoot.innerHTML = `
             });
             shadowHostWithSlotRoot.innerHTML = `
               <style>
-                @layer reset, initial, popover-polyfill, default, demo;
-
-                @import url('/css/demo.css') layer(demo);
-                @import url('/css/fonts.css') layer(initial);
-                @import url('/css/base.css') layer(default);
+                @import url('/css/demo.css');
+                @import url('/css/fonts.css');
+                @import url('/css/base.css');
               </style>
               <div id="shadowedPopoverWithSlot" popover data-popover><slot></slot></div>
               <div class="button-group">
@@ -711,6 +729,9 @@ menuShadowRoot.innerHTML = `
                   Toggle Shadowed Popover
                 </button>
               </div>`;
+            if (!window.supportsCSSStyleSheet) {
+              injectStyles(shadowHostWithSlotRoot);
+            }
           </script>
           <pre><code class="language-html"
 >&lt;!-- Light DOM --&gt;
