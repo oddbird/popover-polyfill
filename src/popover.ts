@@ -176,6 +176,7 @@ export function apply() {
         if (!this.hasAttribute('popover')) return null;
         const value = (this.getAttribute('popover') || '').toLowerCase();
         if (value === '' || value == 'auto') return 'auto';
+        if (value == 'hint') return 'hint';
         return 'manual';
       },
       set(value) {

@@ -8,6 +8,7 @@ const HTMLDialogElement = globalThis.HTMLDialogElement || function () {};
 
 const topLayerElements = new WeakMap<Document, Set<HTMLElement>>();
 const autoPopoverList = new WeakMap<Document, Set<HTMLElement>>();
+// const hintPopoverList = new WeakMap<Document, Set<HTMLElement>>();
 export const visibilityState = new WeakMap<HTMLElement, 'hidden' | 'showing'>();
 function getPopoverVisibilityState(popover: HTMLElement): 'hidden' | 'showing' {
   return visibilityState.get(popover) || 'hidden';
@@ -39,12 +40,16 @@ export function popoverTargetAttributeActivationBehavior(
   }
 }
 
-// https://whatpr.org/html/8221/popover.html#check-popover-validity
+// https://html.spec.whatwg.org/#check-popover-validity
 function checkPopoverValidity(
   element: HTMLElement,
   expectedToBeShowing: boolean,
 ) {
-  if (element.popover !== 'auto' && element.popover !== 'manual') {
+  if (
+    element.popover !== 'auto' &&
+    element.popover !== 'manual' &&
+    element.popover !== 'hint'
+  ) {
     return false;
   }
   if (!element.isConnected) return false;
@@ -303,13 +308,12 @@ export function showPopover(element: HTMLElement) {
   queuePopoverToggleEventTask(element, 'closed', 'open');
 }
 
-// https://html.spec.whatwg.org/#hide-popover
+// https://html.spec.whatwg.org/#hide-popover-algorithm
 export function hidePopover(
   element: HTMLElement,
   focusPreviousElement = false,
   fireEvents = false,
 ) {
-  // https://whatpr.org/html/8221/popover.html#hide-popover
   if (!checkPopoverValidity(element, true)) {
     return;
   }
