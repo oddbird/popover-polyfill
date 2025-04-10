@@ -30,14 +30,24 @@
       }
     </style>
     <script type="module">
-      import { apply, isSupported } from './dist/popover-fn.js';
+      import {
+        apply,
+        isSupported,
+        isHintSupported,
+      } from './dist/popover-fn.js';
 
       const note = document.getElementById('browser-support');
 
-      if (isSupported()) {
+      if (isSupported() && isHintSupported()) {
         console.log('native `popover` support detected, no polyfill used');
         note.innerText =
           'This browser supports the Popover API natively, so the polyfill has not been applied.';
+      } else if (isSupported()) {
+        console.log(
+          'native `popover` support detected, but hint support was not found. No polyfill used',
+        );
+        note.innerText =
+          'This browser supports the Popover API natively, but not "hint".';
       } else {
         apply();
         console.log('polyfill applied');
@@ -55,6 +65,15 @@
       } catch {
         // no support
       }
+      document.querySelectorAll('[data-hover-target]').forEach((el) => {
+        const target = document.getElementById(el.dataset.hoverTarget);
+        el.addEventListener('mouseover', () => {
+          target.togglePopover({ source: el });
+        });
+        el.addEventListener('focus', () => {
+          target.togglePopover({ source: el });
+        });
+      });
     </script>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
@@ -175,10 +194,16 @@
       </div>
       <div id="popovers">
         <div id="defaultPopover" data-popover popover>Default Popover</div>
+        <div id="autoPopover" data-popover popover="auto">Auto Popover</div>
         <div id="manualPopover" data-popover="manual" popover="manual">
           Manual Popover
         </div>
-        <div id="hintPopover" popover="hint">Popover ("hint")</div>
+        <div id="hintPopover" popover="hint" style="inset-block-start: 5em">
+          Popover ("hint")
+        </div>
+        <div id="hintPopover2" popover="hint" style="inset-block-start: 10em">
+          Popover ("hint 2")
+        </div>
         <div id="emptyStatePopover" data-popover popover="">
           Empty State Popover
         </div>
@@ -284,6 +309,44 @@
 &lt;/button&gt;
 
 &lt;div id="manualPopover" popover="manual"&gt;Manual Popover&lt;/div&gt;</code></pre>
+        </section>
+        <section id="popover-hint" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-hint" aria-hidden="true">🔗</a>
+            Popover hint
+          </h2>
+          <div style="display: grid; gap: 1em">
+            <button data-hover-target="hintPopover" data-btn>
+              Hover to toggle Hint Popover
+            </button>
+            <button data-hover-target="hintPopover2" data-btn>
+              Hover to toggle Hint Popover 2
+            </button>
+            <button popovertarget="autoPopover" data-btn>
+              Show Auto Popover
+            </button>
+          </div>
+          <p class="note">Hint popovers only dismiss other hint popovers.</p>
+          <pre><code class="language-html"
+>&lt;button data-hover-target="hintPopover" data-btn&gt;
+  Hover to toggle Hint Popover
+&lt;/button&gt;
+&lt;button data-hover-target="hintPopover2" data-btn&gt;
+  Hover to toggle Hint Popover 2
+&lt;/button&gt;
+&lt;button popovertarget="autoPopover" data-btn&gt;
+  Show Auto Popover
+&lt;/button&gt;</code></pre>
+          <pre><code class="language-js">// JavaScript
+document.querySelectorAll('[data-hover-target]').forEach((el) => {
+  const target = document.getElementById(el.dataset.hoverTarget);
+  el.addEventListener('mouseover', () => {
+    target.togglePopover({source: el});
+  });
+  el.addEventListener('focus', () => {
+    target.togglePopover({source: el});
+  });
+});</code></pre>
         </section>
         <section id="popover-dialog" class="demo-item">
           <h2 data-header>
