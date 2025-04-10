@@ -20,6 +20,13 @@ export function isSupported() {
   );
 }
 
+export function isHintSupported() {
+  const el = document.createElement('div');
+  el.setAttribute('popover', 'hint');
+  // `el.popover` is "manual" in non-supporting browsers
+  return el.popover === 'hint';
+}
+
 export function isPolyfilled() {
   // if the `showPopover` method is defined but is not "native code"
   // then we can infer it's been polyfilled
