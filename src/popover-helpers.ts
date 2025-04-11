@@ -8,8 +8,9 @@ const HTMLDialogElement = globalThis.HTMLDialogElement || function () {};
 
 const topLayerElements = new WeakMap<Document, Set<HTMLElement>>();
 const autoPopoverList = new WeakMap<Document, Set<HTMLElement>>();
-// const hintPopoverList = new WeakMap<Document, Set<HTMLElement>>();
+const hintPopoverList = new WeakMap<Document, Set<HTMLElement>>();
 export const visibilityState = new WeakMap<HTMLElement, 'hidden' | 'showing'>();
+const openInPopoverMode = new WeakMap<HTMLElement, 'auto' | 'hint'>();
 function getPopoverVisibilityState(popover: HTMLElement): 'hidden' | 'showing' {
   return visibilityState.get(popover) || 'hidden';
 }
@@ -18,6 +19,14 @@ const popoverInvoker = new WeakMap<
   HTMLElement,
   HTMLButtonElement | HTMLInputElement
 >();
+
+const combinedPopoverListForDocument = (
+  document: Document,
+): Set<HTMLElement> => {
+  const autoPopovers = autoPopoverList.get(document) || new Set();
+  const hintPopovers = hintPopoverList.get(document) || new Set();
+  return new Set([...autoPopovers, ...hintPopovers]);
+};
 
 // https://html.spec.whatwg.org/#popover-target-attribute-activation-behavior
 export function popoverTargetAttributeActivationBehavior(
@@ -68,11 +77,12 @@ function checkPopoverValidity(
 
 function getStackPosition(popover?: Element) {
   if (!popover) return 0;
-  return (
-    Array.from(autoPopoverList.get(popover.ownerDocument) || []).indexOf(
-      popover as HTMLElement,
-    ) + 1
-  );
+  // A hint popover's stack position is the index in the hint popover list plus
+  // the autoPopover list length
+  const combinedPopoverList = [
+    ...combinedPopoverListForDocument(popover.ownerDocument),
+  ];
+  return combinedPopoverList.indexOf(popover as HTMLElement) + 1;
 }
 
 function topMostClickedPopover(target: HTMLElement) {
@@ -85,11 +95,23 @@ function topMostClickedPopover(target: HTMLElement) {
 }
 
 // https://html.spec.whatwg.org/#topmost-auto-popover
-function topMostAutoPopover(document: Document): HTMLElement | null {
-  const documentPopovers = autoPopoverList.get(document);
+function topMostAutoOrHintPopover(document: Document): HTMLElement | null {
+  const documentPopovers = combinedPopoverListForDocument(document);
   for (const popover of documentPopovers || []) {
     if (!popover.isConnected) {
+      // TODO: [hint] Do we need to remove from the right list here?
       documentPopovers!.delete(popover);
+    } else {
+      return popover;
+    }
+  }
+  return null;
+}
+
+function topMostPopoverInList(list: Set<HTMLElement>): HTMLElement | null {
+  for (const popover of list || []) {
+    if (!popover.isConnected) {
+      list!.delete(popover);
     } else {
       return popover;
     }
@@ -140,10 +162,13 @@ function nearestInclusiveTargetPopoverForInvoker(
 }
 
 // https://html.spec.whatwg.org/#topmost-popover-ancestor
-function topMostPopoverAncestor(newPopover: HTMLElement): HTMLElement | null {
+function topMostPopoverAncestor(
+  newPopover: HTMLElement,
+  list: Set<HTMLElement>,
+): HTMLElement | null {
   const popoverPositions = new Map();
   let i = 0;
-  for (const popover of autoPopoverList.get(newPopover.ownerDocument) || []) {
+  for (const popover of list || []) {
     popoverPositions.set(popover, i);
     i += 1;
   }
@@ -268,20 +293,65 @@ export function showPopover(element: HTMLElement) {
     return;
   }
   let shouldRestoreFocus = false;
-  if (element.popover === 'auto') {
-    const originalType = element.getAttribute('popover');
-    const ancestor = topMostPopoverAncestor(element) || document;
-    hideAllPopoversUntil(ancestor, false, true);
-    if (
-      originalType !== element.getAttribute('popover') ||
-      !checkPopoverValidity(element, false)
-    ) {
-      return;
+  const originalType = element.getAttribute('popover');
+  let stackToAppendTo = originalType;
+  const autoAncestor = topMostPopoverAncestor(
+    element,
+    autoPopoverList.get(document) || new Set(),
+  );
+  const hintAncestor = topMostPopoverAncestor(
+    element,
+    hintPopoverList.get(document) || new Set(),
+  );
+  if (originalType === 'auto') {
+    // Close all hint popovers
+    closeAllOpenPopoversInList(
+      hintPopoverList.get(document) || new Set(),
+      false,
+      true,
+    );
+    const ancestor = autoAncestor || document;
+    hideAllPopoversUntil(ancestor, shouldRestoreFocus, true);
+  }
+  if (originalType === 'hint') {
+    if (hintAncestor) {
+      hideAllPopoversUntil(hintAncestor, shouldRestoreFocus, true);
+    } else {
+      // Close all hint popovers
+      closeAllOpenPopoversInList(
+        hintPopoverList.get(document) || new Set(),
+        false,
+        true,
+      );
+      if (autoAncestor) {
+        hideAllPopoversUntil(autoAncestor, shouldRestoreFocus, true);
+        stackToAppendTo = 'auto';
+      }
     }
   }
-  if (!topMostAutoPopover(document)) {
+  if (
+    originalType !== element.getAttribute('popover') ||
+    !checkPopoverValidity(element, false)
+  ) {
+    return;
+  }
+
+  if (!topMostAutoOrHintPopover(document)) {
     shouldRestoreFocus = true;
   }
+
+  if (
+    stackToAppendTo === 'auto' &&
+    !autoPopoverList.get(document)?.has(element)
+  ) {
+    openInPopoverMode.set(element, 'auto');
+  } else if (
+    stackToAppendTo === 'hint' &&
+    !hintPopoverList.get(document)?.has(element)
+  ) {
+    openInPopoverMode.set(element, 'hint');
+  }
+
   previouslyFocusedElements.delete(element);
   const originallyFocusedElement = document.activeElement as HTMLElement;
   element.classList.add(':popover-open');
@@ -296,6 +366,12 @@ export function showPopover(element: HTMLElement) {
       autoPopoverList.set(document, new Set());
     }
     autoPopoverList.get(document)!.add(element);
+    setInvokerAriaExpanded(popoverInvoker.get(element), true);
+  } else if (element.popover === 'hint') {
+    if (!hintPopoverList.has(document)) {
+      hintPopoverList.set(document, new Set());
+    }
+    hintPopoverList.get(document)!.add(element);
     setInvokerAriaExpanded(popoverInvoker.get(element), true);
   }
   if (
@@ -318,7 +394,7 @@ export function hidePopover(
     return;
   }
   const document = element.ownerDocument;
-  if (element.popover === 'auto') {
+  if (['auto', 'hint'].includes(element.popover as string)) {
     hideAllPopoversUntil(element, focusPreviousElement, fireEvents);
     if (!checkPopoverValidity(element, true)) {
       return;
@@ -338,7 +414,11 @@ export function hidePopover(
     }
   }
   topLayerElements.get(document)?.delete(element);
-  autoPopoverList.get(document)?.delete(element);
+  if (element.popover === 'auto') {
+    autoPopoverList.get(document)?.delete(element);
+  } else if (element.popover === 'hint') {
+    hintPopoverList.get(document)?.delete(element);
+  }
   element.classList.remove(':popover-open');
   visibilityState.set(element, 'hidden');
   if (fireEvents) {
@@ -358,10 +438,22 @@ function closeAllOpenPopovers(
   focusPreviousElement = false,
   fireEvents = false,
 ) {
-  let popover = topMostAutoPopover(document);
+  let popover = topMostAutoOrHintPopover(document);
   while (popover) {
     hidePopover(popover, focusPreviousElement, fireEvents);
-    popover = topMostAutoPopover(document);
+    popover = topMostAutoOrHintPopover(document);
+  }
+}
+
+function closeAllOpenPopoversInList(
+  list: Set<HTMLElement>,
+  focusPreviousElement = false,
+  fireEvents = false,
+) {
+  let popover = topMostPopoverInList(list);
+  while (popover) {
+    hidePopover(popover, focusPreviousElement, fireEvents);
+    popover = topMostPopoverInList(list);
   }
 }
 
@@ -375,6 +467,16 @@ export function hideAllPopoversUntil(
   if (endpoint instanceof Document) {
     return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
   }
+  if (hintPopoverList.get(document)?.has(endpoint as HTMLElement)) {
+    // run hide popover stack
+    return;
+  }
+  closeAllOpenPopoversInList(
+    hintPopoverList.get(document) || new Set(),
+    focusPreviousElement,
+    fireEvents,
+  );
+
   let lastToHide = null;
   let foundEndpoint = false;
   for (const popover of autoPopoverList.get(document) || []) {
@@ -405,7 +507,7 @@ export function lightDismissOpenPopovers(event: Event) {
   const target = event.composedPath()[0] as HTMLElement;
   if (!target) return;
   const document = target.ownerDocument;
-  const topMostPopover = topMostAutoPopover(document);
+  const topMostPopover = topMostAutoOrHintPopover(document);
   if (!topMostPopover) return;
   const ancestor = topMostClickedPopover(target);
   if (ancestor && event.type === 'pointerdown') {

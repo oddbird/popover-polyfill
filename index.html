@@ -68,10 +68,10 @@
       document.querySelectorAll('[data-hover-target]').forEach((el) => {
         const target = document.getElementById(el.dataset.hoverTarget);
         el.addEventListener('mouseover', () => {
-          target.togglePopover({ source: el });
+          target.togglePopover();
         });
         el.addEventListener('focus', () => {
-          target.togglePopover({ source: el });
+          target.togglePopover();
         });
       });
     </script>
