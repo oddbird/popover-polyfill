@@ -10,7 +10,7 @@ const topLayerElements = new WeakMap<Document, Set<HTMLElement>>();
 const autoPopoverList = new WeakMap<Document, Set<HTMLElement>>();
 const hintPopoverList = new WeakMap<Document, Set<HTMLElement>>();
 export const visibilityState = new WeakMap<HTMLElement, 'hidden' | 'showing'>();
-const openInPopoverMode = new WeakMap<HTMLElement, 'auto' | 'hint'>();
+
 function getPopoverVisibilityState(popover: HTMLElement): 'hidden' | 'showing' {
   return visibilityState.get(popover) || 'hidden';
 }
@@ -294,7 +294,7 @@ export function showPopover(element: HTMLElement) {
   }
   let shouldRestoreFocus = false;
   const originalType = element.getAttribute('popover');
-  let stackToAppendTo = originalType;
+
   const autoAncestor = topMostPopoverAncestor(
     element,
     autoPopoverList.get(document) || new Set(),
@@ -325,7 +325,6 @@ export function showPopover(element: HTMLElement) {
       );
       if (autoAncestor) {
         hideAllPopoversUntil(autoAncestor, shouldRestoreFocus, true);
-        stackToAppendTo = 'auto';
       }
     }
   }
@@ -338,18 +337,6 @@ export function showPopover(element: HTMLElement) {
 
   if (!topMostAutoOrHintPopover(document)) {
     shouldRestoreFocus = true;
-  }
-
-  if (
-    stackToAppendTo === 'auto' &&
-    !autoPopoverList.get(document)?.has(element)
-  ) {
-    openInPopoverMode.set(element, 'auto');
-  } else if (
-    stackToAppendTo === 'hint' &&
-    !hintPopoverList.get(document)?.has(element)
-  ) {
-    openInPopoverMode.set(element, 'hint');
   }
 
   previouslyFocusedElements.delete(element);
@@ -468,7 +455,7 @@ export function hideAllPopoversUntil(
     return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
   }
   if (hintPopoverList.get(document)?.has(endpoint as HTMLElement)) {
-    // run hide popover stack
+    // TODO: [hint] run hide popover stack
     return;
   }
   closeAllOpenPopoversInList(
