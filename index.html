@@ -39,18 +39,18 @@
       const note = document.getElementById('browser-support');
 
       if (isSupported() && isHintSupported()) {
-        console.log('native `popover` support detected, no polyfill used');
+        console.log('native `popover` support detected; no polyfill used');
         note.innerText =
           'This browser supports the Popover API natively, so the polyfill has not been applied.';
       } else if (isSupported()) {
         console.log(
-          'native `popover` support detected, but hint support was not found. No polyfill used',
+          'native `popover` support detected, but `popover=hint` support was not found; no polyfill used',
         );
         note.innerText =
-          'This browser supports the Popover API natively, but not "hint".';
+          'This browser supports the Popover API natively, but not "popover=hint". The polyfill has not been applied.';
       } else {
         apply();
-        console.log('polyfill applied');
+        console.log('`popover` polyfill applied');
         note.innerText =
           'This browser does not support the Popover API natively, so the polyfill has been applied.';
       }
@@ -68,9 +68,6 @@
       document.querySelectorAll('[data-hover-target]').forEach((el) => {
         const target = document.getElementById(el.dataset.hoverTarget);
         el.addEventListener('mouseover', () => {
-          target.togglePopover();
-        });
-        el.addEventListener('focus', () => {
           target.togglePopover();
         });
       });
@@ -194,7 +191,15 @@
       </div>
       <div id="popovers">
         <div id="defaultPopover" data-popover popover>Default Popover</div>
-        <div id="autoPopover" data-popover popover="auto">Auto Popover</div>
+        <div id="autoPopover" data-popover popover="auto">
+          Auto Popover
+          <button data-hover-target="hintPopover3" data-btn>
+            Hover to toggle Nested hint popover
+          </button>
+          <div id="hintPopover3" popover="hint" style="inset-block-start: 15em">
+            Nested hint popover
+          </div>
+        </div>
         <div id="manualPopover" data-popover="manual" popover="manual">
           Manual Popover
         </div>
@@ -328,23 +333,36 @@
           </div>
           <p class="note">Hint popovers only dismiss other hint popovers.</p>
           <pre><code class="language-html"
->&lt;button data-hover-target="hintPopover" data-btn&gt;
+>&lt;button data-hover-target="hintPopover"&gt;
   Hover to toggle Hint Popover
 &lt;/button&gt;
-&lt;button data-hover-target="hintPopover2" data-btn&gt;
+&lt;button data-hover-target="hintPopover2"&gt;
   Hover to toggle Hint Popover 2
 &lt;/button&gt;
-&lt;button popovertarget="autoPopover" data-btn&gt;
+&lt;button popovertarget="autoPopover"&gt;
   Show Auto Popover
-&lt;/button&gt;</code></pre>
+&lt;/button&gt;
+
+&lt;div id="hintPopover" popover="hint"&gt;
+  Popover ("hint")
+&lt;/div&gt;
+&lt;div id="hintPopover2" popover="hint"&gt;
+  Popover ("hint 2")
+&lt;/div&gt;
+&lt;div id="autoPopover" popover="auto"&gt;
+  Auto Popover
+  &lt;button data-hover-target="hintPopover3"&gt;
+    Hover to toggle Nested hint popover
+  &lt;/button&gt;
+  &lt;div id="hintPopover3" popover="hint"&gt;
+    Nested hint popover
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
           <pre><code class="language-js">// JavaScript
 document.querySelectorAll('[data-hover-target]').forEach((el) => {
   const target = document.getElementById(el.dataset.hoverTarget);
   el.addEventListener('mouseover', () => {
-    target.togglePopover({source: el});
-  });
-  el.addEventListener('focus', () => {
-    target.togglePopover({source: el});
+    target.togglePopover({ source: el });
   });
 });</code></pre>
         </section>
