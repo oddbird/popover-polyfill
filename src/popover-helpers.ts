@@ -474,7 +474,7 @@ function closeAllOpenPopoversInList(
 }
 
 // https://html.spec.whatwg.org/#hide-popover-stack-until
-function hidePopoverStackUntilUpdated(
+function hidePopoverStackUntil(
   endpoint: Element | Document,
   set: Set<HTMLElement>,
   focusPreviousElement: boolean,
@@ -498,7 +498,11 @@ function hidePopoverStackUntilUpdated(
     }
     if (!lastToHide) return;
     while (getPopoverVisibilityState(lastToHide) === 'showing' && set.size) {
-      hidePopover(lastToHide, focusPreviousElement, fireEvents);
+      hidePopover(
+        [...set].pop() as HTMLElement,
+        focusPreviousElement,
+        fireEvents,
+      );
     }
     if (set.has(endpoint as HTMLElement) && [...set].pop() !== endpoint) {
       repeatingHide = true;
@@ -520,7 +524,7 @@ export function hideAllPopoversUntil(
     return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
   }
   if (hintPopoverList.get(document)?.has(endpoint as HTMLElement)) {
-    hidePopoverStackUntilUpdated(
+    hidePopoverStackUntil(
       endpoint,
       hintPopoverList.get(document)!,
       focusPreviousElement,
@@ -538,7 +542,7 @@ export function hideAllPopoversUntil(
     return;
   }
 
-  hidePopoverStackUntilUpdated(
+  hidePopoverStackUntil(
     endpoint,
     autoPopoverList.get(document)!,
     focusPreviousElement,
