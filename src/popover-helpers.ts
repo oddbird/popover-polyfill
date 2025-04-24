@@ -8,7 +8,9 @@ const HTMLDialogElement = globalThis.HTMLDialogElement || function () {};
 
 const topLayerElements = new WeakMap<Document, Set<HTMLElement>>();
 const autoPopoverList = new WeakMap<Document, Set<HTMLElement>>();
+const hintPopoverList = new WeakMap<Document, Set<HTMLElement>>();
 export const visibilityState = new WeakMap<HTMLElement, 'hidden' | 'showing'>();
+
 function getPopoverVisibilityState(popover: HTMLElement): 'hidden' | 'showing' {
   return visibilityState.get(popover) || 'hidden';
 }
@@ -17,6 +19,10 @@ const popoverInvoker = new WeakMap<
   HTMLElement,
   HTMLButtonElement | HTMLInputElement
 >();
+
+function lastSetElement(set: Set<HTMLElement>) {
+  return [...set].pop() as HTMLElement;
+}
 
 // https://html.spec.whatwg.org/#popover-target-attribute-activation-behavior
 export function popoverTargetAttributeActivationBehavior(
@@ -39,12 +45,16 @@ export function popoverTargetAttributeActivationBehavior(
   }
 }
 
-// https://whatpr.org/html/8221/popover.html#check-popover-validity
+// https://html.spec.whatwg.org/#check-popover-validity
 function checkPopoverValidity(
   element: HTMLElement,
   expectedToBeShowing: boolean,
 ) {
-  if (element.popover !== 'auto' && element.popover !== 'manual') {
+  if (
+    element.popover !== 'auto' &&
+    element.popover !== 'manual' &&
+    element.popover !== 'hint'
+  ) {
     return false;
   }
   if (!element.isConnected) return false;
@@ -61,15 +71,21 @@ function checkPopoverValidity(
   return true;
 }
 
-function getStackPosition(popover?: Element) {
+// https://html.spec.whatwg.org/#get-the-popover-stack-position
+function getStackPosition(popover?: HTMLElement) {
   if (!popover) return 0;
-  return (
-    Array.from(autoPopoverList.get(popover.ownerDocument) || []).indexOf(
-      popover as HTMLElement,
-    ) + 1
-  );
+  const autoPopovers = autoPopoverList.get(document) || new Set();
+  const hintPopovers = hintPopoverList.get(document) || new Set();
+  if (hintPopovers.has(popover)) {
+    return [...hintPopovers].indexOf(popover) + autoPopovers.size + 1;
+  }
+  if (autoPopovers.has(popover)) {
+    return [...autoPopovers].indexOf(popover) + 1;
+  }
+  return 0;
 }
 
+// https://html.spec.whatwg.org/#topmost-clicked-popover
 function topMostClickedPopover(target: HTMLElement) {
   const clickedPopover = nearestInclusiveOpenPopover(target);
   const invokerPopover = nearestInclusiveTargetPopoverForInvoker(target);
@@ -80,11 +96,33 @@ function topMostClickedPopover(target: HTMLElement) {
 }
 
 // https://html.spec.whatwg.org/#topmost-auto-popover
-function topMostAutoPopover(document: Document): HTMLElement | null {
-  const documentPopovers = autoPopoverList.get(document);
-  for (const popover of documentPopovers || []) {
+function topmostAutoOrHintPopover(document: Document): HTMLElement | null {
+  let topmostPopover: HTMLElement;
+  const hintPopovers = hintPopoverList.get(document) || new Set();
+  const autoPopovers = autoPopoverList.get(document) || new Set();
+  const usedStack =
+    hintPopovers.size > 0
+      ? hintPopovers
+      : autoPopovers.size > 0
+        ? autoPopovers
+        : null;
+
+  if (usedStack) {
+    topmostPopover = lastSetElement(usedStack);
+    // This deviates from the spec to verify that the popover is still connected
+    if (!topmostPopover.isConnected) {
+      usedStack.delete(topmostPopover);
+      return topmostAutoOrHintPopover(document);
+    }
+    return topmostPopover;
+  }
+  return null;
+}
+
+function topMostPopoverInList(list: Set<HTMLElement>): HTMLElement | null {
+  for (const popover of list || []) {
     if (!popover.isConnected) {
-      documentPopovers!.delete(popover);
+      list!.delete(popover);
     } else {
       return popover;
     }
@@ -135,10 +173,13 @@ function nearestInclusiveTargetPopoverForInvoker(
 }
 
 // https://html.spec.whatwg.org/#topmost-popover-ancestor
-function topMostPopoverAncestor(newPopover: HTMLElement): HTMLElement | null {
+function topMostPopoverAncestor(
+  newPopover: HTMLElement,
+  list: Set<HTMLElement>,
+): HTMLElement | null {
   const popoverPositions = new Map();
   let i = 0;
-  for (const popover of autoPopoverList.get(newPopover.ownerDocument) || []) {
+  for (const popover of list || []) {
     popoverPositions.set(popover, i);
     i += 1;
   }
@@ -146,9 +187,25 @@ function topMostPopoverAncestor(newPopover: HTMLElement): HTMLElement | null {
   i += 1;
   let topMostPopoverAncestor: HTMLElement | null = null;
   function checkAncestor(candidate: Node | null) {
-    const candidateAncestor = nearestInclusiveOpenPopover(candidate);
-    if (candidateAncestor === null) return null;
-    const candidatePosition = popoverPositions.get(candidateAncestor);
+    if (!candidate) return;
+    let okNesting = false;
+    let candidateAncestor: HTMLElement | null = null;
+    let candidatePosition = null;
+    while (!okNesting) {
+      candidateAncestor = nearestInclusiveOpenPopover(candidate) || null;
+      if (candidateAncestor === null) return;
+      if (!popoverPositions.has(candidateAncestor)) return;
+      if (
+        newPopover.popover === 'hint' ||
+        candidateAncestor.popover === 'auto'
+      ) {
+        okNesting = true;
+      }
+      if (!okNesting) {
+        candidate = candidateAncestor.parentElement;
+      }
+    }
+    candidatePosition = popoverPositions.get(candidateAncestor);
     if (
       topMostPopoverAncestor === null ||
       popoverPositions.get(topMostPopoverAncestor) < candidatePosition
@@ -263,20 +320,72 @@ export function showPopover(element: HTMLElement) {
     return;
   }
   let shouldRestoreFocus = false;
-  if (element.popover === 'auto') {
-    const originalType = element.getAttribute('popover');
-    const ancestor = topMostPopoverAncestor(element) || document;
-    hideAllPopoversUntil(ancestor, false, true);
+  const originalType = element.popover;
+  let stackToAppendTo = null;
+  const autoAncestor = topMostPopoverAncestor(
+    element,
+    autoPopoverList.get(document) || new Set(),
+  );
+  const hintAncestor = topMostPopoverAncestor(
+    element,
+    hintPopoverList.get(document) || new Set(),
+  );
+  if (originalType === 'auto') {
+    // Close all hint popovers
+    closeAllOpenPopoversInList(
+      hintPopoverList.get(document) || new Set(),
+      shouldRestoreFocus,
+      true,
+    );
+    const ancestor = autoAncestor || document;
+    hideAllPopoversUntil(ancestor, shouldRestoreFocus, true);
+    stackToAppendTo = 'auto';
+  }
+  if (originalType === 'hint') {
+    if (hintAncestor) {
+      hideAllPopoversUntil(hintAncestor, shouldRestoreFocus, true);
+      stackToAppendTo = 'hint';
+    } else {
+      // Close all hint popovers
+      closeAllOpenPopoversInList(
+        hintPopoverList.get(document) || new Set(),
+        shouldRestoreFocus,
+        true,
+      );
+      if (autoAncestor) {
+        hideAllPopoversUntil(autoAncestor, shouldRestoreFocus, true);
+        stackToAppendTo = 'auto';
+      } else {
+        stackToAppendTo = 'hint';
+      }
+    }
+  }
+
+  if (originalType === 'auto' || originalType === 'hint') {
     if (
-      originalType !== element.getAttribute('popover') ||
+      originalType !== element.popover ||
       !checkPopoverValidity(element, false)
     ) {
       return;
     }
+
+    if (!topmostAutoOrHintPopover(document)) {
+      shouldRestoreFocus = true;
+    }
+
+    if (stackToAppendTo === 'auto') {
+      if (!autoPopoverList.has(document)) {
+        autoPopoverList.set(document, new Set());
+      }
+      autoPopoverList.get(document)!.add(element);
+    } else if (stackToAppendTo === 'hint') {
+      if (!hintPopoverList.has(document)) {
+        hintPopoverList.set(document, new Set());
+      }
+      hintPopoverList.get(document)!.add(element);
+    }
   }
-  if (!topMostAutoPopover(document)) {
-    shouldRestoreFocus = true;
-  }
+
   previouslyFocusedElements.delete(element);
   const originallyFocusedElement = document.activeElement as HTMLElement;
   element.classList.add(':popover-open');
@@ -285,14 +394,8 @@ export function showPopover(element: HTMLElement) {
     topLayerElements.set(document, new Set());
   }
   topLayerElements.get(document)!.add(element);
+  setInvokerAriaExpanded(popoverInvoker.get(element), true);
   popoverFocusingSteps(element);
-  if (element.popover === 'auto') {
-    if (!autoPopoverList.has(document)) {
-      autoPopoverList.set(document, new Set());
-    }
-    autoPopoverList.get(document)!.add(element);
-    setInvokerAriaExpanded(popoverInvoker.get(element), true);
-  }
   if (
     shouldRestoreFocus &&
     originallyFocusedElement &&
@@ -303,23 +406,25 @@ export function showPopover(element: HTMLElement) {
   queuePopoverToggleEventTask(element, 'closed', 'open');
 }
 
-// https://html.spec.whatwg.org/#hide-popover
+// https://html.spec.whatwg.org/#hide-popover-algorithm
 export function hidePopover(
   element: HTMLElement,
   focusPreviousElement = false,
   fireEvents = false,
 ) {
-  // https://whatpr.org/html/8221/popover.html#hide-popover
   if (!checkPopoverValidity(element, true)) {
     return;
   }
   const document = element.ownerDocument;
-  if (element.popover === 'auto') {
+  if (['auto', 'hint'].includes(element.popover as string)) {
     hideAllPopoversUntil(element, focusPreviousElement, fireEvents);
     if (!checkPopoverValidity(element, true)) {
       return;
     }
   }
+  const autoList = autoPopoverList.get(document) || new Set();
+  const autoPopoverListContainsElement =
+    autoList.has(element) && lastSetElement(autoList) === element;
   setInvokerAriaExpanded(popoverInvoker.get(element), false);
   popoverInvoker.delete(element);
   if (fireEvents) {
@@ -329,12 +434,19 @@ export function hidePopover(
         newState: 'closed',
       }),
     );
+    if (
+      autoPopoverListContainsElement &&
+      lastSetElement(autoList) !== element
+    ) {
+      hideAllPopoversUntil(element, focusPreviousElement, fireEvents);
+    }
     if (!checkPopoverValidity(element, true)) {
       return;
     }
   }
   topLayerElements.get(document)?.delete(element);
-  autoPopoverList.get(document)?.delete(element);
+  autoList.delete(element);
+  hintPopoverList.get(document)?.delete(element);
   element.classList.remove(':popover-open');
   visibilityState.set(element, 'hidden');
   if (fireEvents) {
@@ -354,10 +466,58 @@ function closeAllOpenPopovers(
   focusPreviousElement = false,
   fireEvents = false,
 ) {
-  let popover = topMostAutoPopover(document);
+  let popover = topmostAutoOrHintPopover(document);
   while (popover) {
     hidePopover(popover, focusPreviousElement, fireEvents);
-    popover = topMostAutoPopover(document);
+    popover = topmostAutoOrHintPopover(document);
+  }
+}
+
+function closeAllOpenPopoversInList(
+  list: Set<HTMLElement>,
+  focusPreviousElement = false,
+  fireEvents = false,
+) {
+  let popover = topMostPopoverInList(list);
+  while (popover) {
+    hidePopover(popover, focusPreviousElement, fireEvents);
+    popover = topMostPopoverInList(list);
+  }
+}
+
+// https://html.spec.whatwg.org/#hide-popover-stack-until
+function hidePopoverStackUntil(
+  endpoint: Element | Document,
+  set: Set<HTMLElement>,
+  focusPreviousElement: boolean,
+  fireEvents: boolean,
+) {
+  let repeatingHide = false;
+  let hasRunOnce = false;
+  // This deviates from the latest version of the spec, which has a bug:
+  // https://github.com/whatwg/html/issues/11007
+  while (repeatingHide || !hasRunOnce) {
+    hasRunOnce = true;
+    let lastToHide = null;
+    let foundEndpoint = false;
+    for (const popover of set) {
+      if (popover === endpoint) {
+        foundEndpoint = true;
+      } else if (foundEndpoint) {
+        lastToHide = popover;
+        break;
+      }
+    }
+    if (!lastToHide) return;
+    while (getPopoverVisibilityState(lastToHide) === 'showing' && set.size) {
+      hidePopover(lastSetElement(set), focusPreviousElement, fireEvents);
+    }
+    if (set.has(endpoint as HTMLElement) && lastSetElement(set) !== endpoint) {
+      repeatingHide = true;
+    }
+    if (repeatingHide) {
+      fireEvents = false;
+    }
   }
 }
 
@@ -371,26 +531,31 @@ export function hideAllPopoversUntil(
   if (endpoint instanceof Document) {
     return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
   }
-  let lastToHide = null;
-  let foundEndpoint = false;
-  for (const popover of autoPopoverList.get(document) || []) {
-    if (popover === endpoint) {
-      foundEndpoint = true;
-    } else if (foundEndpoint) {
-      lastToHide = popover;
-      break;
-    }
+  if (hintPopoverList.get(document)?.has(endpoint as HTMLElement)) {
+    hidePopoverStackUntil(
+      endpoint,
+      hintPopoverList.get(document)!,
+      focusPreviousElement,
+      fireEvents,
+    );
+    return;
   }
-  if (!foundEndpoint) {
-    return closeAllOpenPopovers(document, focusPreviousElement, fireEvents);
+  closeAllOpenPopoversInList(
+    hintPopoverList.get(document) || new Set(),
+    focusPreviousElement,
+    fireEvents,
+  );
+
+  if (!autoPopoverList.get(document)?.has(endpoint as HTMLElement)) {
+    return;
   }
-  while (
-    lastToHide &&
-    getPopoverVisibilityState(lastToHide) === 'showing' &&
-    autoPopoverList.get(document)?.size
-  ) {
-    hidePopover(lastToHide, focusPreviousElement, fireEvents);
-  }
+
+  hidePopoverStackUntil(
+    endpoint,
+    autoPopoverList.get(document)!,
+    focusPreviousElement,
+    fireEvents,
+  );
 }
 
 const popoverPointerDownTargets = new WeakMap<Document, HTMLElement>();
@@ -401,7 +566,7 @@ export function lightDismissOpenPopovers(event: Event) {
   const target = event.composedPath()[0] as HTMLElement;
   if (!target) return;
   const document = target.ownerDocument;
-  const topMostPopover = topMostAutoPopover(document);
+  const topMostPopover = topmostAutoOrHintPopover(document);
   if (!topMostPopover) return;
   const ancestor = topMostClickedPopover(target);
   if (ancestor && event.type === 'pointerdown') {
