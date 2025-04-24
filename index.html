@@ -191,7 +191,12 @@
       </div>
       <div id="popovers">
         <div id="defaultPopover" data-popover popover>Default Popover</div>
-        <div id="autoPopover" data-popover popover="auto">
+        <div
+          id="autoPopover"
+          data-popover
+          popover="auto"
+          style="margin: 0; inset-block-start: 15em"
+        >
           Auto Popover
           <button data-hover-target="hintPopover3" data-btn>
             Hover to toggle Nested hint popover
@@ -203,10 +208,18 @@
         <div id="manualPopover" data-popover="manual" popover="manual">
           Manual Popover
         </div>
-        <div id="hintPopover" popover="hint" style="inset-block-start: 5em">
+        <div
+          id="hintPopover"
+          popover="hint"
+          style="inset-block-start: 5em; margin: 0"
+        >
           Popover ("hint")
         </div>
-        <div id="hintPopover2" popover="hint" style="inset-block-start: 10em">
+        <div
+          id="hintPopover2"
+          popover="hint"
+          style="inset-block-start: 10em; margin: 0"
+        >
           Popover ("hint 2")
         </div>
         <div id="emptyStatePopover" data-popover popover="">
@@ -322,7 +335,7 @@
           </h2>
           <div style="display: grid; gap: 1em">
             <button data-hover-target="hintPopover" data-btn>
-              Hover to toggle Hint Popover
+              Hover to toggle Hint Popover 1
             </button>
             <button data-hover-target="hintPopover2" data-btn>
               Hover to toggle Hint Popover 2
