@@ -494,8 +494,8 @@ function hidePopoverStackUntil(
 ) {
   let repeatingHide = false;
   let hasRunOnce = false;
-  // TODO: This doesn't match the spec changes in
-  // https://github.com/whatwg/html/pull/9778/files#diff-41cf6794ba4200b839c53531555f0f3998df4cbb01a4d5cb0b94e3ca5e23947dR85830
+  // This deviates from the latest version of the spec, which has a bug:
+  // https://github.com/whatwg/html/issues/11007
   while (repeatingHide || !hasRunOnce) {
     hasRunOnce = true;
     let lastToHide = null;
