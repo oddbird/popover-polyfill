@@ -28,6 +28,10 @@ const combinedPopoverListForDocument = (
   return new Set([...autoPopovers, ...hintPopovers]);
 };
 
+function lastSetElement(set: Set<HTMLElement>) {
+  return [...set].pop() as HTMLElement;
+}
+
 // https://html.spec.whatwg.org/#popover-target-attribute-activation-behavior
 export function popoverTargetAttributeActivationBehavior(
   element: HTMLButtonElement | HTMLInputElement,
@@ -415,7 +419,7 @@ export function hidePopover(
   }
   const autoList = autoPopoverList.get(document) || new Set();
   const autoPopoverListContainsElement =
-    autoList.has(element) && [...autoList].pop() === element;
+    autoList.has(element) && lastSetElement(autoList) === element;
   setInvokerAriaExpanded(popoverInvoker.get(element), false);
   popoverInvoker.delete(element);
   if (fireEvents) {
@@ -425,7 +429,10 @@ export function hidePopover(
         newState: 'closed',
       }),
     );
-    if (autoPopoverListContainsElement && [...autoList].pop() !== element) {
+    if (
+      autoPopoverListContainsElement &&
+      lastSetElement(autoList) !== element
+    ) {
       hideAllPopoversUntil(element, focusPreviousElement, fireEvents);
     }
     if (!checkPopoverValidity(element, true)) {
@@ -498,13 +505,9 @@ function hidePopoverStackUntil(
     }
     if (!lastToHide) return;
     while (getPopoverVisibilityState(lastToHide) === 'showing' && set.size) {
-      hidePopover(
-        [...set].pop() as HTMLElement,
-        focusPreviousElement,
-        fireEvents,
-      );
+      hidePopover(lastSetElement(set), focusPreviousElement, fireEvents);
     }
-    if (set.has(endpoint as HTMLElement) && [...set].pop() !== endpoint) {
+    if (set.has(endpoint as HTMLElement) && lastSetElement(set) !== endpoint) {
       repeatingHide = true;
     }
     if (repeatingHide) {
