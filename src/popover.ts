@@ -148,6 +148,8 @@ export function injectStyles(root: Document | ShadowRoot) {
   }
 }
 
+type TogglePopoverOptions = boolean | { source?: HTMLElement; force?: boolean };
+
 export function apply() {
   if (typeof window === 'undefined') return;
 
@@ -198,7 +200,8 @@ export function apply() {
     showPopover: {
       enumerable: true,
       configurable: true,
-      value() {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      value({ source } = { source: HTMLElement }) {
         showPopover(this);
       },
     },
@@ -214,13 +217,17 @@ export function apply() {
     togglePopover: {
       enumerable: true,
       configurable: true,
-      value(force: boolean) {
+      value(options: TogglePopoverOptions = {}) {
+        if (typeof options === 'boolean') {
+          options = { force: options };
+        }
         if (
-          (visibilityState.get(this) === 'showing' && force === undefined) ||
-          force === false
+          (visibilityState.get(this) === 'showing' &&
+            options.force === undefined) ||
+          options.force === false
         ) {
           hidePopover(this, true, true);
-        } else if (force === undefined || force === true) {
+        } else if (options.force === undefined || options.force === true) {
           showPopover(this);
         }
       },
