@@ -1,4 +1,8 @@
 import { ToggleEvent } from './events.js';
+import type {
+  PopoverShowPopoverOptions,
+  PopoverTogglePopoverOptions,
+} from './index.js';
 import {
   getRootNode,
   hideAllPopoversUntil,
@@ -147,9 +151,6 @@ export function injectStyles(root: Document | ShadowRoot) {
     root.adoptedStyleSheets = [popoverStyleSheet, ...root.adoptedStyleSheets];
   }
 }
-
-type TogglePopoverOptions = boolean | { source?: HTMLElement; force?: boolean };
-
 export function apply() {
   if (typeof window === 'undefined') return;
 
@@ -201,7 +202,7 @@ export function apply() {
       enumerable: true,
       configurable: true,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      value({ source } = { source: HTMLElement }) {
+      value(options: PopoverShowPopoverOptions = {}) {
         showPopover(this);
       },
     },
@@ -217,7 +218,7 @@ export function apply() {
     togglePopover: {
       enumerable: true,
       configurable: true,
-      value(options: TogglePopoverOptions = {}) {
+      value(options: PopoverTogglePopoverOptions = {}) {
         if (typeof options === 'boolean') {
           options = { force: options };
         }
