@@ -151,6 +151,7 @@ export function injectStyles(root: Document | ShadowRoot) {
     root.adoptedStyleSheets = [popoverStyleSheet, ...root.adoptedStyleSheets];
   }
 }
+
 export function apply() {
   if (typeof window === 'undefined') return;
 
@@ -218,7 +219,7 @@ export function apply() {
     togglePopover: {
       enumerable: true,
       configurable: true,
-      value(options: PopoverTogglePopoverOptions = {}) {
+      value(options: boolean | PopoverTogglePopoverOptions = {}) {
         if (typeof options === 'boolean') {
           options = { force: options };
         }

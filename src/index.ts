@@ -8,21 +8,16 @@ interface PopoverToggleTargetElementInvoker {
 }
 
 /** [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/togglePopover **/
-type PopoverTogglePopoverOptionsBoolean = boolean;
-
-interface PopoverTogglePopoverOptionsObject {
+export interface PopoverTogglePopoverOptions {
   force?: boolean;
   source?: HTMLElement;
 }
-
-export type PopoverTogglePopoverOptions =
-  | PopoverTogglePopoverOptionsBoolean
-  | PopoverTogglePopoverOptionsObject;
 
 /** [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/showPopover **/
 export interface PopoverShowPopoverOptions {
   source?: HTMLElement;
 }
+
 declare global {
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/ToggleEvent) */
   interface ToggleEvent extends Event {
@@ -40,6 +35,7 @@ declare global {
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/showPopover) */
     showPopover(options?: PopoverShowPopoverOptions): void;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/togglePopover) */
+    togglePopover(force?: boolean): void;
     togglePopover(options?: PopoverTogglePopoverOptions): void;
   }
 
