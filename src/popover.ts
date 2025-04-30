@@ -11,7 +11,7 @@ import {
 import type {
   PopoverShowPopoverOptions,
   PopoverTogglePopoverOptions,
-} from './types.js';
+} from './shared-types.js';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const ShadowRoot = globalThis.ShadowRoot || function () {};

@@ -1,15 +1,9 @@
 import { apply, isSupported } from './popover.js';
-import {
+import type {
   PopoverShowPopoverOptions,
   PopoverTogglePopoverOptions,
-} from './types.js';
-
-interface PopoverToggleTargetElementInvoker {
-  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLButtonElement/popoverTargetAction) */
-  popoverTargetAction: string;
-  /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLButtonElement/popoverTargetElement) */
-  popoverTargetElement: Element | null;
-}
+  PopoverToggleTargetElementInvoker,
+} from './shared-types.js';
 
 declare global {
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/ToggleEvent) */
@@ -29,6 +23,7 @@ declare global {
     showPopover(options?: PopoverShowPopoverOptions): void;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/togglePopover) */
     togglePopover(force?: boolean): void;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/togglePopover) */
     togglePopover(options?: PopoverTogglePopoverOptions): void;
   }
 
