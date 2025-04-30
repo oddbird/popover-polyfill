@@ -1,8 +1,4 @@
 import { ToggleEvent } from './events.js';
-import type {
-  PopoverShowPopoverOptions,
-  PopoverTogglePopoverOptions,
-} from './index.js';
 import {
   getRootNode,
   hideAllPopoversUntil,
@@ -12,6 +8,10 @@ import {
   showPopover,
   visibilityState,
 } from './popover-helpers.js';
+import type {
+  PopoverShowPopoverOptions,
+  PopoverTogglePopoverOptions,
+} from './types.js';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const ShadowRoot = globalThis.ShadowRoot || function () {};

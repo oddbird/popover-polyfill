@@ -1,3 +1,8 @@
+import {
+  PopoverShowPopoverOptions,
+  PopoverTogglePopoverOptions,
+} from './types.js';
+
 interface PopoverToggleTargetElementInvoker {
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLButtonElement/popoverTargetAction) */
   popoverTargetAction: string;
@@ -20,9 +25,10 @@ declare global {
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/hidePopover) */
     hidePopover(): void;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/showPopover) */
-    showPopover(): void;
+    showPopover(options?: PopoverShowPopoverOptions): void;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/togglePopover) */
     togglePopover(force?: boolean): void;
+    togglePopover(options?: PopoverTogglePopoverOptions): void;
   }
 
   /* eslint-disable @typescript-eslint/no-empty-object-type */
