@@ -33,3 +33,17 @@ A complete end-to-end test suite is available in the `tests/` folder.
   `@playwright/test` changes in package.json): `npx playwright install --with-deps`
 - Run tests (Chromium only): `npm test`
 - Run tests (Chromium, Firefox & Webkit): `npm run test:ci`
+
+## Previewing Pull Requests
+
+Active pull requests on the polyfill can be tested using the built version
+hosted within the preview environment.
+
+> **IMPORTANT**
+>
+> These previews are ephemeral, and will stop working after the pull request is
+> merged. Do not use this for any purpose other than testing the pull request.
+
+All polyfills are located within the `/dist` folder of the preview environment.
+For instance, the auto-applied version for PR 123 would be available at
+https://deploy-preview-123--popover-polyfill.netlify.app/dist/popover.js.
