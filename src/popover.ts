@@ -1,6 +1,5 @@
 import { ToggleEvent } from './events.js';
 import {
-  checkPopoverValidity,
   getRootNode,
   hideAllPopoversUntil,
   hidePopover,
@@ -224,17 +223,19 @@ export function apply() {
         if (typeof options === 'boolean') {
           options = { force: options };
         }
+        // This differs from the spec, in that the `if` includes instances when
+        // popover is hidden and force=false. In that case, the spec only runs
+        // `check popover validity`. Because the polyfill doesn't throw errors
+        // in `check popover validity`, we pass this case to `hide popover`,
+        // which immediately checks popover validity and returns as a noop.
         if (
-          visibilityState.get(this) === 'showing' &&
-          (options.force === undefined || options.force === false)
+          (visibilityState.get(this) === 'showing' &&
+            options.force === undefined) ||
+          options.force === false
         ) {
           hidePopover(this, true, true);
         } else if (options.force === undefined || options.force === true) {
           showPopover(this);
-        } else {
-          // The popover is not showing, but force is `false`. This currently
-          // has no side effects, but is included for spec-completeness.
-          checkPopoverValidity(this, false);
         }
         return visibilityState.get(this) === 'showing';
       },

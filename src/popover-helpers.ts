@@ -46,7 +46,7 @@ export function popoverTargetAttributeActivationBehavior(
 }
 
 // https://html.spec.whatwg.org/#check-popover-validity
-export function checkPopoverValidity(
+function checkPopoverValidity(
   element: HTMLElement,
   expectedToBeShowing: boolean,
 ) {
