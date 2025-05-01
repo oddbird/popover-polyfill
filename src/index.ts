@@ -22,9 +22,9 @@ declare global {
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/showPopover) */
     showPopover(options?: PopoverShowPopoverOptions): void;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/togglePopover) */
-    togglePopover(force?: boolean): void;
+    togglePopover(force?: boolean): boolean;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/togglePopover) */
-    togglePopover(options?: PopoverTogglePopoverOptions): void;
+    togglePopover(options?: PopoverTogglePopoverOptions): boolean;
   }
 
   /* eslint-disable @typescript-eslint/no-empty-object-type */

@@ -1,5 +1,6 @@
 import { ToggleEvent } from './events.js';
 import {
+  checkPopoverValidity,
   getRootNode,
   hideAllPopoversUntil,
   hidePopover,
@@ -219,19 +220,23 @@ export function apply() {
     togglePopover: {
       enumerable: true,
       configurable: true,
-      value(options: boolean | PopoverTogglePopoverOptions = {}) {
+      value(options: boolean | PopoverTogglePopoverOptions = {}): boolean {
         if (typeof options === 'boolean') {
           options = { force: options };
         }
         if (
-          (visibilityState.get(this) === 'showing' &&
-            options.force === undefined) ||
-          options.force === false
+          visibilityState.get(this) === 'showing' &&
+          (options.force === undefined || options.force === false)
         ) {
           hidePopover(this, true, true);
         } else if (options.force === undefined || options.force === true) {
           showPopover(this);
+        } else {
+          // The popover is not showing, but force is `false`. This currently
+          // has no side effects, but is included for spec-completeness.
+          checkPopoverValidity(this, false);
         }
+        return visibilityState.get(this) === 'showing';
       },
     },
   });
