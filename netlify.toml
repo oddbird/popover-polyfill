@@ -1,0 +1,5 @@
+[[headers]]
+  for = "/dist/*" # Only allow for built files
+  [headers.values]
+    access-control-allow-origin = "*"
+    content-type = "text/javascript"
