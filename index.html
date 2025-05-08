@@ -30,6 +30,23 @@
       }
     </style>
     <script type="module">
+      const backdropPopover = document.querySelector('[data-backdrop-popover]');
+      const body = document.getElementById('body');
+
+      backdropPopover.addEventListener('toggle', () => {
+        const popoverOpen = backdropPopover.matches(
+          ':popover-open, data-backdrop-popover',
+        );
+        if (popoverOpen) {
+          body.classList.add('open-popover');
+          console.log('Popover Open');
+        } else {
+          body.classList.remove('open-popover');
+          console.log('No Popovers Open');
+        }
+      });
+    </script>
+    <script type="module">
       import {
         apply,
         isSupported,
@@ -85,7 +102,7 @@
     </script>
   </head>
 
-  <body>
+  <body id="body">
     <header class="site-header">
       <a href="https://www.oddbird.net/" rel="home" id="banner-logo">
         <svg
@@ -191,6 +208,9 @@
       </div>
       <div id="popovers">
         <div id="defaultPopover" data-popover popover>Default Popover</div>
+        <div id="backdropPopover" data-popover data-backdrop-popover popover>
+          Popover with Backdrop
+        </div>
         <div
           id="autoPopover"
           data-popover
@@ -735,6 +755,26 @@ menuShadowRoot.innerHTML = `
     --border-color: #d00d1e;
   }
 }</code></pre>
+        </section>
+        <section id="popover-backdrop" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-backdrop" aria-hidden="true">🔗</a>
+            Popover with Backdrop
+          </h2>
+          <p class="note">This popover has a backdrop.</p>
+          <button
+            popovertarget="backdropPopover"
+            aria-expanded="false"
+            data-btn
+          >
+            <span>Toggle Popover with Backdrop</span>
+          </button>
+          <pre><code class="language-html"
+>&lt;button popovertarget="backdropPopover" aria-expanded="false"&gt;
+  Toggle Popover with Backdrop
+&lt;/button&gt;
+
+&lt;div id="backdropPopover" popover&gt;Popover with Backdrop&lt;/div&gt;</code></pre>
         </section>
         <section id="popover-shadow-root" class="demo-item">
           <h2 data-header>
