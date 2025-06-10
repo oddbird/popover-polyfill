@@ -62,7 +62,7 @@
       try {
         new CSSStyleSheet();
         window.supportsCSSStyleSheet = true;
-      } catch {
+      } catch (e) {
         // no support
       }
       document.querySelectorAll('[data-hover-target]').forEach((el) => {
