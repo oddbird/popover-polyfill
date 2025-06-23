@@ -199,7 +199,7 @@ boolean, source: HTMLElement}` syntax, both `showPopover()` and
   const popovers = document.querySelectorAll('[popover]');
   const body = document.getElementById('body');
 
-  if (!isSupported) {
+  if (!isSupported()) {
     for (const popover of popovers) {
       popover.addEventListener('toggle', () => {
         const popoverOpen = popover.matches(':popover-open');
