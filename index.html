@@ -30,23 +30,6 @@
       }
     </style>
     <script type="module">
-      const popovers = document.querySelectorAll('[popover]');
-      const body = document.getElementById('body');
-
-      for (const popover of popovers) {
-        popover.addEventListener('toggle', () => {
-          const popoverOpen = popover.matches(':popover-open');
-          if (popoverOpen) {
-            body.classList.add('open-popover');
-            console.log('Popover Open');
-          } else {
-            body.classList.remove('open-popover');
-            console.log('No Popovers Open');
-          }
-        });
-      }
-    </script>
-    <script type="module">
       import {
         apply,
         isSupported,
@@ -101,8 +84,7 @@
       } catch (e) {}
     </script>
   </head>
-
-  <body id="body">
+  <body>
     <header class="site-header">
       <a href="https://www.oddbird.net/" rel="home" id="banner-logo">
         <svg
