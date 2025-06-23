@@ -191,6 +191,58 @@ boolean, source: HTMLElement}` syntax, both `showPopover()` and
 - The polyfill will not work in browsers with partial popover support enabled,
   and will also not attempt to make experimental support match the final spec.
 
+- Native `popover` elements contain a `::backdrop` pseudo-element when open.
+  This behavior has not been added to the polyfill. To work around this, one option
+  is to add a class to the `body` element when a `popover` is open:
+
+  ```js
+  import { isPolyfilled } from '@oddbird/popover-polyfill/fn';
+
+  const popovers = document.querySelectorAll('[popover]');
+  const body = document.getElementById('body');
+
+  if (isPolyfilled()) {
+    for (const popover of popovers) {
+      popover.addEventListener('toggle', () => {
+        const popoverOpen = popover.matches(':popover-open');
+        if (popoverOpen) {
+          body.classList.add('open-popover');
+        } else {
+          body.classList.remove('open-popover');
+        }
+      });
+    }
+  }
+  ```
+
+  And then style the `::backdrop` with CSS:
+
+  ```css
+  ::backdrop,
+  body.open-popover::before {
+    content: '';
+    background: /*backdrop styles*/;
+    inset: 0;
+    position: fixed;
+    z-index: 1;
+  }
+  ```
+
+  If your browser support requirements allow you to use
+  [`:has()`](https://web-platform-dx.github.io/web-features-explorer/features/has/),
+  the following CSS will work without the use of JavaScript:
+
+  ```css
+  ::backdrop,
+  body:has(.\:popover-open)::before {
+    content: '';
+    background: /*backdrop styles*/;
+    inset: 0;
+    position: fixed;
+    z-index: 1;
+  }
+  ```
+
 ## Contributing
 
 Visit our [contribution guidelines](https://github.com/oddbird/popover-polyfill/blob/main/CONTRIBUTING.md).
