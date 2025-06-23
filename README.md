@@ -196,10 +196,12 @@ boolean, source: HTMLElement}` syntax, both `showPopover()` and
   is to add a class to the `body` element when a `popover` is open:
 
   ```js
+  import { isPolyfilled } from '@oddbird/popover-polyfill/fn';
+
   const popovers = document.querySelectorAll('[popover]');
   const body = document.getElementById('body');
 
-  if (!isSupported()) {
+  if (isPolyfilled()) {
     for (const popover of popovers) {
       popover.addEventListener('toggle', () => {
         const popoverOpen = popover.matches(':popover-open');
