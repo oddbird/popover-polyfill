@@ -199,15 +199,17 @@ boolean, source: HTMLElement}` syntax, both `showPopover()` and
   const popovers = document.querySelectorAll('[popover]');
   const body = document.getElementById('body');
 
-  for (const popover of popovers) {
-    popover.addEventListener('toggle', () => {
-      const popoverOpen = popover.matches(':popover-open');
-      if (popoverOpen) {
-        body.classList.add('open-popover');
-      } else {
-        body.classList.remove('open-popover');
-      }
-    });
+  if (!isSupported) {
+    for (const popover of popovers) {
+      popover.addEventListener('toggle', () => {
+        const popoverOpen = popover.matches(':popover-open');
+        if (popoverOpen) {
+          body.classList.add('open-popover');
+        } else {
+          body.classList.remove('open-popover');
+        }
+      });
+    }
   }
   ```
 
@@ -224,8 +226,9 @@ boolean, source: HTMLElement}` syntax, both `showPopover()` and
   }
   ```
 
-  For browsers that support the `:has()` pseudo-class, the following CSS will
-  work without the use of JavaScript:
+  If your browser support requirements allow you to use
+  [`:has()`](https://web-platform-dx.github.io/web-features-explorer/features/has/),
+  the following CSS will work without the use of JavaScript:
 
   ```css
   ::backdrop,
