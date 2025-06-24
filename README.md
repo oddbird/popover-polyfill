@@ -9,6 +9,13 @@ This polyfills the HTML `popover` attribute and
 `showPopover`/`hidePopover`/`togglePopover` methods onto HTMLElement, as well as
 the `popovertarget` and `popovertargetaction` attributes on Button elements.
 
+## Browser Support
+
+- Firefox 88+ (includes Android)
+- Chrome 88+ (includes Android)
+- Edge 88+
+- Safari 14+ (includes iOS)
+
 ## Polyfill Installation
 
 ### Download a copy
