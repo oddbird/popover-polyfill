@@ -269,13 +269,9 @@ test('clicking button[popovertarget=defaultPopover] should not trigger popover w
     const button = document.querySelector(
       'button[popovertarget="defaultPopover"]',
     );
-    button?.addEventListener(
-      'click',
-      (event) => {
-        event.preventDefault();
-      },
-      { capture: true },
-    );
+    button?.addEventListener('click', (event) => {
+      event.preventDefault();
+    });
   });
   await page.click('button[popovertarget=defaultPopover]');
   await expect(popover).toBeHidden();
