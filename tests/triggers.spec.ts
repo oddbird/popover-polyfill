@@ -259,3 +259,24 @@ test('clicking #shadowInInvoker should show then hide popover', async ({
   await page.click('#shadowInvokedHost');
   await expect(popover).toBeHidden();
 });
+
+test('clicking button[popovertarget=defaultPopover] should not trigger popover when defaultPrevented is true', async ({
+  page,
+}) => {
+  const popover = (await page.locator('#defaultPopover')).nth(0);
+  await expect(popover).toBeHidden();
+  await page.evaluate(() => {
+    const button = document.querySelector(
+      'button[popovertarget="defaultPopover"]',
+    );
+    button?.addEventListener(
+      'click',
+      (event) => {
+        event.preventDefault();
+      },
+      { capture: true },
+    );
+  });
+  await page.click('button[popovertarget=defaultPopover]');
+  await expect(popover).toBeHidden();
+});
