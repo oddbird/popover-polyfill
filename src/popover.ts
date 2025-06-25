@@ -354,6 +354,7 @@ export function apply() {
     if (event.defaultPrevented) {
       return;
     }
+    // Composed path allows us to find the target within shadowroots
     const composedPath = event.composedPath() as HTMLElement[];
     const target = composedPath[0];
     if (!(target instanceof Element) || target?.shadowRoot) {
