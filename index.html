@@ -187,6 +187,17 @@
             >native Popover API support</a
           >.
         </p>
+        <p>
+          The examples on this page are not positioned. CSS anchor positioning
+          is a great way to position your popovers, and OddBird has a
+          <a
+            href="https://anchor-positioning.oddbird.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >polyfill</a
+          >
+          for that as well!
+        </p>
       </div>
       <div id="popovers">
         <div id="defaultPopover" data-popover popover>Default Popover</div>
@@ -343,7 +354,14 @@
               Show Auto Popover
             </button>
           </div>
-          <p class="note">Hint popovers only dismiss other hint popovers.</p>
+          <div class="note">
+            <p>Hint popovers only dismiss other hint popovers.</p>
+            <small
+              >(In these examples, the popovers open on the left side of the
+              screen to prevent the popovers overlaying the other buttons, which
+              makes testing difficult.)</small
+            >
+          </div>
           <pre><code class="language-html"
 >&lt;button data-hover-target="hintPopover"&gt;
   Hover to toggle Hint Popover
