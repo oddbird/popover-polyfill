@@ -111,7 +111,6 @@ some caveats which will need accommodations:
   polyfill will add the `.\:popover-open` CSS class to any open popover. In
   other words a popover in the open state will have `class=":popover-open"`. In
   CSS the `:` character must be escaped with a backslash.
-
   - The `:popover-open` selector within JavaScript methods has been polyfilled,
     so both `.querySelector(':popover-open')` _and_
     `.querySelector('.\:popover-open')` will work to select the same element.
@@ -143,7 +142,6 @@ some caveats which will need accommodations:
   onto the page (and each Shadow DOM). If it can't use that it'll generate a
   `<style>` tag instead. This means you may see a `<style>` tag you didn't put
   there, and this _may_ impact mutation observers or frameworks.
-
   - For browsers which don't support `new CSSStyleSheet()`, if you are building
     a ShadowRoot by setting `.innerHTML`, you'll remove the StyleSheet. Call
     `injectStyles(myShadow)` to add the styles back in:
