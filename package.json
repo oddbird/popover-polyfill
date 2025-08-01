@@ -85,13 +85,13 @@
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "@eslint/js": "^9.30.0",
+    "@eslint/js": "^9.32.0",
     "@playwright/test": "1.33.0",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/node": "*",
-    "esbuild": "^0.25.5",
-    "eslint": "^9.30.0",
-    "eslint-config-prettier": "^10.1.5",
+    "esbuild": "^0.25.8",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
@@ -100,7 +100,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.35.1"
+    "typescript-eslint": "^8.38.0"
   },
   "lint-staged": {
     "*.{js,ts}": [
