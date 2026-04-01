@@ -184,13 +184,13 @@ function topMostPopoverAncestor(
     i += 1;
   }
   popoverPositions.set(newPopover, i);
+  // eslint-disable-next-line no-useless-assignment
   i += 1;
   let topMostPopoverAncestor: HTMLElement | null = null;
   function checkAncestor(candidate: Node | null) {
     if (!candidate) return;
     let okNesting = false;
     let candidateAncestor: HTMLElement | null = null;
-    let candidatePosition = null;
     while (!okNesting) {
       candidateAncestor = nearestInclusiveOpenPopover(candidate) || null;
       if (candidateAncestor === null) return;
@@ -205,7 +205,7 @@ function topMostPopoverAncestor(
         candidate = candidateAncestor.parentElement;
       }
     }
-    candidatePosition = popoverPositions.get(candidateAncestor);
+    const candidatePosition = popoverPositions.get(candidateAncestor) ?? null;
     if (
       topMostPopoverAncestor === null ||
       popoverPositions.get(topMostPopoverAncestor) < candidatePosition
