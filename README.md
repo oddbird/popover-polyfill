@@ -122,7 +122,11 @@ some caveats which will need accommodations:
     results in an invalid selector, and so the entire declaration is thrown
     away. This is important because if you intend to style a popover using
     `.\:popover-open` it will need to be a separate declaration. For example,
-    `[popover]:popover-open, [popover].\:popover-open` will not work.
+    `[popover]:popover-open, [popover].\:popover-open` will not work. If your
+    browser support requirements allow you to use
+    [`:where()`](https://web-platform-dx.github.io/web-features-explorer/features/where/),
+    you can use `[popover]:where(:popover-open, .\:popover-open)` to target the
+    native and polyfilled selectors.
 
 - Native `popover` elements use the `:top-layer` pseudo element which gets
   placed above all other elements on the page, regardless of overflow or
