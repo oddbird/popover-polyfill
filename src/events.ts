@@ -6,13 +6,13 @@ export interface ToggleInit extends EventInit {
 export class ToggleEvent extends Event {
   public oldState: string;
   public newState: string;
-  constructor(
-    type: string,
-    { oldState = '', newState = '', ...init }: Partial<ToggleInit> = {},
-  ) {
-    super(type, init);
-    this.oldState = String(oldState || '');
-    this.newState = String(newState || '');
+  constructor(type: string, init: Partial<ToggleInit> = {}) {
+    const eventInit: Partial<ToggleInit> = Object.assign({}, init);
+    delete eventInit.oldState;
+    delete eventInit.newState;
+    super(type, eventInit);
+    this.oldState = String(init.oldState || '');
+    this.newState = String(init.newState || '');
   }
 }
 
