@@ -64,7 +64,7 @@ function hasLayerSupport() {
 function getStyles(layerName: string) {
   const useLayer = hasLayerSupport();
   return `
-${useLayer ? `@layer ${layerName} {` : ''}
+${useLayer ? `@layer ${CSS.escape(layerName)} {` : ''}
   :where([popover]) {
     position: fixed;
     z-index: 2147483647;
