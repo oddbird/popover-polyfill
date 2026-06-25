@@ -191,7 +191,9 @@ some caveats which will need accommodations:
 - When supported, the polyfill creates a cascade layer named `popover-polyfill`.
   If your styles are not in layers then this should have no impact. If your
   styles do use layers, you'll need to ensure the polyfill layer is declared
-  first. (e.g. `@layer popover-polyfill, other, layers;`)
+  first. (e.g. `@layer popover-polyfill, other, layers;`). You can change the
+  layer name by passing `layerName` to `apply`. (e.g.
+  `apply({ layerName: 'my-popover-polyfill-layer' })`)
 
 - While `togglePopover()` supports both the `force: boolean` and `{force:
 boolean, source: HTMLElement}` syntax, both `showPopover()` and

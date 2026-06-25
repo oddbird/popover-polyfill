@@ -61,10 +61,10 @@ function hasLayerSupport() {
 
 // To emulate a UA stylesheet which is the lowest priority in the cascade,
 // all selectors must be wrapped in a :where() which has a specificity of zero.
-function getStyles() {
+function getStyles(layerName: string) {
   const useLayer = hasLayerSupport();
   return `
-${useLayer ? '@layer popover-polyfill {' : ''}
+${useLayer ? `@layer ${layerName} {` : ''}
   :where([popover]) {
     position: fixed;
     z-index: 2147483647;
@@ -129,8 +129,8 @@ ${useLayer ? '}' : ''}
 }
 
 let popoverStyleSheet: null | false | CSSStyleSheet = null;
-export function injectStyles(root: Document | ShadowRoot) {
-  const styles = getStyles();
+export function injectStyles(root: Document | ShadowRoot, layerName: string) {
+  const styles = getStyles(layerName);
   if (popoverStyleSheet === null) {
     try {
       popoverStyleSheet = new CSSStyleSheet();
@@ -152,8 +152,9 @@ export function injectStyles(root: Document | ShadowRoot) {
   }
 }
 
-export function apply() {
+export function apply(props?: { layerName?: string }) {
   if (typeof window === 'undefined') return;
+  const layerName = props?.layerName || 'popover-polyfill';
 
   window.ToggleEvent = window.ToggleEvent || ToggleEvent;
 
@@ -251,7 +252,7 @@ export function apply() {
         writable: true,
         value(options: ShadowRootInit) {
           const shadowRoot = originalAttachShadow.call(this, options);
-          injectStyles(shadowRoot);
+          injectStyles(shadowRoot, layerName);
           return shadowRoot;
         },
       },
@@ -267,7 +268,7 @@ export function apply() {
         value() {
           const internals = originalAttachInternals.call(this);
           if (internals.shadowRoot) {
-            injectStyles(internals.shadowRoot);
+            injectStyles(internals.shadowRoot, layerName);
           }
           return internals;
         },
@@ -394,5 +395,5 @@ export function apply() {
   };
 
   addEventListeners(document);
-  injectStyles(document);
+  injectStyles(document, layerName);
 }
