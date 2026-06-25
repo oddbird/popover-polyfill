@@ -1,4 +1,5 @@
 import type {
+  PopoverPolyfillOptions,
   PopoverShowPopoverOptions,
   PopoverTogglePopoverOptions,
   PopoverToggleTargetElementInvoker,
@@ -33,6 +34,7 @@ declare global {
 
   interface Window {
     ToggleEvent: ToggleEvent;
+    POPOVER_POLYFILL_OPTIONS?: PopoverPolyfillOptions;
   }
 }
 

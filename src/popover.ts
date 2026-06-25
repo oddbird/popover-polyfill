@@ -9,12 +9,14 @@ import {
   visibilityState,
 } from './popover-helpers.js';
 import type {
+  PopoverPolyfillOptions,
   PopoverShowPopoverOptions,
   PopoverTogglePopoverOptions,
 } from './shared-types.js';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const ShadowRoot = globalThis.ShadowRoot || function () {};
+const DEFAULT_LAYER_NAME = 'popover-polyfill';
 
 export function isSupported() {
   return (
@@ -152,9 +154,11 @@ export function injectStyles(root: Document | ShadowRoot, layerName: string) {
   }
 }
 
-export function apply(props?: { layerName?: string }) {
+export function apply(options?: PopoverPolyfillOptions) {
   if (typeof window === 'undefined') return;
-  const layerName = props?.layerName || 'popover-polyfill';
+
+  const opts = options ?? window.POPOVER_POLYFILL_OPTIONS;
+  const layerName = opts?.layerName ?? DEFAULT_LAYER_NAME;
 
   window.ToggleEvent = window.ToggleEvent || ToggleEvent;
 

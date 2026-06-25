@@ -101,6 +101,38 @@ performance and robustness.
 After installation the polyfill will automatically add the correct methods and
 attributes to the HTMLElement class.
 
+## Configuration
+
+The polyfill supports a option to change the CSS layer name. When using the default version
+of the polyfill that executes automatically, options can be set by setting the
+value of `window.POPOVER_POLYFILL_OPTIONS`.
+
+```js
+<script type="module">
+  if (!("popover" in HTMLElement.prototype)) {
+    window.POPOVER_POLYFILL_OPTIONS = {
+      layerName: 'my-popover-polyfill-layer-name'
+    };
+    import("https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest");
+  }
+</script>
+```
+
+When manually applying the polyfill, options can be set by passing an object as
+an argument.
+
+```js
+<script type="module">
+  if (!("popover" in HTMLElement.prototype)) {
+    const { apply } = await import("https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest");
+
+    apply({
+      layerName: 'my-popover-polyfill-layer-name',
+    });
+  }
+</script>
+```
+
 ## Caveats
 
 This polyfill is not a perfect replacement for the native behavior; there are
