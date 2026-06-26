@@ -63,10 +63,16 @@ function hasLayerSupport() {
 
 // To emulate a UA stylesheet which is the lowest priority in the cascade,
 // all selectors must be wrapped in a :where() which has a specificity of zero.
-function getStyles(layerName: string) {
+function getStyles(layerName?: string) {
   const useLayer = hasLayerSupport();
+  const layerNameEscaped = CSS.escape(
+    layerName ??
+      window.POPOVER_POLYFILL_OPTIONS?.layerName ??
+      DEFAULT_LAYER_NAME,
+  );
+
   return `
-${useLayer ? `@layer ${CSS.escape(layerName)} {` : ''}
+${useLayer ? `@layer ${layerNameEscaped} {` : ''}
   :where([popover]) {
     position: fixed;
     z-index: 2147483647;
@@ -131,8 +137,9 @@ ${useLayer ? '}' : ''}
 }
 
 let popoverStyleSheet: null | false | CSSStyleSheet = null;
-export function injectStyles(root: Document | ShadowRoot, layerName: string) {
+export function injectStyles(root: Document | ShadowRoot, layerName?: string) {
   const styles = getStyles(layerName);
+
   if (popoverStyleSheet === null) {
     try {
       popoverStyleSheet = new CSSStyleSheet();
@@ -154,11 +161,9 @@ export function injectStyles(root: Document | ShadowRoot, layerName: string) {
   }
 }
 
-export function apply(options?: PopoverPolyfillOptions) {
+export function apply(opts?: PopoverPolyfillOptions) {
   if (typeof window === 'undefined') return;
-
-  const opts = options ?? window.POPOVER_POLYFILL_OPTIONS;
-  const layerName = opts?.layerName ?? DEFAULT_LAYER_NAME;
+  const layerName = opts?.layerName;
 
   window.ToggleEvent = window.ToggleEvent || ToggleEvent;
 
