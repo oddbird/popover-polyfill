@@ -103,7 +103,7 @@ attributes to the HTMLElement class.
 
 ## Configuration
 
-The polyfill supports a option to change the CSS layer name. When using the default version
+The polyfill supports an option to change the CSS layer name. When using the default version
 of the polyfill that executes automatically, options can be set by setting the
 value of `window.POPOVER_POLYFILL_OPTIONS`.
 
