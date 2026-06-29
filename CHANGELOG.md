@@ -1,5 +1,39 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.7.0: 2026-06-29
+
+- 🚀 NEW: Add `layerName` option (see [documentation](https://github.com/oddbird/popover-polyfill#configuration)) --
+  [#283](https://github.com/oddbird/popover-polyfill/pull/283)
+- 📝 DOCS: Document `:where` selector option --
+  [#276](https://github.com/oddbird/popover-polyfill/pull/276)
+- 🏠 INTERNAL: Pin node for Playwright support --
+  [#284](https://github.com/oddbird/popover-polyfill/pull/284)
+- 🏠 INTERNAL: Upgrade dependencies
+
+## 0.6.1: 2025-06-26
+
+- 🐛 BUGFIX: Respect `defaultPrevented` in `popovertarget` click handler --
+  [#251](https://github.com/oddbird/popover-polyfill/pull/251)
+- 📝 DOCS: Add position notes --
+  [#252](https://github.com/oddbird/popover-polyfill/pull/252)
+- 📝 DOCS: Add example for `backdrop` --
+  [#247](https://github.com/oddbird/popover-polyfill/pull/247)
+- 📝 DOCS: Document browser support --
+  [#250](https://github.com/oddbird/popover-polyfill/pull/250)
+- 🏠 INTERNAL: Upgrade dependencies
+
+## 0.6.0: 2025-05-02
+
+- 🚀 NEW: Support for `popover=hint` --
+  [#240](https://github.com/oddbird/popover-polyfill/pull/240)
+- 🚀 NEW: Support object options syntax for `togglePopover` and `showPopover` --
+  [#243](https://github.com/oddbird/popover-polyfill/pull/243)
+- 🚀 NEW: Return showing status from `togglePopover` by @jamesnw --
+  [#246](https://github.com/oddbird/popover-polyfill/pull/246)
+- 📝 DOCS: Clean up styles for older browsers --
+  [#236](https://github.com/oddbird/popover-polyfill/pull/236)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.5.2: 2024-11-20
 
 - 📝 DOCS: Add favicon, sponsor text, and new demo page URL --
