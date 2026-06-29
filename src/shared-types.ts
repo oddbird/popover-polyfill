@@ -15,3 +15,7 @@ export interface PopoverToggleTargetElementInvoker {
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLButtonElement/popoverTargetElement) */
   popoverTargetElement: Element | null;
 }
+
+export interface PopoverPolyfillOptions {
+  layerName?: string;
+}

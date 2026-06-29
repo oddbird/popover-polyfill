@@ -101,6 +101,38 @@ performance and robustness.
 After installation the polyfill will automatically add the correct methods and
 attributes to the HTMLElement class.
 
+## Configuration
+
+The polyfill supports an option to change the CSS layer name. When using the default version
+of the polyfill that executes automatically, options can be set by setting the
+value of `window.POPOVER_POLYFILL_OPTIONS`.
+
+```js
+<script type="module">
+  if (!("popover" in HTMLElement.prototype)) {
+    window.POPOVER_POLYFILL_OPTIONS = {
+      layerName: 'my-popover-polyfill-layer-name'
+    };
+    import("https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest");
+  }
+</script>
+```
+
+When manually applying the polyfill, options can be set by passing an object as
+an argument.
+
+```js
+<script type="module">
+  if (!("popover" in HTMLElement.prototype)) {
+    const { apply } = await import("https://cdn.jsdelivr.net/npm/@oddbird/popover-polyfill@latest");
+
+    apply({
+      layerName: 'my-popover-polyfill-layer-name',
+    });
+  }
+</script>
+```
+
 ## Caveats
 
 This polyfill is not a perfect replacement for the native behavior; there are
@@ -148,7 +180,8 @@ some caveats which will need accommodations:
   there, and this _may_ impact mutation observers or frameworks.
   - For browsers which don't support `new CSSStyleSheet()`, if you are building
     a ShadowRoot by setting `.innerHTML`, you'll remove the StyleSheet. Call
-    `injectStyles(myShadow)` to add the styles back in:
+    `injectStyles(myShadow, layerName)` (where `layerName` is optional)
+    to add the styles back in:
 
     ```js
     let supportsCSSStyleSheet = false;
@@ -167,7 +200,7 @@ some caveats which will need accommodations:
     shadow root without calling `attachShadow`/`attachInternals`, then the
     polyfill won't inject the styles (because it can't reference the
     `shadowRoot`). You'll need to manually inject the styles yourself with
-    `injectStyles(myShadow)`.
+    `injectStyles(myShadow, layerName)`.
 
   - As a stylesheet is injected into the main document, if your host element is
     a popover, styling with `:host` gets tricky beause `:host` styles always
@@ -191,7 +224,10 @@ some caveats which will need accommodations:
 - When supported, the polyfill creates a cascade layer named `popover-polyfill`.
   If your styles are not in layers then this should have no impact. If your
   styles do use layers, you'll need to ensure the polyfill layer is declared
-  first. (e.g. `@layer popover-polyfill, other, layers;`)
+  first. (e.g. `@layer popover-polyfill, other, layers;`). You can change the
+  layer name by passing `layerName` to `apply`. (e.g.
+  `apply({ layerName: 'my-popover-polyfill-layer' })`) or through
+  `window.POPOVER_POLYFILL_OPTIONS` (see [configuration](#configuration))
 
 - While `togglePopover()` supports both the `force: boolean` and `{force:
 boolean, source: HTMLElement}` syntax, both `showPopover()` and
