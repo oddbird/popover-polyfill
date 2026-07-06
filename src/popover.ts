@@ -69,7 +69,9 @@ function getStyles(layerName?: string) {
     layerName ??
       window.POPOVER_POLYFILL_OPTIONS?.layerName ??
       DEFAULT_LAYER_NAME,
-  );
+  )
+    .split('\\.')
+    .join('.'); // Allow dot in CSS layer name as dot notation can be used to nest layers
 
   return `
 ${useLayer ? `@layer ${layerNameEscaped} {` : ''}
