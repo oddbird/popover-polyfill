@@ -65,13 +65,14 @@ function hasLayerSupport() {
 // all selectors must be wrapped in a :where() which has a specificity of zero.
 function getStyles(layerName?: string) {
   const useLayer = hasLayerSupport();
-  const layerNameEscaped = CSS.escape(
+  const layerNameEscaped = (
     layerName ??
-      window.POPOVER_POLYFILL_OPTIONS?.layerName ??
-      DEFAULT_LAYER_NAME,
+    window.POPOVER_POLYFILL_OPTIONS?.layerName ??
+    DEFAULT_LAYER_NAME
   )
-    .split('\\.')
-    .join('.'); // Allow dot in CSS layer name as dot notation can be used to nest layers
+    .split('.') // Allow dot as it can be used to nest layers
+    .map(CSS.escape) // But escape each part of to ensure it's safe and valid CSS
+    .join('.');
 
   return `
 ${useLayer ? `@layer ${layerNameEscaped} {` : ''}
