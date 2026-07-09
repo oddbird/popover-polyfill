@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.7.1: 2026-07-09
+
+- 🐛 BUGFIX: Allow dot notation in `layerName` option --
+  [#286](https://github.com/oddbird/popover-polyfill/pull/286)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.7.0: 2026-06-29
 
 - 🚀 NEW: Add `layerName` option (see [documentation](https://github.com/oddbird/popover-polyfill#configuration)) --
