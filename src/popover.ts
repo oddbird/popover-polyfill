@@ -22,7 +22,8 @@ export function isSupported() {
   return (
     typeof HTMLElement !== 'undefined' &&
     typeof HTMLElement.prototype === 'object' &&
-    'popover' in HTMLElement.prototype
+    'popover' in HTMLElement.prototype && // Returns true in HappyDOM
+    'showPopover' in HTMLElement.prototype // Returns false in HappyDOM
   );
 }
 
@@ -71,7 +72,7 @@ function getStyles(layerName?: string) {
     DEFAULT_LAYER_NAME
   )
     .split('.') // Allow dot as it can be used to nest layers
-    .map(CSS.escape) // But escape each part of to ensure it's safe and valid CSS
+    .map((css) => CSS.escape(css)) // But escape each part of to ensure it's safe and valid CSS (need to wrap CSS.escape in functino for JSDOM support)
     .join('.');
 
   return `
@@ -151,7 +152,8 @@ export function injectStyles(root: Document | ShadowRoot, layerName?: string) {
       popoverStyleSheet = false;
     }
   }
-  if (popoverStyleSheet === false) {
+  // JSDOM does not support adoptedStyleSheets
+  if (popoverStyleSheet === false || !root.adoptedStyleSheets) {
     const sheet = document.createElement('style');
     sheet.textContent = styles;
     if (root instanceof Document) {
@@ -215,6 +217,7 @@ export function apply(opts?: PopoverPolyfillOptions) {
     showPopover: {
       enumerable: true,
       configurable: true,
+      writable: true,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       value(options: PopoverShowPopoverOptions = {}) {
         showPopover(this);
@@ -224,6 +227,7 @@ export function apply(opts?: PopoverPolyfillOptions) {
     hidePopover: {
       enumerable: true,
       configurable: true,
+      writable: true,
       value() {
         hidePopover(this, true, true);
       },
@@ -232,6 +236,7 @@ export function apply(opts?: PopoverPolyfillOptions) {
     togglePopover: {
       enumerable: true,
       configurable: true,
+      writable: true,
       value(options: boolean | PopoverTogglePopoverOptions = {}): boolean {
         if (typeof options === 'boolean') {
           options = { force: options };
@@ -395,7 +400,8 @@ export function apply(opts?: PopoverPolyfillOptions) {
       target &&
       (key === 'Escape' || key === 'Esc')
     ) {
-      hideAllPopoversUntil(target.ownerDocument, true, true);
+      const owner = target.ownerDocument || target;
+      hideAllPopoversUntil(owner, true, true);
     }
   };
 
