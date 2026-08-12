@@ -400,6 +400,7 @@ export function apply(opts?: PopoverPolyfillOptions) {
       target &&
       (key === 'Escape' || key === 'Esc')
     ) {
+      // target can evaluates to "document" in JSDOM, causing owerDocument to be undefined
       const owner = target.ownerDocument || target;
       hideAllPopoversUntil(owner, true, true);
     }
