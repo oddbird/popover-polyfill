@@ -72,7 +72,7 @@ function getStyles(layerName?: string) {
     DEFAULT_LAYER_NAME
   )
     .split('.') // Allow dot as it can be used to nest layers
-    .map((css) => CSS.escape(css)) // But escape each part of to ensure it's safe and valid CSS (need to wrap CSS.escape in functino for JSDOM support)
+    .map((css) => CSS.escape(css)) // But escape each part of to ensure it's safe and valid CSS (need to wrap CSS.escape in function for JSDOM support)
     .join('.');
 
   return `
