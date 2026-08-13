@@ -565,7 +565,8 @@ export function lightDismissOpenPopovers(event: Event) {
   // Composed path allows us to find the target within shadowroots
   const target = event.composedPath()[0] as HTMLElement;
   if (!target) return;
-  const document = target.ownerDocument;
+  // target evaluates to "document" in JSDOM, causing ownerDocument to be undefined
+  const document = target.ownerDocument || target;
   const topMostPopover = topmostAutoOrHintPopover(document);
   if (!topMostPopover) return;
   const ancestor = topMostClickedPopover(target);
