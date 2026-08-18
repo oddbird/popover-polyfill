@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.7.2: 2026-08-18
+
+- 🐛 BUGFIX: Improve compatibility with jsdom and happydom --
+  [#291](https://github.com/oddbird/popover-polyfill/pull/291)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.7.1: 2026-07-09
 
 - 🐛 BUGFIX: Allow dot notation in `layerName` option --
