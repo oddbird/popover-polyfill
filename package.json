@@ -111,5 +111,10 @@
     "*.{json,yml,md,html}": [
       "prettier --write --ignore-unknown"
     ]
+  },
+  "allowScripts": {
+    "unrs-resolver@1.12.2": true,
+    "esbuild@0.28.2": true,
+    "fsevents@2.3.2": true
   }
 }
