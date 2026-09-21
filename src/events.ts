@@ -3,7 +3,8 @@ export interface ToggleInit extends EventInit {
   newState: string;
 }
 
-export class ToggleEvent extends Event {
+const EventClass = globalThis.Event || class {};
+export class ToggleEvent extends EventClass {
   public oldState: string;
   public newState: string;
   constructor(type: string, init: Partial<ToggleInit> = {}) {
