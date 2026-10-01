@@ -1,5 +1,11 @@
 # Popover Attribute Polyfill Changelog
 
+## 0.7.3: 2026-10-01
+
+- 🐛 BUGFIX: Fix more SSR environment edge cases --
+  [#293](https://github.com/oddbird/popover-polyfill/pull/293)
+- 🏠 INTERNAL: Upgrade dependencies
+
 ## 0.7.2: 2026-08-18
 
 - 🐛 BUGFIX: Improve compatibility with jsdom and happydom --
