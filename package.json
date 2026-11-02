@@ -90,7 +90,7 @@
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/node": "*",
     "esbuild": "^0.28.2",
-    "eslint": "^10.11.0",
+    "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import-x": "^4.17.1",
@@ -99,9 +99,9 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.71.0"
+    "typescript-eslint": "^8.72.1"
   },
   "lint-staged": {
     "*.{js,ts}": [
