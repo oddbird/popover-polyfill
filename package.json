@@ -34,7 +34,7 @@
     "./fn": {
       "types": "./dist/index-fn.d.ts",
       "import": "./dist/popover-fn.js",
-      "require": "./dist/popover-fn.cjs.js"
+      "require": "./dist/popover-fn.cjs"
     }
   },
   "typesVersions": {
@@ -47,7 +47,7 @@
   "files": [
     "README.md",
     "src/**/*.ts",
-    "dist/**/*.{ts,js,map}",
+    "dist/**/*.{ts,js,cjs,map}",
     "package.json"
   ],
   "sideEffects": [
@@ -61,7 +61,7 @@
     "build:esm": "esbuild --bundle src/index.ts --outfile=dist/popover.js --format=esm --sourcemap --target=chrome88,edge88,firefox88,safari14",
     "build:esm-min": "esbuild --bundle src/index.ts --outfile=dist/popover.min.js --format=esm --minify --sourcemap --target=chrome88,edge88,firefox88,safari14",
     "build:esm-fn": "esbuild --bundle src/index-fn.ts --outfile=dist/popover-fn.js --format=esm --sourcemap --target=chrome88,edge88,firefox88,safari14",
-    "build:cjs-fn": "esbuild --bundle src/index-fn.ts --outfile=dist/popover-fn.cjs.js --format=cjs --sourcemap --target=chrome88,edge88,firefox88,safari14",
+    "build:cjs-fn": "esbuild --bundle src/index-fn.ts --outfile=dist/popover-fn.cjs --format=cjs --sourcemap --target=chrome88,edge88,firefox88,safari14",
     "clean": "rm -rf dist",
     "build": "run-s clean build:* types",
     "server:start": "esbuild --bundle src/index.ts --format=esm --servedir=. --outdir=dist --sourcemap --serve=\"${PORT:-3000}\" --log-level=\"${LEVEL:-info}\"",
