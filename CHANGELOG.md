@@ -1,5 +1,9 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🐛 BUGFIX: Focus behavior follows the spec more closely, and focus stays on the trigger in more cases when the `autofocus` attribute is not used. If a popover is a `<dialog>`, focus will move to the first focusable element, or the `<dialog>` itself if there are no focusable elements. Focus will only move into non-`<dialog>` popovers if the `autofocus` attribute is present, and otherwise stay on the trigger.
+
 ## 0.7.3: 2026-10-01
 
 - 🐛 BUGFIX: Fix more SSR environment edge cases --

@@ -505,6 +505,41 @@ document.querySelectorAll('[data-hover-target]').forEach((el) => {
   Single Action Popover. This popover has an &lt;a href="#" autofocus&gt;autofocus link.&lt;/a&gt;
 &lt;/div&gt;</code></pre>
         </section>
+        <section id="popover-autofocus" class="demo-item">
+          <h2 data-header>
+            <a href="#popover-autofocus" aria-hidden="true">🔗</a>
+            Popover with Autofocus
+          </h2>
+          <p class="note">
+            When the <code>popover</code> element itself has the
+            <code>autofocus</code> attribute, the popover receives focus when it
+            is opened, rather than any element inside it. The
+            <code>tabindex="-1"</code> makes the popover focusable without
+            adding it to the tab order.
+          </p>
+          <button popovertarget="autofocusPopover" data-btn>
+            Toggle Autofocus Popover
+          </button>
+          <div
+            id="autofocusPopover"
+            data-popover
+            popover
+            autofocus
+            tabindex="-1"
+          >
+            Autofocus Popover. This popover receives focus when it is opened.
+            <a href="#">A link that is not autofocused.</a>
+          </div>
+          <pre><code class="language-html"
+>&lt;button popovertarget="autofocusPopover"&gt;
+  Toggle Autofocus Popover
+&lt;/button&gt;
+
+&lt;div id="autofocusPopover" popover autofocus tabindex="-1"&gt;
+  Autofocus Popover. This popover receives focus when it is opened.
+  &lt;a href="#"&gt;A link that is not autofocused.&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+        </section>
         <section id="popover-invalid-target" class="demo-item">
           <h2 data-header>
             <a href="#popover-invalid-target" aria-hidden="true">🔗</a>

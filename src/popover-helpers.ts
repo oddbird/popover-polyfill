@@ -217,38 +217,45 @@ function topMostPopoverAncestor(
   return topMostPopoverAncestor;
 }
 
-function isFocusable(focusTarget: HTMLElement) {
-  if (focusTarget.hidden || focusTarget instanceof ShadowRoot) return false;
-  if (
-    focusTarget instanceof HTMLButtonElement ||
-    focusTarget instanceof HTMLInputElement ||
-    focusTarget instanceof HTMLSelectElement ||
-    focusTarget instanceof HTMLTextAreaElement ||
-    focusTarget instanceof HTMLOptGroupElement ||
-    focusTarget instanceof HTMLOptionElement ||
-    focusTarget instanceof HTMLFieldSetElement
-  ) {
-    if (focusTarget.disabled) return false;
-  }
-  if (
-    focusTarget instanceof HTMLInputElement &&
-    focusTarget.type === 'hidden'
-  ) {
-    return false;
-  }
-  if (focusTarget instanceof HTMLAnchorElement && focusTarget.href === '') {
-    return false;
-  }
-  return (
-    typeof focusTarget.tabIndex === 'number' && focusTarget.tabIndex !== -1
-  );
+function hasValidTabIndexAttribute(element: HTMLElement): boolean {
+  const value = element.getAttribute('tabindex');
+  return value !== null && !Number.isNaN(parseInt(value, 10));
 }
 
+// An approximation of whether `element` is a focusable area, including
+// elements that can only be focused by script or click (e.g. tabindex="-1").
+// This is not spec compliant: it does not check rendering (display: none,
+// visibility, inert, etc.).
+// Spec: https://html.spec.whatwg.org/#focusable-area
+function isFocusableArea(element: HTMLElement): boolean {
+  if (element.hidden) return false;
+  // `:disabled` also matches controls disabled by an ancestor
+  // `<fieldset disabled>`, which the `disabled` property does not reflect.
+  if (element.matches(':disabled')) return false;
+  if (element instanceof HTMLInputElement && element.type === 'hidden') {
+    return false;
+  }
+  if (
+    element instanceof HTMLAnchorElement &&
+    !element.hasAttribute('href') &&
+    !hasValidTabIndexAttribute(element)
+  ) {
+    return false;
+  }
+  return element.tabIndex >= 0 || hasValidTabIndexAttribute(element);
+}
+
+// Spec: https://html.spec.whatwg.org/#sequentially-focusable
+function isSequentiallyFocusable(element: HTMLElement): boolean {
+  return isFocusableArea(element) && element.tabIndex >= 0;
+}
+
+// Used by dialogs only.
 // This method is not spec compliant, as it also looks in slotted content
 // for autofocus elements.
 // See: https://github.com/oddbird/popover-polyfill/issues/149
 // Spec: https://html.spec.whatwg.org/#focus-delegate
-function focusDelegate(focusTarget: HTMLElement) {
+function focusDelegate(focusTarget: HTMLElement): HTMLElement | null {
   if (
     focusTarget.shadowRoot &&
     focusTarget.shadowRoot.delegatesFocus !== true
@@ -259,42 +266,72 @@ function focusDelegate(focusTarget: HTMLElement) {
   if (whereToLook.shadowRoot) {
     whereToLook = whereToLook.shadowRoot;
   }
-  let autoFocusDelegate = whereToLook.querySelector('[autofocus]');
-  if (autoFocusDelegate) {
-    return autoFocusDelegate;
-  } else {
-    const slots = whereToLook.querySelectorAll('slot');
-    for (const slot of slots) {
-      const assignedElements = slot.assignedElements({ flatten: true });
-      for (const el of assignedElements) {
-        if (el.hasAttribute('autofocus')) {
-          return el;
-        } else {
-          autoFocusDelegate = el.querySelector('[autofocus]');
-          if (autoFocusDelegate) {
-            return autoFocusDelegate;
-          }
+  let autofocusDelegateRes = autofocusDelegate(whereToLook);
+  if (autofocusDelegateRes) {
+    return autofocusDelegateRes;
+  }
+  // Check for autofocus in slotted content (Not spec compliant)
+  const slots = whereToLook.querySelectorAll('slot');
+  for (const slot of slots) {
+    const assignedElements = slot.assignedElements({ flatten: true });
+    for (const el of assignedElements) {
+      if (el.hasAttribute('autofocus')) {
+        return el as HTMLElement;
+      } else {
+        autofocusDelegateRes = el.querySelector<HTMLElement>('[autofocus]');
+        if (autofocusDelegateRes) {
+          return autofocusDelegateRes;
         }
       }
     }
   }
+  // Check descendants for focusable elements
   const walker = focusTarget.ownerDocument.createTreeWalker(
     whereToLook,
     NodeFilter.SHOW_ELEMENT,
   );
-  let descendant: Node | null = walker.currentNode;
+  let descendant: Node | null = walker.nextNode();
   while (descendant) {
     // this is not spec compliant
-    if (isFocusable(descendant as HTMLElement)) {
-      return descendant;
+    if (isSequentiallyFocusable(descendant as HTMLElement)) {
+      return descendant as HTMLElement;
     }
     descendant = walker.nextNode();
   }
+  return null;
+}
+
+// https://html.spec.whatwg.org/multipage/interaction.html#autofocus-delegate
+function autofocusDelegate(subject: ParentNode): HTMLElement | null {
+  const autofocusElements =
+    subject.querySelectorAll<HTMLElement>('[autofocus]');
+  return (
+    Array.from(autofocusElements).find((el) => isFocusableArea(el)) || null
+  );
+}
+
+function dialogFocusingSteps(dialog: HTMLDialogElement): void {
+  const control = dialog.hasAttribute('autofocus')
+    ? dialog
+    : (focusDelegate(dialog) ?? dialog);
+  control.focus();
 }
 
 // https://html.spec.whatwg.org/#popover-focusing-steps
-function popoverFocusingSteps(subject: HTMLElement) {
-  (focusDelegate(subject) as HTMLElement)?.focus();
+function popoverFocusingSteps(subject: HTMLElement): void {
+  // 1. Check allow focus (skipped)
+  // 2. If subject is a dialog element, then run dialog focusing steps and return
+  if (subject instanceof HTMLDialogElement) {
+    dialogFocusingSteps(subject);
+    return;
+  }
+  // 3. If subject has the autofocus attribute, focus it.
+  if (subject.hasAttribute('autofocus')) {
+    subject.focus();
+    return;
+  }
+  // 4. Otherwise, let control be the autofocus delegate for subject
+  autofocusDelegate(subject)?.focus();
 }
 
 const previouslyFocusedElements = new WeakMap<HTMLElement, HTMLElement>();
