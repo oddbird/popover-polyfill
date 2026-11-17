@@ -59,4 +59,15 @@ export default [
       },
     },
   },
+  {
+    files: ['tests/package.spec.ts'],
+    rules: {
+      // These tests load the built package, but the Lint job does not build
+      // `dist/`, so ESLint cannot always resolve it.
+      'import-x/no-unresolved': [
+        'error',
+        { ignore: ['^@oddbird/popover-polyfill(/|$)'] },
+      ],
+    },
+  },
 ];
