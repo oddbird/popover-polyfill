@@ -26,15 +26,28 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/popover.js",
-      "browser": "./dist/popover.iife.min.js",
-      "require": "./dist/popover.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/popover.js"
+      },
+      "browser": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/popover.iife.min.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/popover.cjs"
+      }
     },
     "./fn": {
-      "types": "./dist/index-fn.d.ts",
-      "import": "./dist/popover-fn.js",
-      "require": "./dist/popover-fn.cjs.js"
+      "import": {
+        "types": "./dist/index-fn.d.ts",
+        "default": "./dist/popover-fn.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index-fn.d.ts",
+        "default": "./dist/popover-fn.cjs"
+      }
     }
   },
   "typesVersions": {
@@ -47,12 +60,14 @@
   "files": [
     "README.md",
     "src/**/*.ts",
-    "dist/**/*.{ts,js,map}",
+    "dist/**/*.{ts,js,cjs,map}",
+    "dist/cjs/package.json",
     "package.json"
   ],
   "sideEffects": [
     "./src/index.ts",
     "./dist/popover.js",
+    "./dist/popover.cjs",
     "./dist/popover.min.js",
     "./dist/popover.iife.min.js"
   ],
@@ -60,14 +75,16 @@
     "build:iife": "esbuild --bundle src/index.ts --outfile=dist/popover.iife.min.js --format=iife --minify --sourcemap --target=chrome88,edge88,firefox88,safari14",
     "build:esm": "esbuild --bundle src/index.ts --outfile=dist/popover.js --format=esm --sourcemap --target=chrome88,edge88,firefox88,safari14",
     "build:esm-min": "esbuild --bundle src/index.ts --outfile=dist/popover.min.js --format=esm --minify --sourcemap --target=chrome88,edge88,firefox88,safari14",
+    "build:cjs": "esbuild --bundle src/index.ts --outfile=dist/popover.cjs --format=cjs --sourcemap --target=chrome88,edge88,firefox88,safari14",
     "build:esm-fn": "esbuild --bundle src/index-fn.ts --outfile=dist/popover-fn.js --format=esm --sourcemap --target=chrome88,edge88,firefox88,safari14",
-    "build:cjs-fn": "esbuild --bundle src/index-fn.ts --outfile=dist/popover-fn.cjs.js --format=cjs --sourcemap --target=chrome88,edge88,firefox88,safari14",
+    "build:cjs-fn": "esbuild --bundle src/index-fn.ts --outfile=dist/popover-fn.cjs --format=cjs --sourcemap --target=chrome88,edge88,firefox88,safari14",
     "clean": "rm -rf dist",
-    "build": "run-s clean build:* types",
+    "build": "run-s clean build:* types types:cjs",
     "server:start": "esbuild --bundle src/index.ts --format=esm --servedir=. --outdir=dist --sourcemap --serve=\"${PORT:-3000}\" --log-level=\"${LEVEL:-info}\"",
     "serve": "run-s build server:start",
     "tsc": "tsc --noEmit",
     "types": "tsc --emitDeclarationOnly",
+    "types:cjs": "mkdir -p dist/cjs && cp dist/*.d.ts dist/cjs/ && echo '{\"type\": \"commonjs\"}' > dist/cjs/package.json",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "eslint:check": "eslint .",
@@ -90,10 +107,10 @@
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/node": "*",
     "esbuild": "^0.28.2",
-    "eslint": "^10.13.0",
+    "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
-    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-import-x": "^4.18.1",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "globals": "^17.13.0",
     "husky": "^9.1.7",
@@ -101,7 +118,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.9.10",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1"
+    "typescript-eslint": "^8.73.0"
   },
   "lint-staged": {
     "*.{js,ts}": [
