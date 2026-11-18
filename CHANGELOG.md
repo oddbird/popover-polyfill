@@ -2,7 +2,12 @@
 
 ## Unreleased
 
-- 💥 BREAKING: Focus behavior follows the spec more closely, and focus stays on the trigger in more cases when the `autofocus` attribute is not used. If a popover is a `<dialog>`, focus will move to the first focusable element, or the `<dialog>` itself if there are no focusable elements. Focus will only move into non-`<dialog>` popovers if the `autofocus` attribute is present, and otherwise stay on the trigger.
+- 💥 BREAKING: Focus behavior follows the spec more closely, and focus stays on
+  the trigger in more cases when the `autofocus` attribute is not used. If a
+  popover is a `<dialog>`, focus will move to the first focusable element, or
+  the `<dialog>` itself if there are no focusable elements. Focus will only move
+  into non-`<dialog>` popovers if the `autofocus` attribute is present, and
+  otherwise stay on the trigger.
 - 🐛 BUGFIX: `require('@oddbird/popover-polyfill/fn')` loads the CommonJS
   build instead of throwing an error --
   [#300](https://github.com/oddbird/popover-polyfill/pull/300)
