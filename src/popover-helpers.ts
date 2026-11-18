@@ -251,34 +251,16 @@ function isSequentiallyFocusable(element: HTMLElement): boolean {
 }
 
 // Spec:  https://html.spec.whatwg.org/#focus-delegate
-// This method is not spec compliant in 2 ways.
 //
-// 1) It also looks in slotted content for autofocus elements. (See:
-//    https://github.com/oddbird/popover-polyfill/issues/149)
-//
-// 2) The focusDelegate spec accounts for the focusTarget having a shadow root.
-//    Since this is only called on dialog elements, and dialog elements can not
-//    be shadow roots, that code is excluded.
+// This method does not fully match the spec. The focusDelegate spec accounts
+// for the focusTarget having a shadow root. Since this is only called on dialog
+// elements, and dialog elements can not be shadow hosts, that code is excluded.
 function focusDelegate(focusTarget: HTMLElement): HTMLElement | null {
-  let autofocusDelegateRes = autofocusDelegate(focusTarget);
+  const autofocusDelegateRes = autofocusDelegate(focusTarget);
   if (autofocusDelegateRes) {
     return autofocusDelegateRes;
   }
-  // Check for autofocus in slotted content (Not spec compliant)
-  const slots = focusTarget.querySelectorAll('slot');
-  for (const slot of slots) {
-    const assignedElements = slot.assignedElements({ flatten: true });
-    for (const el of assignedElements) {
-      if (el.hasAttribute('autofocus')) {
-        return el as HTMLElement;
-      } else {
-        autofocusDelegateRes = el.querySelector<HTMLElement>('[autofocus]');
-        if (autofocusDelegateRes) {
-          return autofocusDelegateRes;
-        }
-      }
-    }
-  }
+
   // Check descendants for focusable elements
   const walker = focusTarget.ownerDocument.createTreeWalker(
     focusTarget,
