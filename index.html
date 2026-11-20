@@ -263,6 +263,15 @@
                 Show Sub Menu
               </button>
             </li>
+            <li>
+              <button
+                popovertarget="sideMenuPopover"
+                popovertargetaction="show"
+                data-btn="menu-item"
+              >
+                Show Side Menu
+              </button>
+            </li>
           </ul>
           <div
             id="nestedPopover"
@@ -282,6 +291,17 @@
               </li>
             </ul>
           </div>
+        </div>
+        <div
+          id="sideMenuPopover"
+          data-popover="nested"
+          popover
+          style="left: 200px"
+        >
+          <ul class="menu-list">
+            <li><button data-btn="menu-item">Side Menu Item 1</button></li>
+            <li><button data-btn="menu-item">Side Menu Item 2</button></li>
+          </ul>
         </div>
         <div id="shadowInvokedPopover" data-popover popover>
           Shadow Invoked Popover
@@ -614,6 +634,11 @@ document.getElementById('crossTreeToggle').popoverTargetElement = crossTreeShado
         Show Sub Menu
       &lt;/button&gt;
     &lt;/li&gt;
+    &lt;li&gt;
+      &lt;button popovertarget="sideMenuPopover" popovertargetaction="show"&gt;
+        Show Side Menu
+      &lt;/button&gt;
+    &lt;/li&gt;
   &lt;/ul&gt;
   &lt;div id="nestedPopover" popover style="left: 200px"&gt;
     &lt;ul&gt;
@@ -622,6 +647,14 @@ document.getElementById('crossTreeToggle').popoverTargetElement = crossTreeShado
       &lt;li&gt;&lt;button&gt;Submenu Item 3&lt;/button&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Not inside menuPopover, but opened from a button in it --&gt;
+&lt;div id="sideMenuPopover" popover style="left: 200px"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;button&gt;Side Menu Item 1&lt;/button&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;button&gt;Side Menu Item 2&lt;/button&gt;&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/div&gt;</code></pre>
         </section>
         <section id="popover-shadow-invoked" class="demo-item">

@@ -175,6 +175,21 @@ test('clicking button[popovertarget=shadowedMenuInner] should not hide open pare
   await expect(outerPopover).toBeHidden();
 });
 
+test('clicking a button inside an open popover should not hide that popover when its target is not nested in it', async ({
+  page,
+}) => {
+  const menuPopover = (await page.locator('#menuPopover')).nth(0);
+  const sideMenuPopover = (await page.locator('#sideMenuPopover')).nth(0);
+  await page.click('button[popovertarget=menuPopover]');
+  await expect(menuPopover).toBeVisible();
+  await page.click('button[popovertarget=sideMenuPopover]');
+  await expect(sideMenuPopover).toBeVisible();
+  await expect(menuPopover).toBeVisible();
+  await page.click('h1');
+  await expect(sideMenuPopover).toBeHidden();
+  await expect(menuPopover).toBeHidden();
+});
+
 test("button 'popovertargetElement' property should return target element", async ({
   page,
 }) => {

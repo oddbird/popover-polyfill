@@ -176,6 +176,7 @@ function nearestInclusiveTargetPopoverForInvoker(
 function topMostPopoverAncestor(
   newPopover: HTMLElement,
   list: Set<HTMLElement>,
+  invoker: HTMLElement | null,
 ): HTMLElement | null {
   const popoverPositions = new Map();
   let i = 0;
@@ -214,6 +215,7 @@ function topMostPopoverAncestor(
     }
   }
   checkAncestor(newPopover.parentElement || getRootNode(newPopover));
+  checkAncestor(invoker);
   return topMostPopoverAncestor;
 }
 
@@ -322,13 +324,16 @@ export function showPopover(element: HTMLElement) {
   let shouldRestoreFocus = false;
   const originalType = element.popover;
   let stackToAppendTo = null;
+  const invoker = popoverInvoker.get(element) || null;
   const autoAncestor = topMostPopoverAncestor(
     element,
     autoPopoverList.get(document) || new Set(),
+    invoker,
   );
   const hintAncestor = topMostPopoverAncestor(
     element,
     hintPopoverList.get(document) || new Set(),
+    invoker,
   );
   if (originalType === 'auto') {
     // Close all hint popovers
