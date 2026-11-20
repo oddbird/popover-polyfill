@@ -8,6 +8,9 @@
 - 🐛 BUGFIX: Add a CommonJS build of the default entry point, and give
   CommonJS consumers of both entry points CommonJS type declarations --
   [#303](https://github.com/oddbird/popover-polyfill/pull/303)
+- 🐛 BUGFIX: Opening an auto popover from a button inside another open popover
+  no longer closes that popover when the new one is not nested in it --
+  [#305](https://github.com/oddbird/popover-polyfill/pull/305)
 
 ## 0.7.3: 2026-10-01
 
