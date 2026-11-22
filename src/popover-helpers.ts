@@ -455,7 +455,10 @@ export function hidePopover(
   const previouslyFocusedElement = previouslyFocusedElements.get(element);
   if (previouslyFocusedElement) {
     previouslyFocusedElements.delete(element);
-    if (focusPreviousElement) {
+    // Only move focus back if focus is inside the popover. Asking the
+    // popover's own root keeps this working inside (closed) shadow roots.
+    const root = getRootNode(element) as Document | ShadowRoot;
+    if (focusPreviousElement && element.contains(root.activeElement)) {
       previouslyFocusedElement.focus();
     }
   }

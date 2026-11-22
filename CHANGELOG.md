@@ -8,6 +8,9 @@
 - 🐛 BUGFIX: Add a CommonJS build of the default entry point, and give
   CommonJS consumers of both entry points CommonJS type declarations --
   [#303](https://github.com/oddbird/popover-polyfill/pull/303)
+- 🐛 BUGFIX: Hiding a popover only moves focus back to the previously focused
+  element if focus is inside the popover, matching the spec --
+  [#298](https://github.com/oddbird/popover-polyfill/issues/298)
 
 ## 0.7.3: 2026-10-01
 
