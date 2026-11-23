@@ -233,6 +233,16 @@ some caveats which will need accommodations:
 boolean, source: HTMLElement}` syntax, both `showPopover()` and
   `togglePopover()` disregard the `source` parameter.
 
+- When a popover is opened by an invoker (a `popovertarget` button), native
+  browsers put the popover's contents right after the invoker in the tab
+  order, wherever the popover is in the DOM. The polyfill emulates this by
+  handling Tab and Shift+Tab, with some limits:
+  - Positive `tabindex` values and radio groups are not taken into account.
+  - Popovers opened with `showPopover()` or `togglePopover()` keep DOM order,
+    because the `source` option is not supported.
+  - Elements in a different shadow root from the focused element are not
+    taken into account.
+
 - The polyfill will not work in browsers with partial popover support enabled,
   and will also not attempt to make experimental support match the final spec.
 

@@ -310,6 +310,86 @@ function popoverFocusingSteps(subject: HTMLElement): void {
   autofocusDelegate(subject)?.focus();
 }
 
+// Skips elements the browser skips when tabbing, such as those inside a closed
+// popover.
+function isRendered(element: HTMLElement): boolean {
+  // checkVisibility() is missing in some browsers that need the polyfill
+  // (e.g. Safari before 17.4).
+  return element.checkVisibility?.() ?? element.getClientRects().length > 0;
+}
+
+// In the spec, a showing popover's contents follow its invoker in the
+// sequential focus navigation order, wherever the popover is in the DOM. The
+// polyfill can't change the browser's order, so this compares the order the
+// browser will use (DOM order) with the order the spec describes, and moves
+// focus only when they disagree.
+//
+// This is an approximation: it ignores positive tabindex values, radio groups
+// and elements inside other shadow roots.
+// Spec: https://html.spec.whatwg.org/#flattened-tabindex-ordered-focus-navigation-scope
+export function handleTabNavigation(event: KeyboardEvent) {
+  if (
+    event.defaultPrevented ||
+    event.altKey ||
+    event.ctrlKey ||
+    event.metaKey ||
+    event.isComposing
+  ) {
+    return;
+  }
+  const focused = event.composedPath()[0];
+  if (!(focused instanceof HTMLElement)) return;
+  const document = focused.ownerDocument;
+  const invokedPopovers = [...(topLayerElements.get(document) || [])].filter(
+    (popover) => popoverInvoker.has(popover),
+  );
+  if (!invokedPopovers.length) return;
+  const root = getRootNode(focused);
+  if (!(root instanceof Document || root instanceof ShadowRoot)) return;
+
+  const domOrder: HTMLElement[] = [];
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+  while (walker.nextNode()) {
+    const element = walker.currentNode;
+    if (
+      element instanceof HTMLElement &&
+      isSequentiallyFocusable(element) &&
+      isRendered(element)
+    ) {
+      domOrder.push(element);
+    }
+  }
+  if (!domOrder.includes(focused)) return;
+
+  let popoverOrder = [...domOrder];
+  // Tree order, so a popover nested in another popover's DOM is moved after
+  // the outer one, and ends up after its own invoker.
+  invokedPopovers.sort((a, b) =>
+    a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+  );
+  for (const popover of invokedPopovers) {
+    const invoker = popoverInvoker.get(popover)!;
+    // If the invoker isn't in the tab order (e.g. tabindex="-1"), leave the
+    // popover's contents in DOM order. The spec removes them from the tab
+    // order instead.
+    if (popover.contains(invoker) || !popoverOrder.includes(invoker)) {
+      continue;
+    }
+    const contents = popoverOrder.filter((el) => popover.contains(el));
+    popoverOrder = popoverOrder.filter((el) => !popover.contains(el));
+    popoverOrder.splice(popoverOrder.indexOf(invoker) + 1, 0, ...contents);
+  }
+
+  const step = event.shiftKey ? -1 : 1;
+  const expected = popoverOrder[popoverOrder.indexOf(focused) + step];
+  const browserDefault = domOrder[domOrder.indexOf(focused) + step];
+  // When `expected` is undefined, focus should leave the page, which script
+  // can't do, so the browser's default is used.
+  if (!expected || expected === browserDefault) return;
+  event.preventDefault();
+  expected.focus();
+}
+
 const previouslyFocusedElements = new WeakMap<HTMLElement, HTMLElement>();
 
 // https://html.spec.whatwg.org/#show-popover

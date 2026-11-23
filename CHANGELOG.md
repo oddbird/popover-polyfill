@@ -8,6 +8,9 @@
   the `<dialog>` itself if there are no focusable elements. Focus will only move
   into non-`<dialog>` popovers if the `autofocus` attribute is present, and
   otherwise stay on the trigger.
+- 🐛 BUGFIX: When a popover is opened by an invoker, Tab and Shift+Tab move
+  through the popover's contents right after the invoker, wherever the popover
+  is in the DOM.
 - 🐛 BUGFIX: `require('@oddbird/popover-polyfill/fn')` loads the CommonJS
   build instead of throwing an error --
   [#300](https://github.com/oddbird/popover-polyfill/pull/300)

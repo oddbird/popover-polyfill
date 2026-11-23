@@ -1,6 +1,7 @@
 import { ToggleEvent } from './events.js';
 import {
   getRootNode,
+  handleTabNavigation,
   hideAllPopoversUntil,
   hidePopover,
   lightDismissOpenPopovers,
@@ -403,6 +404,9 @@ export function apply(opts?: PopoverPolyfillOptions) {
       // target evaluates to "document" in JSDOM, causing ownerDocument to be undefined
       const owner = target.ownerDocument || target;
       hideAllPopoversUntil(owner, true, true);
+    }
+    if (key === 'Tab') {
+      handleTabNavigation(event as KeyboardEvent);
     }
   };
 
