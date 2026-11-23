@@ -1,5 +1,9 @@
 # Popover Attribute Polyfill Changelog
 
+## Unreleased
+
+- 🐛 BUGFIX: Patch `DocumentFragment.prototype.querySelector`.
+
 ## 0.7.3: 2026-10-01
 
 - 🐛 BUGFIX: Fix more SSR environment edge cases --

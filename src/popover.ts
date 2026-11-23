@@ -188,6 +188,7 @@ export function apply(opts?: PopoverPolyfillOptions) {
   patchSelectorFn(Element.prototype, 'querySelectorAll', rewriteSelector);
   patchSelectorFn(Element.prototype, 'matches', rewriteSelector);
   patchSelectorFn(Element.prototype, 'closest', rewriteSelector);
+  patchSelectorFn(DocumentFragment.prototype, 'querySelector', rewriteSelector);
   patchSelectorFn(
     DocumentFragment.prototype,
     'querySelectorAll',
