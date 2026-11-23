@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- 🐛 BUGFIX: Patch `DocumentFragment.prototype.querySelector`.
 - 🐛 BUGFIX: `require('@oddbird/popover-polyfill/fn')` loads the CommonJS
   build instead of throwing an error --
   [#300](https://github.com/oddbird/popover-polyfill/pull/300)
