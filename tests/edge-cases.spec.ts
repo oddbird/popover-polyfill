@@ -27,3 +27,26 @@ test('styles in layers are winning over polyfilled styles', async ({
   const popover = (await page.locator('#layeredStylesPopover')).nth(0);
   await expect(popover).toHaveCSS('--border-color', '#d00d1e');
 });
+
+test('`popover` set via IDL before the polyfill is applied is polyfilled', async ({
+  page,
+}) => {
+  // Set `el.popover` once the document is parsed but before the deferred
+  // module script that applies the polyfill runs.
+  await page.addInitScript(() => {
+    document.addEventListener('readystatechange', () => {
+      if (document.readyState !== 'interactive') return;
+      const el = document.createElement('div');
+      el.id = 'idlPopover';
+      el.textContent = 'IDL popover';
+      el.popover = 'auto';
+      document.body.append(el);
+    });
+  });
+  await page.goto('/');
+  const popover = page.locator('#idlPopover');
+  await expect(popover).toHaveAttribute('popover', 'auto');
+  await expect(popover).toBeHidden();
+  await popover.evaluate((node) => node.showPopover());
+  await expect(popover).toBeVisible();
+});
