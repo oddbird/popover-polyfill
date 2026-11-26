@@ -260,6 +260,17 @@ export function apply(opts?: PopoverPolyfillOptions) {
     },
   });
 
+  // If `el.popover` was set before the polyfill was applied, it is an own
+  // property on the element that hides the setter above. Move the value
+  // through the setter so the `popover` attribute is set.
+  for (const el of document.querySelectorAll('*')) {
+    if (Object.prototype.hasOwnProperty.call(el, 'popover')) {
+      const value = (el as HTMLElement).popover;
+      delete (el as Partial<HTMLElement>).popover;
+      (el as HTMLElement).popover = value;
+    }
+  }
+
   const originalAttachShadow = Element.prototype.attachShadow;
   if (originalAttachShadow) {
     Object.defineProperties(Element.prototype, {
